@@ -1,7 +1,7 @@
 """CLI/module bridge for terminals, editor extensions, and agent hooks.
 
 Transcribes files and reads the speech capability document from a local,
-standalone or remote VoiceStudio backend.
+standalone or remote CallenVoice backend.
 
 Native dictation control (start/stop/toggle/status and ``--insert``) was served
 by the retired Tauri desktop shell on port 3902. The Electron app has no such
@@ -51,7 +51,7 @@ class SpeechClientError(RuntimeError):
 
 class _RejectCredentialRedirect(request.HTTPRedirectHandler):
     def redirect_request(self, req, fp, code, msg, headers, newurl):  # noqa: ARG002
-        raise SpeechClientError("VoiceStudio refused a credentialed redirect")
+        raise SpeechClientError("CallenVoice refused a credentialed redirect")
 
 
 def _join_url(base_url: str, path: str) -> str:
@@ -107,10 +107,10 @@ def _open(req: request.Request, timeout: float = 300.0) -> tuple[bytes, str]:
     target = urlsplit(req.full_url)
     scheme = target.scheme.lower()
     if scheme not in {"http", "https"}:
-        raise SpeechClientError("VoiceStudio URLs must use http:// or https://")
+        raise SpeechClientError("CallenVoice URLs must use http:// or https://")
     credentialed = bool(req.get_header("Authorization"))
     if credentialed and scheme != "https" and not _is_loopback_host(target.hostname):
-        raise SpeechClientError("Remote VoiceStudio credentials require https://")
+        raise SpeechClientError("Remote CallenVoice credentials require https://")
     handlers: list[request.BaseHandler] = [_LoopbackDirectProxyHandler()]
     if credentialed:
         handlers.append(_RejectCredentialRedirect())
@@ -121,7 +121,7 @@ def _open(req: request.Request, timeout: float = 300.0) -> tuple[bytes, str]:
     except error.HTTPError as exc:
         raise SpeechClientError(_decode_error(exc)) from exc
     except error.URLError as exc:
-        raise SpeechClientError(f"VoiceStudio is unavailable: {exc.reason}") from exc
+        raise SpeechClientError(f"CallenVoice is unavailable: {exc.reason}") from exc
 
 
 def _json_request(method: str, url: str, payload: Any | None = None) -> Any:
@@ -133,7 +133,7 @@ def _json_request(method: str, url: str, payload: Any | None = None) -> Any:
     try:
         return json.loads(body)
     except json.JSONDecodeError as exc:
-        raise SpeechClientError("VoiceStudio returned invalid JSON") from exc
+        raise SpeechClientError("CallenVoice returned invalid JSON") from exc
 
 
 def _encode_multipart(
@@ -237,7 +237,7 @@ def _transcribe(args: argparse.Namespace) -> int:
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="voicestudio-speech",
-        description="Consume VoiceStudio's local speech platform.",
+        description="Consume CallenVoice's local speech platform.",
     )
     parser.add_argument(
         "--engine-url",

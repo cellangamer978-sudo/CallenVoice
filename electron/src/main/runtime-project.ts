@@ -764,7 +764,7 @@ export function missingSystemLibraryError(libraries: readonly string[]): Error {
     new Error(
       `This Windows system is missing ${libraries.join(', ')}, which the PyTorch audio extension links ` +
         'against. Install the Microsoft Visual C++ 2015-2022 Redistributable (x64) and restart ' +
-        'VoiceStudio; reinstalling the Python packages cannot supply a system library.',
+        'CallenVoice; reinstalling the Python packages cannot supply a system library.',
     ),
     { code: MISSING_SYSTEM_LIBRARY_CODE, missingSystemLibraries: [...libraries] },
   );
@@ -913,8 +913,8 @@ async function mirrorInPlace(source: string, target: string, fs: StageFileSystem
 function runtimeFilesLockedError(target: string, cause: unknown): Error {
   return Object.assign(
     new Error(
-      `Windows would not let VoiceStudio update ${target} because another program has a file in it ` +
-        'open (OneDrive or another sync app, antivirus, or a VoiceStudio backend that is still ' +
+      `Windows would not let CallenVoice update ${target} because another program has a file in it ` +
+        'open (OneDrive or another sync app, antivirus, or a CallenVoice backend that is still ' +
         'running). Close that program or pause syncing, then press Retry. ' +
         `(${String((cause as Error | null)?.message ?? cause)})`,
     ),

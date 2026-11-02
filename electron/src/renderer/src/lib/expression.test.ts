@@ -33,8 +33,8 @@ describe('expressionCaps (#3422)', () => {
 
   it("names the bundled engine by its model, not the app's own name", () => {
     expect(
-      engineShortName(engine({ display_name: 'VoiceStudio (k2-fsa/OmniVoice, 600+ languages)' })),
+      engineShortName(engine({ display_name: 'CallenVoice (k2-fsa/OmniVoice, 600+ languages)' })),
     ).toBe('OmniVoice');
-    expect(engineShortName(engine({ display_name: 'VoiceStudio' }))).toBe('VoiceStudio');
+    expect(engineShortName(engine({ display_name: 'CallenVoice' }))).toBe('CallenVoice');
   });
 });

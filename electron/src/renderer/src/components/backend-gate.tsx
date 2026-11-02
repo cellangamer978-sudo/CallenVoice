@@ -1,3 +1,4 @@
+import { CALLEN_RELEASES_URL } from '@shared/callen/repo';
 import { SetupGate } from './setup-gate';
 import { SetupProgressCard } from './setup-progress-card';
 import { ReportBug } from './report-bug';
@@ -52,7 +53,7 @@ interface BackendGateProps {
   repairDock?: ReactNode;
 }
 
-const RELEASES_URL = 'https://github.com/debpalash/VoiceStudio/releases/latest';
+const RELEASES_URL = CALLEN_RELEASES_URL;
 const RETRYABLE = new Set(['crashed', 'failed', 'port_in_use']);
 
 function useElapsedSeconds(elapsedMs: number, running: boolean): number {
@@ -463,7 +464,7 @@ export function BackendGate({ children, repairDock }: BackendGateProps) {
                   </div>
                 </div>
               )}
-              {wrongArchitecture && (
+              {wrongArchitecture && RELEASES_URL && (
                 <ExternalLink href={RELEASES_URL}>
                   {t('backend.download_apple_silicon')}
                 </ExternalLink>
@@ -538,13 +539,13 @@ export function BackendGate({ children, repairDock }: BackendGateProps) {
                 </Button>
               )}
               <AgentFixButton
-                request={`Restore the VoiceStudio local backend. Current stage: ${status.stage}.${delimitedDiagnostic(status.message)} Inspect Electron status, restart or resume runtime setup as needed, wait until the backend is ready, and verify health. Do not clean reinstall or change user consent.`}
+                request={`Restore the CallenVoice local backend. Current stage: ${status.stage}.${delimitedDiagnostic(status.message)} Inspect Electron status, restart or resume runtime setup as needed, wait until the backend is ready, and verify health. Do not clean reinstall or change user consent.`}
               />
             </div>
           ) : null}
           {setupFailed ? (
             <AgentFixButton
-              request={`Resume and repair the interrupted VoiceStudio runtime setup. Current issue: ${status.setupIssue || 'unknown'}.${delimitedDiagnostic(status.message)} Use the Electron runtime setup control, wait for completion, and verify backend health. Do not clean reinstall or change user consent.`}
+              request={`Resume and repair the interrupted CallenVoice runtime setup. Current issue: ${status.setupIssue || 'unknown'}.${delimitedDiagnostic(status.message)} Use the Electron runtime setup control, wait for completion, and verify backend health. Do not clean reinstall or change user consent.`}
             />
           ) : null}
           {!installing && (status.logTail.length > 0 || (cause && status.message)) ? (

@@ -598,33 +598,32 @@ def recommendations():
         for slot, model in zip(asr_slots, ordered):
             curated[slot] = model
 
+    # CallenVoice: the required voice model is MOSS-TTS-Nano (see callen.catalog);
+    # the optional picks are limited to the whitelist.
     if is_mac_arm:
         rationale = (
-            "Apple Silicon preset: VoiceStudio (required) covers multilingual TTS + "
-            "cloning on its own. The optional picks are Metal-native: MLX Whisper "
-            "large-v3 for dubbing/transcription, Whisper Turbo (MLX) + Parakeet TDT "
-            "v3 for live dictation, Kokoro + KittenTTS for instant English TTS."
+            "Apple Silicon preset: MOSS-TTS-Nano (required) clones voices and speaks "
+            "the dubbed lines. MLX Whisper large-v3 is the optional transcription "
+            "pick for dubbing."
         )
     elif has_cuda:
         rationale = (
-            "NVIDIA preset: VoiceStudio (required) runs standalone. Optional ASR picks "
-            "are CUDA-accelerated via CTranslate2 — Whisper large-v3 for dubbing "
-            "(best word timestamps) and Turbo for 5× faster transcription. Whisper "
-            "Tiny provides broad-language local dictation. KittenTTS adds CPU-realtime English."
+            "NVIDIA preset: MOSS-TTS-Nano (required) clones voices and speaks the "
+            "dubbed lines. Optional transcription picks are CUDA-accelerated: Whisper "
+            "large-v3 for the best word timing and Turbo for faster transcription."
         )
     elif has_rocm:
         rationale = (
-            "AMD/ROCm preset: VoiceStudio (required) runs standalone. CTranslate2 has "
-            "no ROCm backend, so the PyTorch Whisper large-v3 build is the "
-            "GPU-accelerated ASR route; faster-whisper works on CPU, and Whisper Tiny "
-            "provides broad-language local dictation."
+            "AMD/ROCm preset: MOSS-TTS-Nano (required) clones voices and speaks the "
+            "dubbed lines. PyTorch Whisper large-v3 is the GPU-accelerated "
+            "transcription route; faster-whisper also works on the CPU."
         )
     else:
         rationale = (
-            "CPU preset: VoiceStudio (required) runs standalone. Optional picks favour "
-            "speed on CPU — Whisper small (int8) as the light default, large-v3 for "
-            "accuracy and Turbo when you can spare the time and RAM, Whisper Tiny "
-            "(ONNX) for live dictation, KittenTTS for instant English TTS."
+            "CPU preset: MOSS-TTS-Nano (required) clones voices and speaks the dubbed "
+            "lines on an 8 GB computer without a GPU. Whisper small (int8) is the "
+            "light transcription default; large-v3 and Turbo are more accurate when "
+            "you can spare the time and RAM."
         )
 
     cached_ids: set[str] = set()

@@ -73,13 +73,11 @@ def test_off_by_default_even_when_the_build_ships_a_token(monkeypatch):
 
 
 def test_source_builds_have_a_destination_via_the_in_repo_default(monkeypatch):
-    """#1193: with no env/baked token, the committed publishable key is the
-    fallback — so source builds get the SAME consent flow as installers. Consent
-    is still the gate: available ≠ enabled."""
-    assert analytics.token_configured() is True  # no env token set by _isolate
-    assert analytics.enabled() is False          # …but silence is still not consent
+    """CallenVoice (adapted from upstream #1193): no in-repo default token, so a
+    source build has no destination and consent alone cannot enable sending."""
+    assert analytics.token_configured() is False
     analytics.set_opted_in(True)
-    assert analytics.enabled() is True
+    assert analytics.enabled() is False
 
 
 def test_the_env_token_beats_the_in_repo_default(monkeypatch):

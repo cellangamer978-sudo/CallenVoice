@@ -23,6 +23,8 @@ _CONTACTS = {
     "partner@voicestudio.sh",
     "security@voicestudio.sh",
     "sponsor@voicestudio.sh",
+    # CallenVoice publisher contact (package metadata), until a product domain exists.
+    "engeener978@gmail.com",
 }
 _EMAIL = re.compile(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,}")
 _RESERVED_DOMAIN = re.compile(r"(^|\.)(example\.(com|net|org)|example|test|invalid|localhost|local)$", re.I)

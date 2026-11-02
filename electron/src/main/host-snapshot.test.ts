@@ -6,13 +6,13 @@ import { expect, it } from 'vitest';
 import { collectHostSnapshot, pathRiskFlags } from './host-snapshot';
 
 it('flags launch-hostile Windows paths without exposing them', () => {
-  expect(pathRiskFlags('C:\\Users\\Ana\\OneDrive\\Masaüstü\\VoiceStudio', 'win32')).toEqual([
+  expect(pathRiskFlags('C:\\Users\\Ana\\OneDrive\\Masaüstü\\CallenVoice', 'win32')).toEqual([
     'onedrive',
     'non-ascii',
   ]);
-  expect(pathRiskFlags('C:\\Windows\\System32\\VoiceStudio', 'win32')).toContain('system32');
-  expect(pathRiskFlags('\\\\server\\share\\VoiceStudio', 'win32')).toContain('network-share');
-  expect(pathRiskFlags('C:\\Program Files\\VoiceStudio', 'win32')).toEqual([
+  expect(pathRiskFlags('C:\\Windows\\System32\\CallenVoice', 'win32')).toContain('system32');
+  expect(pathRiskFlags('\\\\server\\share\\CallenVoice', 'win32')).toContain('network-share');
+  expect(pathRiskFlags('C:\\Program Files\\CallenVoice', 'win32')).toEqual([
     'spaces',
     'program-files',
   ]);

@@ -358,7 +358,8 @@ class ProductionTests(unittest.TestCase):
 
     def test_production_rows_never_use_synthetic_positive_fixtures(self):
         registry = ml.load_registry()
-        self.assertEqual(len(registry["models"]), 70)
+        # CallenVoice adds santhosh/madlad400-3b-ct2 (whitelist candidate, Phase 3).
+        self.assertEqual(len(registry["models"]), 71)
         self.assertEqual(len(registry["dynamic_assets"]), 7)
         for row in registry["models"]:
             self.assertEqual(row["component_closure"], "incomplete")
@@ -381,7 +382,10 @@ class ProductionTests(unittest.TestCase):
         expected = {r["id"]: r["runtime_revision"] for r in data["models"]
                     if r["runtime_pin_scope"] == "central"}
         self.assertEqual(CURATED_REVISIONS, expected)
-        self.assertEqual(len(expected), 46)
+        self.assertEqual(len(expected), 47)
+        # CallenVoice: MADLAD-400 CT2 conversion pinned for the Phase 3 translator.
+        self.assertEqual(expected.pop("santhosh/madlad400-3b-ct2"),
+                         "c32ad0cf118807ea6258d14be137547155842723")
         self.assertEqual(expected.pop("OpenMOSS-Team/MOSS-Audio-Tokenizer"),
                          "3cd226ba2947efa357ef453bcad111b6eafba782")
         self.assertEqual(expected.pop("Lourdle/Fun-CosyVoice3-0.5B-2512-GGUF"),

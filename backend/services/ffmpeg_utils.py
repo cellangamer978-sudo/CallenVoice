@@ -457,12 +457,12 @@ def _bare_name_shim(real: str, tool: str) -> "str | None":
 def ensure_media_tools_on_path() -> list[str]:
     """Put the resolved ffmpeg/ffprobe on ``PATH`` for third-party code (#1256).
 
-    VoiceStudio's own call sites always resolve an explicit path, so a bundled
+    CallenVoice's own call sites always resolve an explicit path, so a bundled
     sidecar that was never on ``PATH`` works fine for us. Our dependencies do
     not get that courtesy: a library that shells out to ``ffprobe`` by bare
     name dies with ``FileNotFoundError: [Errno 2] No such file or directory:
     'ffprobe'``. The reporter of #1256 hit that mid-synthesis and was told the
-    engine had "stopped with an error VoiceStudio doesn't recognize", on a Mac
+    engine had "stopped with an error CallenVoice doesn't recognize", on a Mac
     where the app's OWN ffprobe was sitting on disk, resolvable, the whole
     time.
 

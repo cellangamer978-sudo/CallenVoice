@@ -58,7 +58,10 @@ def shares_repo(model: dict, models: "list[dict] | None" = None) -> bool:
     )
 
 
-KNOWN_MODELS = _load_models_from_yaml()
+# CallenVoice: first-run setup requires our default models, never excluded ones.
+from callen.catalog import apply_to_model_catalogue  # noqa: E402
+
+KNOWN_MODELS = apply_to_model_catalogue(_load_models_from_yaml())
 
 
 def catalogue_entry(key: str, models: "list[dict] | None" = None) -> "dict | None":
@@ -89,7 +92,7 @@ def _hub_cache_roots() -> list[str]:
     HF stores repos under ``$HF_HUB_CACHE`` (== ``$HF_HOME/hub`` by default). When
     only ``HF_HOME`` (or the ``~/.cache/huggingface`` default) is known, the repos
     live under the ``hub`` subdir — so we probe both ``<dir>`` (the
-    ``HF_HUB_CACHE``-is-set case, e.g. VoiceStudio's Windows short cache) and
+    ``HF_HUB_CACHE``-is-set case, e.g. CallenVoice's Windows short cache) and
     ``<dir>/hub`` (the ``HF_HOME``-only case). Without this the WinError-448
     fallback would look one level too high and miss the cache (CodeRabbit #137).
     """

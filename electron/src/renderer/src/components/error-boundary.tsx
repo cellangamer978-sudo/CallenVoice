@@ -119,7 +119,7 @@ export class ErrorBoundary extends Component<{ children: ReactNode }, { error: E
   }
   componentDidCatch(error: Error, info: ErrorInfo) {
     captureException(error, 'renderer:react-boundary');
-    console.error('[VoiceStudio UI]', error, info.componentStack);
+    console.error('[CallenVoice UI]', error, info.componentStack);
   }
   render() {
     return this.state.error ? (

@@ -1,7 +1,7 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { expect, it, vi } from 'vitest';
 
-const route = vi.hoisted(() => ({ pathname: '/gallery' }));
+const route = vi.hoisted(() => ({ pathname: '/personas' }));
 vi.mock('@tanstack/react-router', () => ({
   useRouterState: ({ select }: any) => select({ location: route }),
   Link: ({ to, activeProps: _activeProps, children, ...props }: any) => (
@@ -14,26 +14,38 @@ vi.mock('react-i18next', () => ({ useTranslation: () => ({ t: (key: string) => k
 vi.mock('@/lib/store/workspace', () => ({ setWorkspace: vi.fn() }));
 import { WorkspaceNavigation } from './workspace-menu';
 
+// CallenVoice: the upstream examples used sections we hide (gallery, stories,
+// workflows); these tests use visible ones and check the hidden ones are gone.
+it('hides sections outside the CallenVoice scope', () => {
+  route.pathname = '/dub';
+  render(<WorkspaceNavigation />);
+  for (const name of ['nav.gallery', 'designWorkspace.title', 'workflows.title', 'tools.title'])
+    expect(screen.queryByRole('link', { name })).toBeNull();
+  expect(screen.queryByRole('button', { name: 'nav.stories' })).toBeNull();
+  expect(screen.getByRole('link', { name: 'dubWorkspace.title' })).toHaveAttribute('href', '/dub');
+  route.pathname = '/personas';
+});
+
 it('opens the current workflow, lets users collapse it, and follows route changes', () => {
   const { rerender } = render(<WorkspaceNavigation />);
   const voice = screen.getByRole('button', { name: 'nav.voice' });
   expect(voice).toHaveAttribute('aria-expanded', 'true');
-  expect(screen.getByRole('link', { name: 'nav.gallery' })).toHaveAttribute('href', '/gallery');
-  expect(screen.getByRole('link', { name: 'workflows.title' })).toHaveAttribute(
+  expect(screen.getByRole('link', { name: 'nav.saved' })).toHaveAttribute('href', '/personas');
+  expect(screen.getByRole('link', { name: 'projects.title' })).toHaveAttribute(
     'href',
-    '/workflows',
+    '/projects',
   );
   fireEvent.click(voice);
   expect(voice).toHaveAttribute('aria-expanded', 'false');
-  route.pathname = '/audiobook';
+  route.pathname = '/batch';
   rerender(<WorkspaceNavigation />);
-  expect(screen.getByRole('button', { name: 'nav.stories' })).toHaveAttribute(
+  expect(screen.getByRole('button', { name: 'nav.dub' })).toHaveAttribute(
     'aria-expanded',
     'true',
   );
-  expect(screen.getByRole('link', { name: 'audiobook.title' })).toHaveAttribute(
+  expect(screen.getByRole('link', { name: 'nav.batch_dub' })).toHaveAttribute(
     'href',
-    '/audiobook',
+    '/batch',
   );
 });
 
@@ -44,7 +56,7 @@ it('keeps grouped destinations reachable from the compact rail', async () => {
     'href',
     '/clone',
   );
-  expect(screen.getByRole('link', { name: 'nav.gallery' })).toHaveAttribute('href', '/gallery');
+  expect(screen.getByRole('link', { name: 'nav.saved' })).toHaveAttribute('href', '/personas');
 });
 
 it('opens a compact group for a mouse hover while ignoring touch hover', async () => {
@@ -58,7 +70,7 @@ it('opens a compact group for a mouse hover while ignoring touch hover', async (
 });
 
 it('keeps the compact flyout mounted until navigation changes the route', async () => {
-  route.pathname = '/gallery';
+  route.pathname = '/personas';
   const { rerender } = render(<WorkspaceNavigation compact />);
   fireEvent.click(screen.getByRole('button', { name: 'nav.voice' }));
   const clone = await screen.findByRole('link', { name: 'nav.clone_short' });
@@ -70,9 +82,9 @@ it('keeps the compact flyout mounted until navigation changes the route', async 
 });
 
 it('closes the compact flyout when choosing the current route again', async () => {
-  route.pathname = '/gallery';
+  route.pathname = '/personas';
   render(<WorkspaceNavigation compact />);
   fireEvent.click(screen.getByRole('button', { name: 'nav.voice' }));
-  fireEvent.click(await screen.findByRole('link', { name: 'nav.gallery' }));
-  await waitFor(() => expect(screen.queryByRole('link', { name: 'nav.gallery' })).toBeNull());
+  fireEvent.click(await screen.findByRole('link', { name: 'nav.saved' }));
+  await waitFor(() => expect(screen.queryByRole('link', { name: 'nav.saved' })).toBeNull());
 });

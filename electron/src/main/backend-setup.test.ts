@@ -263,7 +263,7 @@ it('attaches to a healthy replacement instead of reporting its exited child as c
   expect(supervisor.status.stage).toBe('ready');
   expect(supervisor.status.managed).toBe(false);
   expect(supervisor.status.exitCode).toBeUndefined();
-  expect(supervisor.status.logTail).toContain('Attached to the replacement VoiceStudio backend.');
+  expect(supervisor.status.logTail).toContain('Attached to the replacement CallenVoice backend.');
   await supervisor.shutdown();
   vi.useRealTimers();
 });
@@ -834,19 +834,19 @@ function stubResourcesPath(path: string): void {
 
 it('serves LAN devices the web UI packaged with this app version', () => {
   vi.stubEnv('OMNIVOICE_FRONTEND_DIST', '');
-  stubResourcesPath(join('/opt', 'VoiceStudio', 'resources'));
+  stubResourcesPath(join('/opt', 'CallenVoice', 'resources'));
 
   const { env } = managedBackendSpawnOptions(3900);
 
   expect(env.OMNIVOICE_FRONTEND_DIST).toBe(
-    join('/opt', 'VoiceStudio', 'resources', 'frontend', 'dist'),
+    join('/opt', 'CallenVoice', 'resources', 'frontend', 'dist'),
   );
   expect(bundledWebUiPath()).toBe(env.OMNIVOICE_FRONTEND_DIST);
 });
 
 it('keeps a web UI directory the user pinned themselves', () => {
   vi.stubEnv('OMNIVOICE_FRONTEND_DIST', '/custom/web');
-  stubResourcesPath(join('/opt', 'VoiceStudio', 'resources'));
+  stubResourcesPath(join('/opt', 'CallenVoice', 'resources'));
 
   expect(managedBackendSpawnOptions(3900).env.OMNIVOICE_FRONTEND_DIST).toBe('/custom/web');
 });

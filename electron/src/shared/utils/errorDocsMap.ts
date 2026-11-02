@@ -12,8 +12,9 @@
 // to bound the blast radius.
 
 import { openExternal } from '../api/external';
+import { DOCS_BLOB_BASE } from '../callen/repo';
 
-const BASE = 'https://github.com/debpalash/VoiceStudio/blob/main';
+const BASE = DOCS_BLOB_BASE;
 
 export const ERROR_DOCS: Record<string, string> = {
   GPU_ARCH_UNSUPPORTED: `${BASE}/docs/install/troubleshooting.md#generation-failure-diagnosis`,

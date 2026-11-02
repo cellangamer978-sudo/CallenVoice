@@ -17,7 +17,7 @@ function stubStage(stage: string, message?: string): void {
 // exitCode/signalCode before reporting), yet `unresponsive` fell through to
 // `unknown`, and `unknown` is the branch that tells apiFetch to give up at once.
 // Every request issued during a long generation therefore dead-ended with
-// "Can't reach the local VoiceStudio backend" while the backend was faithfully
+// "Can't reach the local CallenVoice backend" while the backend was faithfully
 // working through the job. `starting` is the honest answer: still in progress,
 // keep waiting, and let it land when the event loop frees up.
 describe('backendLifecycleStage — a busy backend is still in progress (#2430)', () => {

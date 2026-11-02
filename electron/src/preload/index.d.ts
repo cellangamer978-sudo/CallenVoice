@@ -351,7 +351,7 @@ export interface AccountPublicState {
 }
 
 export interface VoiceStudioBridge {
-  /** VoiceStudio Cloud account; never carries a token. */
+  /** CallenVoice Cloud account; never carries a token. */
   account: {
     get(): Promise<AccountPublicState>;
     signIn(): Promise<void>;

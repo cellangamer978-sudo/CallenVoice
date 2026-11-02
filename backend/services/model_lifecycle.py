@@ -98,7 +98,7 @@ def list_loaded() -> dict:
     degraded_sources: list[str] = []
     active_tts = _active_tts_id()
 
-    # 1. In-process TTS model (VoiceStudio)
+    # 1. In-process TTS model (CallenVoice)
     if mm.model is not None:
         try:
             device = str(next(mm.model.parameters()).device) if hasattr(mm.model, "parameters") else get_best_device()
@@ -106,7 +106,7 @@ def list_loaded() -> dict:
             device = get_best_device()
         models.append({
             "id": "tts",
-            "name": "VoiceStudio TTS",
+            "name": "CallenVoice TTS",
             "checkpoint": mm.resolve_omnivoice_checkpoint(),  # #693: effective checkpoint, not a leaked raw value
             "device": device,
             "vram_mb": round(_tts_vram_mb(), 1),
@@ -161,7 +161,7 @@ def list_loaded() -> dict:
 
     # 5. In-process engine instances that hold a model (mlx-audio, cosyvoice,
     #    voxcpm2, kittentts, …). These live in the generate path's instance
-    #    cache, separate from the VoiceStudio core above — and were INVISIBLE here
+    #    cache, separate from the CallenVoice core above — and were INVISIBLE here
     #    until now, so a resident non-VoiceStudio engine (up to a few GB) didn't
     #    show in the panel at all. Report each that currently holds a model.
     #    VRAM isn't self-reported by these engines → 0 (unmeasured), same

@@ -2,12 +2,11 @@
   "name": "voicestudio-electron",
   "version": "0.0.0-electron",
   "private": true,
-  "description": "VoiceStudio desktop shell (Electron) - local voice cloning, no cloud.",
-  "homepage": "https://github.com/debpalash/VoiceStudio",
+  "description": "CallenVoice desktop app - local AI dubbing and localization. Based on VoiceStudio (AGPL-3.0).",
   "license": "AGPL-3.0-only",
   "author": {
-    "name": "VoiceStudio contributors",
-    "email": "hi@voicestudio.sh"
+    "name": "CallenVoice",
+    "email": "engeener978@gmail.com"
   },
   "type": "module",
   "main": "./out/main/index.js",

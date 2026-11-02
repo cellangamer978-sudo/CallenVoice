@@ -898,7 +898,7 @@ def uv_subprocess_env(cache_parent: Path) -> "dict[str, str]":
     """Environment for ``uv`` subprocesses that install into *cache_parent*'s volume.
 
     Always a copy of ``os.environ`` with ``UV_NO_CONFIG=1``: an engine's
-    install resolves its own requirements, never VoiceStudio's. The backend
+    install resolves its own requirements, never CallenVoice's. The backend
     runs inside the app's tree, so uv would otherwise discover the app's
     ``pyproject.toml`` and apply its ``[tool.uv] constraint-dependencies``
     (``torch==2.8.0``) to the engine's venv. An engine pinning another torch
@@ -1067,7 +1067,7 @@ def _job_step(job: dict, step_id: str) -> dict:
 
 
 _DISK_FULL_REMEDIATION = (
-    "The disk is full. Free up space (or move VoiceStudio's data directory to a "
+    "The disk is full. Free up space (or move CallenVoice's data directory to a "
     "larger volume), then re-run the install — it resumes from where it stopped."
 )
 
@@ -1330,7 +1330,7 @@ def uninstall(engine_id: str) -> dict:
             "status": "not_managed",
             "engine": engine_id,
             "detail": (
-                f"{spec.display_name} points at {env_dir}, which VoiceStudio did not "
+                f"{spec.display_name} points at {env_dir}, which CallenVoice did not "
                 f"install. Remove that directory yourself if you want it gone, or "
                 f"clear {spec.env_var} in Settings."
             ),
@@ -1401,12 +1401,12 @@ def _step_preflight(spec: SidecarSpec, job: dict) -> None:
         raise _StepError(
             "uv was not found (checked the bundled path via OMNIVOICE_BUNDLED_UV, "
             "then PATH).",
-            "Install uv from https://docs.astral.sh/uv/ and relaunch VoiceStudio, or "
+            "Install uv from https://docs.astral.sh/uv/ and relaunch CallenVoice, or "
             "set OMNIVOICE_BUNDLED_UV to the absolute path of a uv binary.",
         )
     err = disk_space_error(spec)
     if err:
-        raise _StepError(err, "Free up disk space (or move VoiceStudio's data directory "
+        raise _StepError(err, "Free up disk space (or move CallenVoice's data directory "
                               "to a larger volume) and retry.")
     managed_root(spec).mkdir(parents=True, exist_ok=True)
     _job_step(job, "preflight")["detail"] = "uv found, disk space OK"

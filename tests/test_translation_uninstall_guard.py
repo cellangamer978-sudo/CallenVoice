@@ -46,7 +46,7 @@ def test_a_package_the_app_depends_on_is_never_uninstalled(monkeypatch):
     with pytest.raises(HTTPException) as err:
         _uninstall(monkeypatch, "x-llm")
     assert err.value.status_code == 400
-    assert "VoiceStudio itself" in err.value.detail
+    assert "CallenVoice itself" in err.value.detail
 
 
 def test_a_package_other_engines_share_is_never_uninstalled(monkeypatch):

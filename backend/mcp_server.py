@@ -1,5 +1,5 @@
 """
-VoiceStudio MCP Server — expose voice synthesis as AI-agent tools.
+CallenVoice MCP Server — expose voice synthesis as AI-agent tools.
 
 Run standalone:
     python -m backend.mcp_server          # stdio transport (Claude Desktop)
@@ -442,9 +442,9 @@ def create_mcp_server(app=None):
     """
     FastMCP = _ensure_mcp()
     mcp = FastMCP(
-        "VoiceStudio",
+        "CallenVoice",
         instructions=(
-            "AI-agent interface for VoiceStudio — voice cloning, "
+            "AI-agent interface for CallenVoice — voice cloning, "
             "voice design, and video dubbing in 646 languages."
         ),
     )
@@ -524,7 +524,7 @@ def create_mcp_server(app=None):
         return decoded
 
     def _request_failure(exc: Exception) -> str:
-        return json.dumps({"error": f"VoiceStudio backend request failed: {exc}"})
+        return json.dumps({"error": f"CallenVoice backend request failed: {exc}"})
 
     # ── Tools ───────────────────────────────────────────────────────────
 
@@ -651,7 +651,7 @@ def create_mcp_server(app=None):
     async def list_languages() -> str:
         """List a sample of supported TTS languages.
 
-        VoiceStudio supports 646 languages. This returns the most popular ones
+        CallenVoice supports 646 languages. This returns the most popular ones
         plus a note about the full count.
         """
         return (
@@ -702,7 +702,7 @@ def create_mcp_server(app=None):
 
     @mcp.tool()
     async def check_health() -> str:
-        """Check if the VoiceStudio backend is running and what GPU device is active."""
+        """Check if the CallenVoice backend is running and what GPU device is active."""
         info = await _api_get("/health")
         return json.dumps(info)
 
@@ -945,7 +945,7 @@ def mount_mcp(app) -> bool:
 # ── CLI entrypoint ──────────────────────────────────────────────────────
 
 def main():
-    parser = argparse.ArgumentParser(description="VoiceStudio MCP Server")
+    parser = argparse.ArgumentParser(description="CallenVoice MCP Server")
     parser.add_argument(
         "--sse", action="store_true",
         help="Use SSE transport instead of stdio (for remote agents)",

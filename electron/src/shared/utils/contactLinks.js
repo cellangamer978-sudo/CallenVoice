@@ -10,5 +10,5 @@ export const X_URL = 'https://x.com/idebpalash';
 
 export const LICENSE_EMAIL = 'hi@voicestudio.sh';
 export const LICENSE_MAILTO =
-  'mailto:hi@voicestudio.sh?subject=VoiceStudio Commercial License Inquiry' +
-  '&body=Hi Palash,%0A%0AI%27d like to talk about a commercial license for VoiceStudio.%0A%0AOrganization:%0ATeam size:%0AUse case:%0A';
+  'mailto:hi@voicestudio.sh?subject=CallenVoice Commercial License Inquiry' +
+  '&body=Hi Palash,%0A%0AI%27d like to talk about a commercial license for CallenVoice.%0A%0AOrganization:%0ATeam size:%0AUse case:%0A';

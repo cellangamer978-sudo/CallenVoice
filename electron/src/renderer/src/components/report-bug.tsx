@@ -138,7 +138,7 @@ export function ReportBug({ error }: { error?: Error | string }) {
         .trim();
       const context = [
         `**Summary:** ${summaryText}`,
-        `**App:** VoiceStudio ${__APP_VERSION__} (build ${__BUILD_COMMIT__})`,
+        `**App:** CallenVoice ${__APP_VERSION__} (build ${__BUILD_COMMIT__})`,
         '**Shell:** Electron',
       ];
       if (staleBuild) {

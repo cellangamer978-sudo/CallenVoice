@@ -342,14 +342,10 @@ def test_uninstall_ping_info_written_when_enabled_and_removed_when_not(
 def test_uninstall_ping_info_written_for_a_source_build_with_the_default_token(
     sent, monkeypatch, tmp_path
 ):
-    """#1193: a consented source build has a destination (the in-repo default),
-    so the uninstall ping must work there too."""
-    analytics.set_opted_in(True)  # no env token → in-repo default
-    info = tmp_path / analytics.UNINSTALL_PING_INFO_BASENAME
-    assert info.exists()
-    payload = json.loads(info.read_text())
-    assert payload["token"] == analytics._PUBLIC_PROJECT_TOKEN
-    assert payload["host"] == "https://us.i.posthog.com"
+    """CallenVoice (adapted from upstream #1193): a source build has no default
+    destination, so no uninstall ping is prepared even after consent."""
+    analytics.set_opted_in(True)  # no env token and no in-repo default
+    assert not (tmp_path / analytics.UNINSTALL_PING_INFO_BASENAME).exists()
 
 
 def test_uninstall_ping_info_never_written_without_any_token(sent, monkeypatch, tmp_path):

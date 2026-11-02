@@ -13,6 +13,7 @@ import { openTake } from '@/lib/store/takes';
 import { selectCloneProfile } from '@/lib/store/reference';
 import { patchCloneSettings } from '@/lib/store/clone-settings';
 import { SETTINGS_ENTRIES } from '@/features/settings/settings-index';
+import { commandVisible } from '@/callen/product';
 import { cn } from '@/lib/utils';
 import { Kbd } from '@/components/ui/kbd';
 import { isMac } from '@/components/bridge';
@@ -353,7 +354,7 @@ export function CommandPalette() {
   // Settings pages are searchable but stay out of the default list.
   const needle = query.trim().toLocaleLowerCase();
   const settingsItems: CommandItem[] = needle
-    ? SETTINGS_ENTRIES.map((entry) => ({
+    ? SETTINGS_ENTRIES.filter((entry) => commandVisible(entry.label, entry.to)).map((entry) => ({
         id: `settings-${entry.label}`,
         label: t(entry.label),
         group: t('nav.settings'),
@@ -362,6 +363,7 @@ export function CommandPalette() {
       }))
     : [];
   const items = [...source, ...settingsItems]
+    .filter((item) => commandVisible(item.id))
     .filter((item) => commandMatches(item, query))
     .slice(0, 30);
   const run = (index: number) => {

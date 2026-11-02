@@ -1048,7 +1048,9 @@ async def _phase_b(app: FastAPI) -> None:
     _init_gallery_db()
     # Seed a demo voice profile on first run (empty DB only).
     from core.onboarding import seed_sample_project
-    seed_sample_project()
+    from callen.catalog import upstream_demo_voice_allowed
+    if upstream_demo_voice_allowed():  # CallenVoice: upstream demo is non-commercial
+        seed_sample_project()
     # Any job still in pending/running at startup is orphaned — flip to failed
     # so the UI doesn't show a fake spinner.
     try:
@@ -1219,7 +1221,7 @@ async def _phase_b(app: FastAPI) -> None:
     app.state.mcp_task = mcp_task
     app.state.mcp_stop = mcp_stop
 
-    # VoiceStudio Cloud settings sync: idles (no Cloud call) unless main hands
+    # CallenVoice Cloud settings sync: idles (no Cloud call) unless main hands
     # out a token, i.e. the user is signed in with sync switched on.
     from services.cloud_sync.service import get_service as _cloud_sync
 
@@ -1681,7 +1683,7 @@ async def global_exception_handler(request: Request, exc: Exception):
                 # genuinely reportable bugs — suppressing the report button for
                 # every 503 would silence exactly the class users need to file.
                 "detail": (
-                    "[shutting_down] VoiceStudio is shutting down, so it didn't "
+                    "[shutting_down] CallenVoice is shutting down, so it didn't "
                     "start loading the model. Reopen the app and try again."
                 )
             },
@@ -1716,7 +1718,7 @@ async def global_exception_handler(request: Request, exc: Exception):
 
     content = public_exception_response(
         exc,
-        fallback="VoiceStudio hit an internal error; check the backend log for details.",
+        fallback="CallenVoice hit an internal error; check the backend log for details.",
     )
     content["error_class"] = _entry.get("error_class")
     # The Python exception TYPE rides along with the taxonomy class. The class
@@ -1783,7 +1785,7 @@ class StartupGateMiddleware:
             status_code=503,
             content={
                 "detail": (
-                    f"[starting] VoiceStudio is still starting "
+                    f"[starting] CallenVoice is still starting "
                     f"({_label or 'initializing'}). Retry shortly."
                 ),
                 "step": _step,
@@ -1850,7 +1852,7 @@ class NetworkAccessMiddleware:
 #: from whatever else might answer at the same URL (#1385). A rehosted UI
 #: whose API requests land on a static host or a proxy with no API route gets
 #: that host's 404 page; the frontend needs an authoritative "this really is
-#: a VoiceStudio backend" signal rather than guessing from the body shape,
+#: a CallenVoice backend" signal rather than guessing from the body shape,
 #: since a proxy can return JSON too. Value is the version, which is also
 #: useful when a desktop app talks to an older remote backend.
 BACKEND_MARKER_HEADER = "x-omnivoice-backend"
@@ -1976,6 +1978,9 @@ _allowed = allowed_origin_values()
 # the two probe paths until the deferred startup completes (and is a no-op
 # forever after).
 from core.render_trace import RenderTraceMiddleware
+# CallenVoice: innermost, so auth/CSRF/network guards run before the whitelist.
+from callen.middleware import CallenCatalogMiddleware
+app.add_middleware(CallenCatalogMiddleware)
 app.add_middleware(RenderTraceMiddleware)
 app.add_middleware(StartupGateMiddleware)
 
@@ -2017,7 +2022,7 @@ app.add_middleware(
 # Registered LAST, which in Starlette means OUTERMOST — so the marker lands on
 # every response. CORS is immediately inside it and outside both auth gates, so
 # preflights and gate-generated 401s retain the browser contract. The marker's
-# absence lets a client conclude that the responder is not VoiceStudio (#1385).
+# absence lets a client conclude that the responder is not CallenVoice (#1385).
 app.add_middleware(BackendMarkerMiddleware)
 
 # Register canonical audio MIME types before any StaticFiles mount.
@@ -2226,7 +2231,7 @@ if __name__ == "__main__":
     # Electron's backend supervisor must stay in sync.
     #
     # SECURITY: default to loopback (127.0.0.1) so the API isn't reachable
-    # from the LAN out of the box. VoiceStudio ships no authentication; binding
+    # from the LAN out of the box. CallenVoice ships no authentication; binding
     # to 0.0.0.0 by default would expose every router on this process to any
     # host on the user's network. The Docker image never reaches this block:
     # its uvicorn ENTRYPOINT binds 0.0.0.0 itself (deploy/Dockerfile), and the
@@ -2258,7 +2263,7 @@ if __name__ == "__main__":
 
     def _fail_port_in_use(exc: "OSError | None") -> None:
         print(
-            f"FATAL: port {_port} is already in use — another VoiceStudio "
+            f"FATAL: port {_port} is already in use — another CallenVoice "
             f"backend (or another app) is listening on it. Quit the other "
             f"instance and relaunch; if nothing is visibly running, an "
             f"orphaned backend from a previous session is still holding the "
@@ -2277,7 +2282,7 @@ if __name__ == "__main__":
         shell's "Last output" shows it instead of a bare exit code.
         """
         print(
-            f"FATAL: the operating system refused to let VoiceStudio listen on "
+            f"FATAL: the operating system refused to let CallenVoice listen on "
             f"port {_port} (permission denied). On Windows a possible cause is "
             f"a reserved port range (check "
             f"`netsh interface ipv4 show excludedportrange protocol=tcp`) or "

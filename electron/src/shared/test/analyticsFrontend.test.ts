@@ -89,7 +89,7 @@ describe('sanitizeException — error tracking keeps frames, not user data', () 
     ].join('\n');
     const clean = sanitizeException(failure);
     expect(clean.name).toBe('TypeError');
-    expect(clean.message).toBe('VoiceStudio renderer error');
+    expect(clean.message).toBe('CallenVoice renderer error');
     expect(clean.stack).toContain('~/github/VoiceStudio/electron/src/app.tsx:12:3');
     expect(clean.stack).not.toContain('Private script');
     expect(clean.stack).not.toContain('/home/pal');

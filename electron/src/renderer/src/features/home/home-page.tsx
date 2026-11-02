@@ -1,8 +1,4 @@
 import { HomeFeatureIcon } from './home-feature-icon';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-import { getBridge } from '@/components/bridge';
-import { runRendererTask } from '@/lib/global-error-recovery';
-import { HomeContributors } from './home-contributors';
 import './home-page.css';
 import { WorkspaceHeader } from '@/components/app-shell/workspace-header';
 import { ProfileAvatar } from '@/components/profile-avatar';
@@ -32,6 +28,8 @@ import {
   FolderOpenIcon,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { isHiddenRoute } from '@/callen/product';
+import { callenHomeCopy } from '@/callen/home-copy';
 
 interface Destination {
   to: string;
@@ -68,7 +66,7 @@ const iconTones: Record<string, string> = {
 };
 
 export function HomePage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const { data: profiles = [] } = useProfiles();
   const { data: exports = [] } = useQuery({
@@ -84,7 +82,8 @@ export function HomePage() {
     queryKey: ['longform-projects'],
     queryFn: projectLibrary.list,
   });
-  const destinations: Destination[] = [
+  const destinations: Destination[] = (
+  [
     {
       to: '/clone',
       label: t('nav.clone'),
@@ -130,7 +129,8 @@ export function HomePage() {
       label: t('tools.title'),
       description: t('tools.desc'),
     },
-  ];
+  ] satisfies Destination[]
+  ).filter(({ to }) => !isHiddenRoute(to)); // CallenVoice scope
   const recentProjects = [
     ...dubProjects.map((project) => ({
       kind: 'dub' as const,
@@ -211,42 +211,18 @@ export function HomePage() {
               />
               <div className="home-heading-row">
                 <div className="home-heading-copy">
+                  {/* CallenVoice: own headline; the upstream one linked to the upstream website,
+                      and the upstream contributor avatars are not shown. */}
                   <h2
                     id="home-new-projects"
                     className="flex flex-wrap items-center gap-x-3 gap-y-2 text-3xl font-semibold tracking-[-0.035em]"
                   >
-                    <Tooltip>
-                      <TooltipTrigger
-                        render={
-                          <a
-                            href="https://voicestudio.sh"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="rounded-md transition-colors hover:text-primary focus-visible:outline-2 focus-visible:outline-ring"
-                            onClick={(event) => {
-                              const browser = getBridge()?.browser;
-                              if (!browser) return;
-                              event.preventDefault();
-                              event.currentTarget.focus();
-                              runRendererTask('Preview official website', () =>
-                                browser.open('https://voicestudio.sh'),
-                              );
-                            }}
-                          />
-                        }
-                      >
-                        {t('homeUi.title')}
-                      </TooltipTrigger>
-                      <TooltipContent surface="theme" side="bottom">
-                        {t('siteBrowser.preview')}
-                      </TooltipContent>
-                    </Tooltip>
+                    {callenHomeCopy(i18n.language).title}
                   </h2>
                   <p className="mt-3 max-w-[80ch] text-sm leading-relaxed text-foreground/65">
-                    {t('homeUi.subtitle')}
+                    {callenHomeCopy(i18n.language).subtitle}
                   </p>
                 </div>
-                <HomeContributors />
               </div>
             </div>
             {[destinations.slice(0, 3), destinations.slice(3)].map((group, groupIndex) => (

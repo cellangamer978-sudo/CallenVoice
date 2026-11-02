@@ -120,21 +120,10 @@ it('requires passing preflight and installed models before completion', async ()
     expect(screen.getByRole('button', { name: 'setup.continue_ok' })).toBeEnabled(),
   );
   fireEvent.click(screen.getByRole('button', { name: 'setup.continue_ok' }));
-  await screen.findByText('setup.ready_desc');
-  expect(screen.getByRole('button', { name: 'dub.advanced' })).toHaveAttribute(
-    'aria-pressed',
-    'true',
-  );
-  expect(screen.getByRole('button', { name: /demo.dictation_title/ })).toHaveAttribute(
-    'aria-expanded',
-    'true',
-  );
-  expect(screen.getByText('Shortcuts')).toBeVisible();
-  fireEvent.click(screen.getByRole('button', { name: 'dub.advanced' }));
-  expect(screen.queryByText('Shortcuts')).not.toBeInTheDocument();
-  fireEvent.click(screen.getByRole('button', { name: /demo.dictation_title/ }));
-  expect(screen.getByText('Shortcuts')).toBeInTheDocument();
-  fireEvent.click(screen.getByRole('button', { name: /demo.dictation_title/ }));
+  // CallenVoice: dictation is out of the v1 scope, so the last step only says
+  // the studio is ready (callen/home-copy.ts) instead of offering dictation setup.
+  await screen.findByText(/All set\. Enter the studio/);
+  expect(screen.queryByRole('button', { name: /demo.dictation_title/ })).not.toBeInTheDocument();
   expect(screen.queryByText('Shortcuts')).not.toBeInTheDocument();
   let finishCatalogue!: () => void;
   const catalogueReady = new Promise<void>((resolve) => {

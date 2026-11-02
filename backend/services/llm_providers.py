@@ -1,4 +1,4 @@
-"""LLM provider registry for every VoiceStudio LLM skill.
+"""LLM provider registry for every CallenVoice LLM skill.
 
 OpenAI-compatible, native SDK and desktop CLI transports share the same
 completion interface. This module resolves configuration without contacting
@@ -289,7 +289,7 @@ def resolve_base_url(p: Provider, *, substitute: bool = True) -> str:
 
 #: How long a discovered model id is trusted. Bounded rather than permanent
 #: because the user can swap the loaded model inside LM Studio without touching
-#: VoiceStudio at all — an unbounded cache would keep sending the unloaded name
+#: CallenVoice at all — an unbounded cache would keep sending the unloaded name
 #: and 404 every translation until a restart (greptile).
 DISCOVERY_TTL_S = 300.0
 
@@ -357,7 +357,7 @@ def _probe_lmstudio_loaded_model(
         root = base_url.rstrip("/")
         if root.endswith("/v1"):
             root = root[:-3]
-        headers = {"User-Agent": "VoiceStudio LM Studio model probe"}
+        headers = {"User-Agent": "CallenVoice LM Studio model probe"}
         if api_key and api_key != "local":
             headers["Authorization"] = f"Bearer {api_key}"
         request = urllib.request.Request(
@@ -540,11 +540,11 @@ def configuration_error(p: Provider, *, require_model: bool = True) -> Optional[
 
     if p.transport == "cli":
         from services.llm_cli import executable
-        return None if executable(p.sdk_provider) else "Install and sign in to the selected CLI, then restart VoiceStudio."
+        return None if executable(p.sdk_provider) else "Install and sign in to the selected CLI, then restart CallenVoice."
     if p.transport == "sdk":
         import importlib.util
         if importlib.util.find_spec("litellm") is None:
-            return "Install the LiteLLM SDK in the VoiceStudio backend."
+            return "Install the LiteLLM SDK in the CallenVoice backend."
         if require_model and not configured_model(p):
             return "Set the Model in Settings > Models > LLM."
         if p.id == "sdk" and require_model and "/" not in configured_model(p):

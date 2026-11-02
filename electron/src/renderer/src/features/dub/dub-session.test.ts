@@ -75,7 +75,7 @@ it('translates the current dubbing segments with an installed local CLI agent', 
   });
   vi.mocked(apiJson).mockReset();
   vi.mocked(apiJson).mockResolvedValueOnce([
-    { source: 'VoiceStudio', target: 'VoiceStudio', note: '' },
+    { source: 'CallenVoice', target: 'CallenVoice', note: '' },
   ]);
   dubSession.setState((current) => ({
     ...current,

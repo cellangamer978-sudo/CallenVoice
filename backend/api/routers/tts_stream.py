@@ -104,13 +104,13 @@ class StreamTTSRequest(BaseModel):
 
 
 EMO_AUDIO_DETAIL = (
-    "emo_audio must name an audio clip stored in VoiceStudio's voices or "
+    "emo_audio must name an audio clip stored in CallenVoice's voices or "
     "outputs folder."
 )
 
 
 def resolve_emotion_clip(value: object) -> str:
-    """Resolve an ``emo_audio`` reference to a file VoiceStudio owns.
+    """Resolve an ``emo_audio`` reference to a file CallenVoice owns.
 
     Accepts a bare filename in the voices folder, or a path inside the voices
     or outputs folders (voice-gallery imports live there). Anything else —

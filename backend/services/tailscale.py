@@ -206,7 +206,7 @@ def serve_enable(port: int | None = None) -> dict:
             "ok": False,
             "error": (
                 f"Tailscale ports {_DEFAULT_PORTS['http']} and {_FALLBACK_PORT} already serve other apps "
-                "on this machine; VoiceStudio left them unchanged."
+                "on this machine; CallenVoice left them unchanged."
             ),
         }
     http = _run([cli, "serve", "--bg", f"--http={http_port}", target])

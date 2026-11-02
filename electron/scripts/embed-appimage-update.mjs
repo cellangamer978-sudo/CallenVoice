@@ -25,7 +25,7 @@ assert(
 const isBeta = channel === 'electron-beta-linux-x64';
 const releaseTag = `v${version}`;
 const manifestPath = resolve(releaseDir, `${channel}-linux.yml`);
-const updateInfo = `gh-releases-zsync|debpalash|VoiceStudio|${
+const updateInfo = `gh-releases-zsync|debpalash|CallenVoice|${
   isBeta ? releaseTag : 'latest'
 }|VoiceStudio-*-linux-x64.AppImage.zsync`;
 

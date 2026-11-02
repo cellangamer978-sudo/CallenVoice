@@ -227,7 +227,7 @@ it('creates locked-down Claude and OpenCode MCP configs and removes them on clos
     root,
     'fix',
     undefined,
-    'C:\\VoiceStudio\\repair-mcp-server.js',
+    'C:\\CallenVoice\\repair-mcp-server.js',
   );
   const capability = context(bridge);
   expect(bridge.mcpConfigFile).toBeTruthy();
@@ -241,11 +241,11 @@ it('creates locked-down Claude and OpenCode MCP configs and removes them on clos
     mcp: { voicestudio: { command: string[]; environment: Record<string, string> } };
   };
 
-  expect(claude.mcpServers.voicestudio.args).toEqual(['C:\\VoiceStudio\\repair-mcp-server.js']);
+  expect(claude.mcpServers.voicestudio.args).toEqual(['C:\\CallenVoice\\repair-mcp-server.js']);
   expect(openCode.permission).toEqual({ '*': 'deny', 'voicestudio_*': 'allow' });
   expect(openCode.mcp.voicestudio.command).toEqual([
     process.execPath,
-    'C:\\VoiceStudio\\repair-mcp-server.js',
+    'C:\\CallenVoice\\repair-mcp-server.js',
   ]);
   expect(claude.mcpServers.voicestudio.env.VOICESTUDIO_REPAIR_CONTEXT_FILE).toBe(
     bridge.contextFile,

@@ -42,7 +42,7 @@ export function resolveDistributionTarget(value = process.env.VOICESTUDIO_DISTRI
   const target = typeof value === "string" && value.trim() ? value.trim() : "direct";
   if (!Object.hasOwn(DISTRIBUTION_PROFILES, target)) {
     throw new TypeError(
-      `Unsupported VoiceStudio distribution: ${target}. Expected one of: ${DISTRIBUTION_TARGETS.join(", ")}`,
+      `Unsupported CallenVoice distribution: ${target}. Expected one of: ${DISTRIBUTION_TARGETS.join(", ")}`,
     );
   }
   return target;

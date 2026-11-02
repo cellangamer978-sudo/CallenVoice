@@ -2,6 +2,7 @@ import { createRootRoute, createRoute, lazyRouteComponent, redirect } from '@tan
 import { AppShell } from '@/components/app-shell/app-shell';
 import { readLastSettingsRoute } from '@/lib/settings-route';
 import { NotFoundPage } from '@/components/not-found-page';
+import { isHiddenRoute } from '@/callen/product';
 
 const HomePage = lazyRouteComponent(() => import('@/features/home/home-page'), 'HomePage');
 
@@ -54,7 +55,13 @@ const SettingsPage = lazyRouteComponent(
 );
 const ProPage = lazyRouteComponent(() => import('@/features/pro/pro-page'), 'ProPage');
 
-export const rootRoute = createRootRoute({ component: AppShell });
+export const rootRoute = createRootRoute({
+  component: AppShell,
+  // CallenVoice: routes outside the product scope redirect home (callen/product.ts).
+  beforeLoad: ({ location }) => {
+    if (isHiddenRoute(location.pathname)) throw redirect({ to: '/' });
+  },
+});
 
 export const indexRoute = createRoute({
   getParentRoute: () => rootRoute,

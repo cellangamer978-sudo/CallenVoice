@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-label="CallenVoice">
+  <title>CallenVoice</title>
+  <!-- Black tile, white open "C" (the original voice) and an orange waveform
+       leaving through its opening (the same voice in another language). -->
+  <rect width="1024" height="1024" rx="224" fill="#0A0A0A"/>
+  <path d="M 619.6 331.6 A 255 255 0 1 0 619.6 692.4" fill="none" stroke="#FAFAFA" stroke-width="104" stroke-linecap="round"/>
+  <g fill="#FF6A00">
+    <rect x="566" y="452" width="56" height="120" rx="28"/>
+    <rect x="662" y="372" width="56" height="280" rx="28"/>
+    <rect x="758" y="422" width="56" height="180" rx="28"/>
+    <rect x="854" y="482" width="56" height="60" rx="28"/>
+  </g>
+</svg>

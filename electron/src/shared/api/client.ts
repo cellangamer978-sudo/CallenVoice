@@ -245,7 +245,7 @@ export class ApiError extends Error {
    *
    * The 500 handler puts `error_class` in the response body, but nothing
    * lifted it onto the Error — so the auto bug reporter, which reads the
-   * Error, filed "VoiceStudio hit an internal error; check the backend log"
+   * Error, filed "CallenVoice hit an internal error; check the backend log"
    * and nothing else. Every such report looked identical and none could be
    * triaged (#1773).
    *
@@ -288,10 +288,10 @@ export function _isApiTarget(target: string, apiBase: string = API): boolean {
 
 // Stamped on EVERY response by the backend's BackendMarkerMiddleware and
 // exposed cross-origin, so its presence is AUTHORITATIVE: this really is an
-// VoiceStudio backend answering, whatever the body looks like (#1385).
+// CallenVoice backend answering, whatever the body looks like (#1385).
 const BACKEND_MARKER_HEADER = 'x-omnivoice-backend';
 
-// `backendShaped` — did this response come from a VoiceStudio backend?
+// `backendShaped` — did this response come from a CallenVoice backend?
 //
 // The marker header settles it outright. Body shape is the fallback for a
 // backend older than the header (a desktop app pointed at a remote box that
@@ -342,7 +342,7 @@ const TRANSPORT_RETRY_BACKOFF_MS = [400, 900, 1600];
 // longer. When the desktop shell says the backend is starting/restarting
 // (bootstrap_status ≠ ready/failed), keep retrying at this interval instead
 // of dead-ending every request mid-restart with "Can't reach the local
-// VoiceStudio backend". Bounded by STARTUP_GRACE_MS (matches the supervisor's
+// CallenVoice backend". Bounded by STARTUP_GRACE_MS (matches the supervisor's
 // own 120 s respawn-health wait in src-tauri/src/bootstrap.rs); the shell
 // flipping to `failed` — or being absent (browser/Docker) — exits the wait
 // immediately, so a truly dead backend still errors promptly.
@@ -488,7 +488,7 @@ export async function apiFetch(path: string, opts: ApiFetchOptions = {}): Promis
           /* no window (tests) — the ApiError below still tells the story */
         }
         throw new ApiError(
-          `The local VoiceStudio backend crashed (${describeCrashExit(crash)}) ${crashAge(crash)} ago ` +
+          `The local CallenVoice backend crashed (${describeCrashExit(crash)}) ${crashAge(crash)} ago ` +
             'and is being restarted — this request could not reach it. ' +
             'Open the crash notice for the error output, or check Settings → Logs → Backend.',
           { status: 0, detail: failureDetail },
@@ -502,7 +502,7 @@ export async function apiFetch(path: string, opts: ApiFetchOptions = {}): Promis
       // GPU). Name what actually happened and point at the thing that fixes it.
       if (lastStage.stage === 'ready') {
         throw new ApiError(
-          'The local VoiceStudio backend is running but stopped responding. This usually means a ' +
+          'The local CallenVoice backend is running but stopped responding. This usually means a ' +
             'job (a generation or a transcription) is stuck holding the engine — often a model ' +
             'too heavy for the available memory on this machine. Check Settings → Logs → Backend ' +
             'for the last thing it was doing; a smaller model or a lighter engine, both in Model ' +
@@ -535,7 +535,7 @@ export async function apiFetch(path: string, opts: ApiFetchOptions = {}): Promis
           /* no window (tests) — the ApiError below still carries the diagnosis */
         }
         throw new ApiError(
-          'The local VoiceStudio backend could not start, so this request had nowhere to go. ' +
+          'The local CallenVoice backend could not start, so this request had nowhere to go. ' +
             `The app reported:\n\n${diagnosis}\n\n` +
             'Open the details for the full output, or use Retry / Clean & Retry in Settings → Logs → Backend.',
           { status: 0, detail: { ...failureDetail, startFailure: diagnosis } },
@@ -569,7 +569,7 @@ export async function apiFetch(path: string, opts: ApiFetchOptions = {}): Promis
         });
       }
       // #1385: a 404 in some other server's voice means the request never
-      // reached a VoiceStudio backend at all — a static host's catch-all page
+      // reached a CallenVoice backend at all — a static host's catch-all page
       // or a reverse proxy with no route for this path. Echoing that page
       // ("NOT_FOUND bom1::…") sends the user chasing a page that never
       // existed; name the actual problem instead: where requests are going.

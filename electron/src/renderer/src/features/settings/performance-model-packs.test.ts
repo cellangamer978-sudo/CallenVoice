@@ -20,7 +20,7 @@ describe('performance model packs', () => {
   it('uses a small ASR and dictation set for Fast', () => {
     const pack = resolvePerformanceModelPack(
       [
-        model('k2-fsa/OmniVoice', 2.4, true),
+        model('OpenMOSS-Team/MOSS-TTS-Nano-100M', 2.4, true),
         model('Systran/faster-whisper-base', 0.15),
         model('csukuangfj/sherpa-onnx-whisper-tiny', 0.104),
         model('facebook/nllb-200-distilled-600M', 2.4),
@@ -29,7 +29,7 @@ describe('performance model packs', () => {
     );
 
     expect(pack.models.map((item) => item.repo_id)).toEqual([
-      'k2-fsa/OmniVoice',
+      'OpenMOSS-Team/MOSS-TTS-Nano-100M',
       'Systran/faster-whisper-base',
       'csukuangfj/sherpa-onnx-whisper-tiny',
     ]);
@@ -39,7 +39,7 @@ describe('performance model packs', () => {
 
   it('adds accurate ASR, multilingual dictation fallback, and NLLB for Quality', () => {
     const repos = [
-      model('k2-fsa/OmniVoice', 2.4, true),
+      model('OpenMOSS-Team/MOSS-TTS-Nano-100M', 2.4, true),
       model('Systran/faster-whisper-large-v3', 2.9),
       model('csukuangfj/sherpa-onnx-whisper-tiny', 0.104),
       model('csukuangfj/sherpa-onnx-nemo-parakeet-tdt-0.6b-v3-int8', 0.67),
@@ -54,7 +54,7 @@ describe('performance model packs', () => {
   it('omits models unsupported by this device', () => {
     const pack = resolvePerformanceModelPack(
       [
-        model('k2-fsa/OmniVoice', 2.4, true),
+        model('OpenMOSS-Team/MOSS-TTS-Nano-100M', 2.4, true),
         model('Systran/faster-whisper-base', 0.15, false, false),
         model('csukuangfj/sherpa-onnx-whisper-tiny', 0.104),
       ],
@@ -66,7 +66,7 @@ describe('performance model packs', () => {
 
   it('preselects the largest tier whose download fits the model disk', () => {
     const catalogue = [
-      model('k2-fsa/OmniVoice', 2.4),
+      model('OpenMOSS-Team/MOSS-TTS-Nano-100M', 2.4),
       model('Systran/faster-whisper-base', 0.15),
       model('csukuangfj/sherpa-onnx-whisper-tiny', 0.1),
       model('deepdml/faster-whisper-large-v3-turbo-ct2', 1.6),

@@ -124,7 +124,7 @@ def _driver_tuple(driver: str | None) -> tuple[int, ...] | None:
         return None
     return tuple(int(p) for p in parts)
 _RAM_FAIL_GB = 8
-_RAM_WARN_GB = 12
+_RAM_WARN_GB = 16  # CallenVoice: 8 GB minimum, 16 GB recommended (Phase 1 benchmark)
 # Installed DIMMs never fully reach the OS: firmware, integrated graphics and
 # kernel reservations shave off up to ~7% (an "8 GB" Windows laptop reports
 # ~7.8 GB usable). Thresholds are compared with this allowance applied so the
@@ -609,9 +609,9 @@ def preflight():
             "id": "arch", "label": "Windows on ARM", "status": "warn",
             "detail": "ARM64 Windows PC — the AI backend runs as x64 under "
                       "Windows emulation, CPU only (no GPU/NPU acceleration).",
-            "fix": "Everything works but generation is slower. Prefer a "
-                   "lightweight voice engine (KittenTTS, Supertonic-3, "
-                   "PocketTTS) and a small Whisper model.",
+            "fix": "Everything works but generation is slower. Keep the "
+                   "default voice engine (MOSS-TTS-Nano, built for CPU) and a "
+                   "small Whisper model.",
         })
 
     # ── Media engine (ffmpeg/ffprobe/yt-dlp) — deliberately NOT a check row.
@@ -693,9 +693,9 @@ def preflight():
         gpu_detail = "No compatible GPU detected — running CPU-only."
         gpu_fix = (
             "Everything works on CPU, just ~10× slower than a GPU — integrated "
-            "graphics are not used for AI. For the best CPU experience pick a "
-            "lightweight voice engine (KittenTTS, Supertonic-3, PocketTTS) and a "
-            "small Whisper model in the Model Catalogue. If you have an "
+            "graphics are not used for AI. For the best CPU experience keep the "
+            "default voice engine (MOSS-TTS-Nano, lightweight and built for CPU) and a small "
+            "Whisper model in the Model Catalogue. If you have an "
             "NVIDIA/AMD card, check drivers are installed."
         )
     checks.append({

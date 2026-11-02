@@ -3652,6 +3652,62 @@
           "lexicon.txt"
         ]
       }
+    },
+    {
+      "id": "santhosh/madlad400-3b-ct2",
+      "license": "apache-2.0",
+      "commercial_use": false,
+      "review_status": "unreviewed",
+      "credit": "MADLAD-400 3B (Google) — CTranslate2 conversion by santhosh",
+      "source_url": "https://huggingface.co/santhosh/madlad400-3b-ct2",
+      "evidence_url": "https://huggingface.co/santhosh/madlad400-3b-ct2/blob/c32ad0cf118807ea6258d14be137547155842723/README.md",
+      "revision": "c32ad0cf118807ea6258d14be137547155842723",
+      "engines": [],
+      "configured_at": "backend/callen/catalog.py",
+      "notes": "CallenVoice whitelist candidate (high-quality local translation, Phase 3). Licence identifier is model-card metadata for the conversion; the upstream google/madlad400-3b-mt card is also Apache-2.0. Not yet used by any engine.",
+      "runtime_revision": "c32ad0cf118807ea6258d14be137547155842723",
+      "runtime_pin_scope": "central",
+      "runtime_pin_source": "backend/services/hf_revisions.py",
+      "component_closure": "incomplete",
+      "commercial_inference": "unknown",
+      "commercial_outputs": "unknown",
+      "documents": [],
+      "artifacts": [],
+      "required_components": [],
+      "upstream_access": "unknown",
+      "audit_observations": {
+        "commercial_inference": {
+          "status": "permissive_metadata_only",
+          "scope": "Selected weight/component; all required components and intended use must be assessed.",
+          "summary": "Apache-2.0 model-card metadata on the CTranslate2 conversion and on google/madlad400-3b-mt (checked 2026-11-02)."
+        },
+        "output_terms": {
+          "status": "not_specifically_granted_in_reviewed_material",
+          "summary": "No blanket output ownership or third-party-rights clearance established.",
+          "ownership_or_all_rights_cleared": false
+        },
+        "sources": [
+          {
+            "url": "https://huggingface.co/santhosh/madlad400-3b-ct2",
+            "checked_at": "2026-11-02",
+            "method": "read_primary_source"
+          },
+          {
+            "url": "https://huggingface.co/google/madlad400-3b-mt",
+            "checked_at": "2026-11-02",
+            "method": "read_primary_source"
+          }
+        ],
+        "open_questions": [
+          "Attribution/NOTICE duties for the conversion",
+          "Training-data provenance scope"
+        ],
+        "identified_components": [
+          "model.bin (CTranslate2)",
+          "sentencepiece.model",
+          "shared_vocabulary.json"
+        ]
+      }
     }
   ],
   "dynamic_assets": [

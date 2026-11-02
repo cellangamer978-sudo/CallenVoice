@@ -8,7 +8,7 @@ export type SourceCheckoutResult =
   | { ok: true; root: string }
   | { ok: false; reason: SourceCheckoutProblem };
 
-// Files every VoiceStudio clone has had since the Electron migration.
+// Files every CallenVoice clone has had since the Electron migration.
 const MARKERS = ['backend/main.py', 'electron/package.json', 'package.json'];
 
 const hasMarkers = (dir: string) => MARKERS.every((entry) => existsSync(join(dir, entry)));
@@ -16,7 +16,7 @@ const isGitRoot = (dir: string) => existsSync(join(dir, '.git'));
 
 function isInstalledApp(dir: string): boolean {
   // Packaged builds keep the app in resources/app.asar (Windows, Linux) or
-  // VoiceStudio.app/Contents/Resources/app.asar (macOS). Neither is source.
+  // CallenVoice.app/Contents/Resources/app.asar (macOS). Neither is source.
   return (
     /\.app$/i.test(dir) ||
     existsSync(join(dir, 'resources', 'app.asar')) ||
@@ -60,7 +60,7 @@ function childCheckouts(dir: string): string[] {
 }
 
 /**
- * Resolve the folder a user picked to a writable VoiceStudio clone root.
+ * Resolve the folder a user picked to a writable CallenVoice clone root.
  *
  * Accepts the clone itself, any folder inside it, and the folder `git clone`
  * ran in when it holds exactly one clone. Otherwise names the problem.

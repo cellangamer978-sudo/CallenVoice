@@ -6,6 +6,7 @@ import { isTrustedRenderer } from './trusted-renderer';
 import type { UpdateReleaseInfo, UpdateState } from '../preload/index.d';
 import { sendToLiveWindow } from './window-safety';
 import { applicationUpdatesUnsupportedReason, CURRENT_DISTRIBUTION } from './distribution';
+import { callenUpdatesConfigured } from './callen/updates';
 import type { DistributionTarget } from '../../../config/distributions.mjs';
 
 // electron-updater is CommonJS. Electron executes our main bundle as ESM, so
@@ -69,7 +70,7 @@ export async function resolveBetaFeed(
   fetcher: typeof fetch = fetch,
 ): Promise<{ url: string; channel: string }> {
   const response = await fetcher(RELEASES_API, {
-    headers: { Accept: 'application/vnd.github+json', 'User-Agent': 'VoiceStudio' },
+    headers: { Accept: 'application/vnd.github+json', 'User-Agent': 'CallenVoice' },
     signal: AbortSignal.timeout(10_000),
   });
   if (!response.ok) throw new Error(`Beta update feed lookup failed (${response.status})`);
@@ -134,7 +135,7 @@ export async function resolveUpdateFeedUrl(
   const response = await fetcher(RELEASES_API, {
     headers: {
       Accept: 'application/vnd.github+json',
-      'User-Agent': 'VoiceStudio',
+      'User-Agent': 'CallenVoice',
     },
     signal: AbortSignal.timeout(10_000),
   });
@@ -196,7 +197,7 @@ export async function listDesktopReleases(
   const response = await fetcher(RELEASES_API, {
     headers: {
       Accept: 'application/vnd.github+json',
-      'User-Agent': 'VoiceStudio',
+      'User-Agent': 'CallenVoice',
     },
     signal: AbortSignal.timeout(10_000),
   });
@@ -563,6 +564,8 @@ export function registerUpdateIpc(
   });
   ipcMain.handle(UPDATE_CHANNELS.listReleases, (event) => {
     trusted(event);
+    // CallenVoice: never list upstream releases (callen/updates.ts).
+    if (!callenUpdatesConfigured()) return [];
     return listDesktopReleases();
   });
   const unsubscribe = updater.subscribe((state) => {

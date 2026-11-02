@@ -1,3 +1,5 @@
+import { ALLOW_DICTATION } from '@/callen/product';
+import { callenSetupReadyCopy } from '@/callen/home-copy';
 import { ModelLibrary, PerformanceModelPacks } from '@/features/settings/model-library';
 import { ModelStoreShownContext } from '@/features/settings/model-list/model-store-context';
 import { AnalyticsConsent } from './analytics-consent';
@@ -42,7 +44,7 @@ const steps = [
 ] as const;
 
 export function SetupGate({ children }: { children: ReactNode }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const queryClient = useQueryClient();
   const appearance = useAppearance();
   const [needed, setNeeded] = useState<boolean | null>(null);
@@ -226,7 +228,12 @@ export function SetupGate({ children }: { children: ReactNode }) {
                   <PrivacySettings showAnalytics={false} />
                 </>
               )}
-              {step === 3 && (
+              {step === 3 && !ALLOW_DICTATION && (
+                <p className="text-sm leading-relaxed text-muted-foreground">
+                  {callenSetupReadyCopy(i18n?.language)}
+                </p>
+              )}
+              {step === 3 && ALLOW_DICTATION && (
                 <div className="space-y-6">
                   <p className="text-sm leading-relaxed text-muted-foreground">
                     {t('setup.ready_desc')}

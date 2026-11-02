@@ -54,12 +54,12 @@ it('shows the verified move plan and sends only its one-shot authorization', asy
   mock.choose.mockResolvedValue({
     authorization: 'move-token',
     source: 'C:\\VoiceStudio-old',
-    target: 'D:\\VoiceStudio',
+    target: 'D:\\CallenVoice',
     size_bytes: 2048,
     file_count: 7,
   });
   mock.relocate.mockResolvedValue({
-    path: 'D:\\VoiceStudio',
+    path: 'D:\\CallenVoice',
     size_bytes: 2048,
     file_count: 7,
     removed_source: true,
@@ -68,11 +68,11 @@ it('shows the verified move plan and sends only its one-shot authorization', asy
 
   await screen.findByText('C:\\VoiceStudio-old');
   fireEvent.click(screen.getByRole('button', { name: 'settings.data_move_choose' }));
-  await screen.findByText('D:\\VoiceStudio');
+  await screen.findByText('D:\\CallenVoice');
   fireEvent.click(screen.getByRole('button', { name: 'settings.data_move_confirm' }));
 
   await waitFor(() => expect(mock.relocate).toHaveBeenCalledWith('move-token'));
-  expect(mock.relocate).not.toHaveBeenCalledWith(expect.stringContaining('VoiceStudio'));
+  expect(mock.relocate).not.toHaveBeenCalledWith(expect.stringContaining('CallenVoice'));
   await waitFor(() => expect(mock.toastSuccess).toHaveBeenCalled());
 });
 

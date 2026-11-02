@@ -1,9 +1,10 @@
 import React from 'react';
 
 /**
- * VoiceStudio's compact mark: a rounded speech waveform with one small spark.
- * The desktop icon uses the same silhouette on a dark tile; app chrome keeps
- * it transparent so it stays crisp at titlebar sizes and in every theme.
+ * CallenVoice mark: an open "C" (the original voice) with an orange waveform
+ * leaving through its opening (the same voice in another language). Same
+ * geometry as branding/logo.svg, without the tile, for titlebar sizes.
+ * The component keeps its upstream name so imports stay stable.
  */
 export default function VoiceStudioMark({ className = '', title, ...props }) {
   return (
@@ -17,17 +18,17 @@ export default function VoiceStudioMark({ className = '', title, ...props }) {
     >
       {title ? <title>{title}</title> : null}
       <path
-        d="M6 34c4 0 5-7 9-7 5 0 4 14 9 14 5 0 4-23 9-23s4 28 9 28 4-21 9-21c4 0 5 9 8 9"
+        d="M37.8 21.8 A15.9 15.9 0 1 0 37.8 42.2"
         stroke="currentColor"
-        strokeWidth="5.5"
+        strokeWidth="6.5"
         strokeLinecap="round"
-        strokeLinejoin="round"
       />
-      <path
-        d="M50 9c.7 4.3 3.7 7.3 8 8-4.3.7-7.3 3.7-8 8-.7-4.3-3.7-7.3-8-8 4.3-.7 7.3-3.7 8-8Z"
-        fill="currentColor"
-        opacity="0.72"
-      />
+      <g fill="var(--primary, #FF6A00)">
+        <rect x="35.4" y="28.3" width="3.5" height="7.5" rx="1.75" />
+        <rect x="41.4" y="23.3" width="3.5" height="17.5" rx="1.75" />
+        <rect x="47.4" y="26.4" width="3.5" height="11.2" rx="1.75" />
+        <rect x="53.4" y="30.1" width="3.5" height="3.8" rx="1.75" />
+      </g>
     </svg>
   );
 }

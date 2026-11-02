@@ -56,12 +56,14 @@ def test_home_keeps_creation_actions_with_open_source_heading():
     home = (ROOT / "electron/src/renderer/src/features/home/home-page.tsx").read_text(
         encoding="utf-8"
     )
+    # CallenVoice: own headline (callen/home-copy.ts), no upstream website link
+    # and no upstream contributor avatars.
     assert "t('nav.home')" in home
-    assert "t('homeUi.title')" in home
-    assert "t('homeUi.subtitle')" in home
-    assert "<HomeContributors />" in home
+    assert "callenHomeCopy(i18n.language).title" in home
+    assert "callenHomeCopy(i18n.language).subtitle" in home
+    assert "<HomeContributors />" not in home
     assert "group.map(" in home
-    assert "browser.open('https://voicestudio.sh')" in home
+    assert "https://voicestudio.sh" not in home
     assert "PanelLeftOpenIcon" not in home
 
 

@@ -13,10 +13,10 @@ import { TwilioSetup, TWILIO_DOCS } from './twilio-setup';
 import { DEFAULT_BACKEND_PORT } from '@shared/app-config';
 
 /**
- * Directory entries VoiceStudio actually works with, keyed by catalog slug.
+ * Directory entries CallenVoice actually works with, keyed by catalog slug.
  *
  * An entry here is the only thing that earns a card the "Works with
- * VoiceStudio" badge and capability chips; every other catalog entry is an
+ * CallenVoice" badge and capability chips; every other catalog entry is an
  * external link. Add a connector by adding one entry: its capabilities and
  * its copyable setup blocks for the current backend address.
  */
@@ -62,7 +62,7 @@ export interface IntegrationSetup {
   blocks: (baseUrl: string) => SetupBlock[] | null;
   /**
    * An interactive setup panel for connectors that are configured and run
-   * inside VoiceStudio rather than exported as snippets (e.g. Twilio). An
+   * inside CallenVoice rather than exported as snippets (e.g. Twilio). An
    * entry needs copyable blocks, a panel, or both.
    */
   panel?: ComponentType<IntegrationPanelProps>;
@@ -275,7 +275,7 @@ export const INTEGRATION_SETUPS: Record<string, IntegrationSetup> = {
             `curl ${base}/v1/audio/speech \\`,
             ...auth,
             '  -H "Content-Type: application/json" \\',
-            '  -d \'{"model":"tts-1","voice":"default","input":"Hello from VoiceStudio.","response_format":"wav"}\' \\',
+            '  -d \'{"model":"tts-1","voice":"default","input":"Hello from CallenVoice.","response_format":"wav"}\' \\',
             '  --output speech.wav',
             '',
           ].join('\n'),
@@ -308,7 +308,7 @@ export const INTEGRATION_SETUPS: Record<string, IntegrationSetup> = {
             ')',
             '',
             'with client.audio.speech.with_streaming_response.create(',
-            '    model="tts-1", voice="default", input="Hello from VoiceStudio.",',
+            '    model="tts-1", voice="default", input="Hello from CallenVoice.",',
             '    response_format="wav",',
             ') as response:',
             '    response.stream_to_file("speech.wav")',
@@ -324,7 +324,7 @@ export const INTEGRATION_SETUPS: Record<string, IntegrationSetup> = {
   docker: container(DOCKER_HUB_IMAGE, `${REPO_DOCS}/install/docker.md`),
   'github-container-registry': container(GHCR_IMAGE, `${REPO_DOCS}/install/docker.md`),
   'openai-agents': {
-    // VoiceStudio serves the pipeline's speech-to-text and text-to-speech; the
+    // CallenVoice serves the pipeline's speech-to-text and text-to-speech; the
     // agent's language model is a local OpenAI-compatible server of the user's.
     capabilities: ['speechApi', 'transcriptionApi', 'localLlm'],
     taglineKey: 'integrationCatalog.tagline.openaiAgents',

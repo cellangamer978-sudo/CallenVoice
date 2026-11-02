@@ -3,6 +3,7 @@ import {
   type DistributionProfile,
   type DistributionTarget,
 } from '../../../config/distributions.mjs';
+import { callenUpdatesConfigured } from './callen/updates';
 
 export const CURRENT_DISTRIBUTION = __DISTRIBUTION_TARGET__ as DistributionTarget;
 
@@ -19,7 +20,9 @@ export type UpdateUnsupportedReason = 'development' | 'store' | 'package-manager
 export function applicationUpdatesUnsupportedReason(
   packaged: boolean,
   target: DistributionTarget = CURRENT_DISTRIBUTION,
-  disabledByEnvironment = process.env.VOICESTUDIO_DISABLE_UPDATER === '1',
+  // CallenVoice: in-app updates stay off until our own release feed exists.
+  disabledByEnvironment = process.env.VOICESTUDIO_DISABLE_UPDATER === '1' ||
+    !callenUpdatesConfigured(),
 ): UpdateUnsupportedReason | null {
   if (!packaged) return 'development';
   if (DISTRIBUTION_PROFILES[target].applicationUpdates !== 'application') return 'store';
@@ -30,7 +33,9 @@ export function applicationUpdatesUnsupportedReason(
 export function applicationUpdatesSupported(
   packaged: boolean,
   target: DistributionTarget = CURRENT_DISTRIBUTION,
-  disabledByEnvironment = process.env.VOICESTUDIO_DISABLE_UPDATER === '1',
+  // CallenVoice: in-app updates stay off until our own release feed exists.
+  disabledByEnvironment = process.env.VOICESTUDIO_DISABLE_UPDATER === '1' ||
+    !callenUpdatesConfigured(),
 ): boolean {
   return applicationUpdatesUnsupportedReason(packaged, target, disabledByEnvironment) === null;
 }

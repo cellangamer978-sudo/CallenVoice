@@ -294,7 +294,7 @@ def _normalize(name: str) -> str:
 
 @functools.lru_cache(maxsize=1)
 def _app_dependency_names() -> frozenset[str]:
-    """Distribution names VoiceStudio itself requires, normalized.
+    """Distribution names CallenVoice itself requires, normalized.
 
     Read from the installed package metadata, so it follows the lockfile with
     no second list to keep in step. Without metadata this guards nothing
@@ -317,7 +317,7 @@ def _app_dependency_names() -> frozenset[str]:
 def uninstall_blocker(engine_id: str) -> "tuple[int, str] | None":
     """Why removing this engine's package would break something, or None.
 
-    `pip uninstall` acts on the app's own environment. A package VoiceStudio
+    `pip uninstall` acts on the app's own environment. A package CallenVoice
     depends on (openai, argostranslate) would break the app, and a package
     other translation engines share (deep_translator backs four) would break
     those engines too.
@@ -328,7 +328,7 @@ def uninstall_blocker(engine_id: str) -> "tuple[int, str] | None":
         return None
     if entry.get("builtin") or _normalize(pkg) in _app_dependency_names():
         return 400, (
-            f"{entry['display_name']} uses {pkg}, which VoiceStudio itself "
+            f"{entry['display_name']} uses {pkg}, which CallenVoice itself "
             "depends on. Uninstalling it would break the app."
         )
     sharing = [

@@ -74,7 +74,7 @@ import { DEFAULT_BACKEND_PORT } from '../../../config/app-config.mjs';
 
 const DEFAULT_BUDGET_S = 300;
 const READY_POLL_MS = 500;
-/** Allow another VoiceStudio shell to take ownership without showing a false crash. */
+/** Allow another CallenVoice shell to take ownership without showing a false crash. */
 const REPLACEMENT_ATTACH_GRACE_MS = 10_000;
 const SUPERVISE_POLL_MS = 2000;
 const PROBE_TIMEOUT_MS = 1500;
@@ -440,9 +440,10 @@ function scopedRuntimeRoot(): string | null {
 
 function selectedRuntimeRoot(parent: string): string {
   const selected = resolve(parent);
-  return basename(selected).toLocaleLowerCase('en-US') === 'voicestudio'
+  // CallenVoice: the app folder is named after the product.
+  return ['callenvoice', 'voicestudio'].includes(basename(selected).toLocaleLowerCase('en-US'))
     ? selected
-    : join(selected, 'VoiceStudio');
+    : join(selected, 'CallenVoice');
 }
 
 /** File-manager metadata a new folder can hold; it is not another installation's data. */
@@ -493,8 +494,8 @@ export async function resolveSpawnPlan(
     if (hostIssue === 'unsupported_platform' || hostIssue === 'wrong_architecture') {
       return {
         error:
-          'This Intel Mac cannot run the local VoiceStudio backend: PyTorch no longer publishes ' +
-          'Intel-Mac wheels. Connect the app to a VoiceStudio backend on another computer, or ' +
+          'This Intel Mac cannot run the local CallenVoice backend: PyTorch no longer publishes ' +
+          'Intel-Mac wheels. Connect the app to a CallenVoice backend on another computer, or ' +
           'use the Apple Silicon build on an Apple Silicon Mac.',
         setupIssue: 'unsupported_platform',
       };
@@ -524,9 +525,9 @@ export async function resolveSpawnPlan(
   if (hostIssue === 'unsupported_platform') {
     return {
       error:
-        'This Intel Mac cannot run the local VoiceStudio backend: PyTorch no longer publishes ' +
+        'This Intel Mac cannot run the local CallenVoice backend: PyTorch no longer publishes ' +
         'Intel-Mac wheels, so `bun run setup:api` cannot install it. Connect the app to a ' +
-        'VoiceStudio backend on another computer, or run the backend on an Apple Silicon Mac, ' +
+        'CallenVoice backend on another computer, or run the backend on an Apple Silicon Mac, ' +
         'Windows or Linux.',
       setupIssue: 'unsupported_platform',
     };
@@ -550,8 +551,8 @@ export async function resolveSpawnPlan(
     if (!existsSync(join(root, 'pyproject.toml'))) {
       return {
         error:
-          `The Python environment in ${root} is missing (no ${relative(root, python)}), and this is not a VoiceStudio source checkout. ` +
-          'Install VoiceStudio from the release installer, or clone the repository and run `bun run setup:api` inside it.',
+          `The Python environment in ${root} is missing (no ${relative(root, python)}), and this is not a CallenVoice source checkout. ` +
+          'Install CallenVoice from the release installer, or clone the repository and run `bun run setup:api` inside it.',
       };
     }
     return {
@@ -758,7 +759,7 @@ export function spawnFailureMessage(
   // adds its localized permission/security hint to this diagnostic.
   if (runtimeOwned && code !== 'ENOENT') return `Could not start ${command}: ${detail}`;
   return runtimeOwned
-    ? `Could not start ${command}: ${detail}. Install or repair the local runtime, then restart VoiceStudio.`
+    ? `Could not start ${command}: ${detail}. Install or repair the local runtime, then restart CallenVoice.`
     : `Could not start ${command}: ${detail}. Check that the program exists and can be launched, then try again.`;
 }
 
@@ -807,7 +808,7 @@ export function startupTimeoutMessage(
   if (!owned) return `${base} Nothing was spawned for this attempt.`;
   const advice =
     ' Slow disks and antivirus scanning of the runtime folder are the usual cause: click Retry, ' +
-    'exclude the VoiceStudio runtime folder from real-time scanning, or raise OMNIVOICE_STARTUP_BUDGET_S ' +
+    'exclude the CallenVoice runtime folder from real-time scanning, or raise OMNIVOICE_STARTUP_BUDGET_S ' +
     '(for example 900).';
   return lastOutput
     ? `${base} Last output: ${lastOutput}${advice}`
@@ -1801,7 +1802,7 @@ export class BackendSupervisor extends EventEmitter<{
     code: number | null,
     signal: NodeJS.Signals | null,
   ): Promise<void> {
-    // A second VoiceStudio shell can deliberately replace this child between
+    // A second CallenVoice shell can deliberately replace this child between
     // process exit and its own listener becoming ready. Treat that handoff as
     // attachment, not a crash, and keep renderer requests paused meanwhile.
     this.setStage('attaching', { managed: false, message: undefined });
@@ -1811,7 +1812,7 @@ export class BackendSupervisor extends EventEmitter<{
         if (gen !== this.generation || this.shuttingDown) return;
         this.exitCode = undefined;
         this.exitSignal = undefined;
-        this.pushLog('out', 'Attached to the replacement VoiceStudio backend.');
+        this.pushLog('out', 'Attached to the replacement CallenVoice backend.');
         await this.markReady(gen, { managed: false, message: undefined }, true);
         return;
       }

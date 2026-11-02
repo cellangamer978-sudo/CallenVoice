@@ -1,5 +1,5 @@
 /**
- * VoiceStudio Cloud endpoints (vssaas docs/specs/desktop-account-client.md). One block per
+ * CallenVoice Cloud endpoints (vssaas docs/specs/desktop-account-client.md). One block per
  * environment. Sign-in is Zitadel on its own host (vssaas ADR 0093); the app discovers the
  * endpoints from `${issuer}/.well-known/openid-configuration`.
  */

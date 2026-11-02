@@ -233,7 +233,7 @@ def _cpu_incompatible_reason(bin_path: Path) -> str:
         f"GGUF binary {bin_path.name} stopped with an illegal instruction: it "
         f"was built for CPU features this processor does not have. Rebuild it "
         f"with `scripts/build-omnivoice-tts.sh --platform {_platform_slug()}` "
-        f"(portable x86-64 build), reinstall VoiceStudio, or use the default "
+        f"(portable x86-64 build), reinstall CallenVoice, or use the default "
         f"in-process OmniVoice engine (Model Catalogue)."
     )
 
@@ -265,7 +265,7 @@ def _binary_repair_hint() -> str:
     return (
         f"the bundled GGUF runtime is not usable on this machine — build it "
         f"with `scripts/build-omnivoice-tts.sh --platform {_platform_slug()}`, "
-        f"reinstall VoiceStudio, or switch to the default in-process "
+        f"reinstall CallenVoice, or switch to the default in-process "
         f"OmniVoice engine (Model Catalogue)"
     )
 
@@ -611,7 +611,7 @@ def _make_backend_class():
                         f"zero-byte placeholders until a real binary is "
                         f"built — run `scripts/build-omnivoice-tts.sh "
                         f"--platform {_platform_slug()}`, reinstall "
-                        f"VoiceStudio, or use the default in-process "
+                        f"CallenVoice, or use the default in-process "
                         f"OmniVoice engine (Model Catalogue)."
                     )
                 known_bad = _CPU_INCOMPATIBLE.get(str(bin_path))
@@ -625,7 +625,7 @@ def _make_backend_class():
                 except ChecksumManifestError as exc:
                     return False, (
                         f"GGUF binary {bin_path.name} could not be verified: "
-                        f"{exc}. Reinstall VoiceStudio or use the default "
+                        f"{exc}. Reinstall CallenVoice or use the default "
                         f"in-process OmniVoice engine."
                     )
                 expected = manifest.get(bin_path.name)
@@ -645,7 +645,7 @@ def _make_backend_class():
                             f"GGUF runtime library checksum mismatch for "
                             f"{bad_lib} — the runtime would load a library "
                             f"other than the one that was built. Reinstall "
-                            f"VoiceStudio or rebuild with "
+                            f"CallenVoice or rebuild with "
                             f"`scripts/build-omnivoice-tts.sh`."
                         )
                 # macOS Gatekeeper quarantine detection (Pitfall 3).

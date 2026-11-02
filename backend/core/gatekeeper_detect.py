@@ -4,7 +4,7 @@ Issue #54 — When a user downloads the .dmg/.zip outside the Mac App Store,
 macOS Gatekeeper attaches an `com.apple.quarantine` extended attribute to the
 .app bundle. On first launch, that attribute propagates to every binary inside
 the bundle, and Gatekeeper refuses to exec any of them. The user sees
-"VoiceStudio can't be opened" or the app crashes silently — both bad UX.
+"CallenVoice can't be opened" or the app crashes silently — both bad UX.
 
 The fix is documented in Phase 1 Wave 2's `docs/install/macos-gatekeeper.md`
 (shipped by Plan 01-02 — Wave 2 scope) and reachable via the React
@@ -38,8 +38,8 @@ ERROR_CLASS = "GATEKEEPER_QUARANTINE"
 def _resolve_app_bundle_path() -> Optional[str]:
     """Walk up from ``sys.executable`` until we find a ``.app`` directory.
 
-    When VoiceStudio is launched from an installed .app bundle, Python runs from
-    `VoiceStudio.app/Contents/Resources/.venv/bin/python` (or similar),
+    When CallenVoice is launched from an installed .app bundle, Python runs from
+    `CallenVoice.app/Contents/Resources/.venv/bin/python` (or similar),
     so ``sys.executable`` is several levels below the bundle root.
 
     Returns the .app path (e.g. ``/Applications/VoiceStudio.app``) or

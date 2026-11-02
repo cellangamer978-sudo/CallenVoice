@@ -13,7 +13,7 @@ describe('backendFailureHints', () => {
   it('explains a launch the OS refused (#2440)', () => {
     expect(
       backendFailureHints(
-        'Could not start C:\\runtime\\python.exe: spawn UNKNOWN. Install or repair the local runtime, then restart VoiceStudio.',
+        'Could not start C:\\runtime\\python.exe: spawn UNKNOWN. Install or repair the local runtime, then restart CallenVoice.',
       ),
     ).toEqual(['backend.hint_spawn_blocked']);
     expect(backendFailureHints('Could not start /x/python: spawn EACCES')).toEqual([
@@ -40,7 +40,7 @@ describe('backendFailureHints', () => {
   it('flags a path inside a cloud-synced folder (#2465)', () => {
     expect(
       backendFailureHints(
-        'The Python environment in C:\\Users\\a\\OneDrive\\Desktop\\VoiceStudio is missing or incomplete.',
+        'The Python environment in C:\\Users\\a\\OneDrive\\Desktop\\CallenVoice is missing or incomplete.',
       ),
     ).toEqual(['backend.hint_synced_folder']);
   });
@@ -70,17 +70,17 @@ describe('backendFailureCause', () => {
     ['Backend exited unexpectedly (exit code 3221225477).', 'native_crash'],
     ['Backend exited unexpectedly (exit code -1073741819).', 'native_crash'],
     ['Backend exited unexpectedly (signal SIGSEGV).', 'native_crash'],
-    ['The Python environment in C:\\VoiceStudio is missing or incomplete.', 'missing_env'],
+    ['The Python environment in C:\\CallenVoice is missing or incomplete.', 'missing_env'],
     [
       'The Python environment in C:\\Users\\a\\OneDrive\\VS is missing or incomplete.',
       'synced_folder',
     ],
     [
-      'The Python environment in C:\\VoiceStudio is missing (no .venv\\Scripts\\python.exe). Install it.',
+      'The Python environment in C:\\CallenVoice is missing (no .venv\\Scripts\\python.exe). Install it.',
       'missing_env',
     ],
     [
-      'The Python environment in C:\\VoiceStudio is incomplete: ImportError: torch. Install it.',
+      'The Python environment in C:\\CallenVoice is incomplete: ImportError: torch. Install it.',
       'missing_env',
     ],
     ['EPERM: operation not permitted, mkdir', 'permission'],
@@ -95,14 +95,14 @@ describe('backendFailureCause', () => {
 
 describe('inSyncedFolder', () => {
   it.each([
-    'C:\\Users\\a\\OneDrive\\Desktop\\VoiceStudio',
-    'C:\\Users\\a\\OneDrive - Contoso\\VoiceStudio',
+    'C:\\Users\\a\\OneDrive\\Desktop\\CallenVoice',
+    'C:\\Users\\a\\OneDrive - Contoso\\CallenVoice',
     '/Users/a/Dropbox/VoiceStudio',
     '/Users/a/Library/Mobile Documents/iCloud Drive/VoiceStudio',
-    'G:\\Google Drive\\VoiceStudio',
+    'G:\\Google Drive\\CallenVoice',
   ])('detects %s', (path) => expect(inSyncedFolder(path)).toBe(true));
 
-  it.each(['C:\\VoiceStudio', '/home/a/voicestudio', '/home/a/Documents/onedrive-notes-app'])(
+  it.each(['C:\\CallenVoice', '/home/a/voicestudio', '/home/a/Documents/onedrive-notes-app'])(
     'ignores %s',
     (path) => expect(inSyncedFolder(path)).toBe(false),
   );

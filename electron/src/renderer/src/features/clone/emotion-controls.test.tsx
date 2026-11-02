@@ -39,7 +39,7 @@ beforeEach(() => {
 describe('engine-aware emotion entry (#3422)', () => {
   it('stays visible and explains why for engines without emotion', async () => {
     engine.supportsEmotion = false;
-    engine.name = 'VoiceStudio (k2-fsa/OmniVoice, 600+ languages)';
+    engine.name = 'CallenVoice (k2-fsa/OmniVoice, 600+ languages)';
     engine.caps = { emotion: 'none', tags: ['[laughter]', '[sigh]'] };
     render(<EmotionControls />);
     fireEvent.click(screen.getByRole('button', { name: 'Emotion' }));

@@ -35,7 +35,7 @@ import Table from '../../ui/Table.jsx';
 import Tabs from '../../ui/Tabs.jsx';
 import SettingRow from '../../components/settings/primitives/SettingRow.jsx';
 import SettingsToggle from '../../components/settings/primitives/SettingsToggle.jsx';
-// shadcn/ui proof components — themed via the VoiceStudio token bridge (index.css).
+// shadcn/ui proof components — themed via the CallenVoice token bridge (index.css).
 // Rendered here across all 3 themes to prove the bridge keeps them on-palette.
 import { Button as ShadcnButton } from '../../components/ui/button.tsx';
 import { Input as ShadcnInput } from '../../components/ui/input.tsx';

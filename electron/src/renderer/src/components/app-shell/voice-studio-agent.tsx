@@ -1,3 +1,4 @@
+import { CALLEN_REPO_URL, DOCS_BLOB_BASE } from '@shared/callen/repo';
 import { useStore } from '@tanstack/react-store';
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
@@ -44,9 +45,8 @@ import { TranslationAgentDock } from './translation-agent-dock';
 import { AgentDockFrame } from './agent-dock-frame';
 import './voice-studio-agent.css';
 
-const REPAIR_DOCS_URL =
-  'https://github.com/debpalash/VoiceStudio/blob/main/docs/electron-repair.md#source-checkout';
-const CLONE_COMMAND = 'git clone https://github.com/debpalash/VoiceStudio.git';
+const REPAIR_DOCS_URL = `${DOCS_BLOB_BASE}/docs/electron-repair.md#source-checkout`;
+const CLONE_COMMAND = CALLEN_REPO_URL ? `git clone ${CALLEN_REPO_URL}.git` : null;
 type WorkspaceProblem = NonNullable<RepairAgentState['workspaceError']>;
 const icons = { codex: codexIcon, claude: claudeIcon, opencode: openCodeIcon, pi: piIcon };
 const labels: Record<AgentFeature, string> = {
@@ -446,7 +446,7 @@ export function VoiceStudioAgent() {
             {source && !workspace.available && (
               <div className="flex flex-col items-start gap-1 text-xs">
                 <p>{t('repairAgent.noSource')}</p>
-                <code className="select-all break-all">{CLONE_COMMAND}</code>
+                {CLONE_COMMAND && <code className="select-all break-all">{CLONE_COMMAND}</code>}
                 <ExternalLink href={REPAIR_DOCS_URL}>{t('common.learn_more')}</ExternalLink>
               </div>
             )}

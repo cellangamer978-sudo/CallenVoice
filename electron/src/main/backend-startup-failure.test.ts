@@ -42,7 +42,7 @@ interface SupervisorInternals {
 
 const FATAL_STARTUP =
   "FATAL: backend startup failed during 'ml_imports': Could not find module " +
-  "'~\\AppData\\Roaming\\VoiceStudio\\runtime\\project\\.venv\\Lib\\site-packages\\torchaudio\\lib\\libtorchaudio.pyd' " +
+  "'~\\AppData\\Roaming\\CallenVoice\\runtime\\project\\.venv\\Lib\\site-packages\\torchaudio\\lib\\libtorchaudio.pyd' " +
   '(or one of its dependencies).';
 /** The project this install created: the only kind a crash-time repair may rebuild. */
 const OWN_PROJECT = join('/private/voicestudio', 'runtime', 'project');

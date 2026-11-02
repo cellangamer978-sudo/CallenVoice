@@ -220,7 +220,7 @@ it('names the folder to open and refuses setup advice outside a checkout (#2988)
   state.checkout = false;
   const plan = await resolveSpawnPlan(3900);
   if (!('error' in plan)) throw new Error('expected a setup error');
-  expect(plan.error).toContain('not a VoiceStudio source checkout');
+  expect(plan.error).toContain('not a CallenVoice source checkout');
   expect(plan.error).toContain('release installer');
 });
 
@@ -295,7 +295,7 @@ it('passes legacy storage to packaged backends while preserving explicit overrid
 });
 
 it('names the refused program without recommending runtime repair', () => {
-  const python = String.raw`C:\Users\u\VoiceStudio\.venv\Scripts\python.exe`;
+  const python = String.raw`C:\Users\u\CallenVoice\.venv\Scripts\python.exe`;
   const message = spawnFailureMessage(
     python,
     Object.assign(new Error('spawn UNKNOWN'), { code: 'UNKNOWN' }),
@@ -318,7 +318,7 @@ it('reads Smart App Control from the registry output', () => {
 });
 
 it('names Smart App Control when it blocked the runtime (#3224)', () => {
-  const python = String.raw`C:\Users\u\VoiceStudio\.venv\Scripts\python.exe`;
+  const python = String.raw`C:\Users\u\CallenVoice\.venv\Scripts\python.exe`;
   const blocked = Object.assign(new Error('spawn UNKNOWN'), { code: 'UNKNOWN' });
   for (const smartAppControl of ['on', 'evaluation'] as const) {
     const message = spawnFailureMessage(python, blocked, { smartAppControl });

@@ -1778,7 +1778,7 @@ class OmniVoiceBackend(TTSBackend):
     """
 
     id = "omnivoice"
-    display_name = "VoiceStudio (k2-fsa/OmniVoice, 600+ languages)"
+    display_name = "CallenVoice (k2-fsa/OmniVoice, 600+ languages)"
     instruct_vocabulary = "tags"
     inline_tags = OMNIVOICE_INLINE_TAGS
     supports_voice_design = True
@@ -2771,7 +2771,7 @@ def _ensure_melotts_text_frontend() -> None:
         raise RuntimeError(
             "MeloTTS English needs the optional 'g2p_en' text package. "
             "Pick another MLX-Audio model or install it explicitly into "
-            "VoiceStudio's Python environment (uv pip install g2p_en)."
+            "CallenVoice's Python environment (uv pip install g2p_en)."
         )
     import nltk
     from core.config import DATA_DIR
@@ -2785,7 +2785,7 @@ def _ensure_melotts_text_frontend() -> None:
         except LookupError as exc:
             raise RuntimeError(
                 f"MeloTTS needs the local NLTK '{package}' data. "
-                "Install its resources explicitly in VoiceStudio's Python "
+                "Install its resources explicitly in CallenVoice's Python "
                 "environment: python -m nltk.downloader "
                 "averaged_perceptron_tagger averaged_perceptron_tagger_eng cmudict. "
                 "Generation does not download these resources."
@@ -3561,7 +3561,7 @@ class GPTSoVITSBackend(TTSBackend):
             "ref_audio_path": clip,
             "prompt_text": transcript or "",
             "prompt_lang": prompt_lang,
-            # VoiceStudio already chunks long text; ask the server not to
+            # CallenVoice already chunks long text; ask the server not to
             # re-split it into short fragments.
             "text_split_method": "cut0",
             "media_type": "wav",
@@ -3653,7 +3653,7 @@ class SherpaOnnxBackend(TTSBackend):
       • Android / iOS
       • WebAssembly (browser)
 
-    This is the bridge to browser-based VoiceStudio: the same engine runs natively
+    This is the bridge to browser-based CallenVoice: the same engine runs natively
     on desktop and compiles to WASM for the web UI.
 
     Install: pip install sherpa-onnx
@@ -3699,7 +3699,7 @@ class SherpaOnnxBackend(TTSBackend):
             return False, (
                 "OMNIVOICE_SHERPA_MODEL not set. Point it to a sherpa-onnx TTS "
                 "model directory (containing model.onnx + tokens.txt), then "
-                "restart VoiceStudio. Download models from "
+                "restart CallenVoice. Download models from "
                 "https://github.com/k2-fsa/sherpa-onnx/releases"
             )
         if _sherpa_model_file(model_dir) is None:
@@ -4558,7 +4558,12 @@ def active_backend_id() -> str:
     # Env var > persisted UI choice > default. Env wins so power-users can
     # pin a backend without the Settings picker silently undoing it.
     from core import prefs
-    return prefs.resolve("tts_backend", env="OMNIVOICE_TTS_BACKEND", default="omnivoice")
+    from callen.catalog import resolve_tts_engine
+    # CallenVoice: a selection outside the whitelist (including the upstream
+    # default, OmniVoice) falls back to our default engine.
+    return resolve_tts_engine(
+        prefs.resolve("tts_backend", env="OMNIVOICE_TTS_BACKEND", default="omnivoice")
+    )
 
 
 # Cached active backend instance + its id (MM2-01). Without this, every call
@@ -4599,10 +4604,13 @@ def ensure_engine_licence(cls) -> None:
     ``ModelLicenceNotAccepted`` before any weights load or sidecar starts.
     """
     from services.model_acceptance import ensure_engine_accepted
+    from callen.catalog import ensure_tts_engine_allowed
 
     engine_id = getattr(cls, "id", None)
     if not engine_id:
         return
+    # CallenVoice: engines outside the whitelist never load (typed 403 upstream).
+    ensure_tts_engine_allowed(engine_id)
     try:
         identity = cls.configured_identity()
     except Exception:  # noqa: BLE001 — unknown model: gate every model the engine ships

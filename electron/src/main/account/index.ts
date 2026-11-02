@@ -31,7 +31,7 @@ const BRIDGE_ENV_OFF = {
 };
 
 /**
- * Wires VoiceStudio Cloud sign-in. Must run before the backend starts (bridge env).
+ * Wires CallenVoice Cloud sign-in. Must run before the backend starts (bridge env).
  * Never throws: an optional feature must not stop the local app from starting.
  */
 export async function startAccount(opts: StartOptions): Promise<() => void> {

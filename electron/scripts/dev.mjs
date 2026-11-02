@@ -27,7 +27,7 @@ import {
   withMacDevCacheLock,
 } from './mac-dev-cache.mjs';
 
-const APP_NAME = 'VoiceStudio';
+const APP_NAME = 'CallenVoice';
 const here = dirname(fileURLToPath(import.meta.url));
 const electronRoot = resolve(here, '..');
 const repoRoot = resolve(electronRoot, '..');
@@ -233,7 +233,7 @@ export function pruneOldBundles(cacheRoot, keep, { leaseDirectory } = {}) {
 /**
  * Ports only a `bun dev` instance uses: the Electron main's private dev proxy
  * (listened on by the Electron app itself) and the renderer dev server. The
- * backend port is left alone: an installed VoiceStudio may own it, and the dev
+ * backend port is left alone: an installed CallenVoice may own it, and the dev
  * app falls back to another port anyway.
  */
 export function devInstancePorts(env = process.env) {

@@ -104,13 +104,13 @@ class DotsTTSBackend(SubprocessBackend):
             return False, (
                 "dots.tts venv not found. Set OMNIVOICE_DOTS_TTS_DIR to your "
                 "dots.tts clone (the directory containing pyproject.toml) and "
-                "restart VoiceStudio. CUDA or CPU only (no MPS). See "
+                "restart CallenVoice. CUDA or CPU only (no MPS). See "
                 "docs/engines/dots-tts.md for the full install walk-through."
             )
         if not DOTS_TTS_SIDECAR_SCRIPT.exists():
             return False, (
                 "dots.tts sidecar script missing at "
-                f"{DOTS_TTS_SIDECAR_SCRIPT} — reinstall VoiceStudio."
+                f"{DOTS_TTS_SIDECAR_SCRIPT} — reinstall CallenVoice."
             )
         return True, "ok (CUDA when present, else CPU)"
 

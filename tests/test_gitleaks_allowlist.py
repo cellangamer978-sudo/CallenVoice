@@ -6,9 +6,11 @@ import tomllib
 
 
 ROOT = Path(__file__).resolve().parents[1]
+# CallenVoice: the upstream token no longer ships in backend/core/analytics.py,
+# but it stays allowlisted because it remains in the inherited git history.
 _POSTHOG_TOKEN = re.search(
     r"phc_[A-Za-z0-9]{20,}",
-    (ROOT / "backend/core/analytics.py").read_text(encoding="utf-8"),
+    (ROOT / ".gitleaks.toml").read_text(encoding="utf-8"),
 )
 assert _POSTHOG_TOKEN is not None
 EXPECTED_EXACT_REGEXES = {

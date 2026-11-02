@@ -65,7 +65,7 @@ describe('Header — rail mode (default)', () => {
         tts: {
           active: 'omni',
           backends: [
-            { id: 'omni', display_name: 'VoiceStudio (k2-fsa/OmniVoice, 600+ languages)' },
+            { id: 'omni', display_name: 'CallenVoice (k2-fsa/OmniVoice, 600+ languages)' },
           ],
         },
         asr: { active: 'whisper', backends: [{ id: 'whisper', display_name: 'Whisper' }] },

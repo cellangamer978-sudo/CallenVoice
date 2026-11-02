@@ -152,7 +152,7 @@ def build_consent_json(profile: dict, *, has_recording: bool) -> Optional[dict]:
 
 def _legacy_metadata(profile: dict, omnivoice_version: str) -> dict:
     """A ``metadata.json`` payload shaped like marketplace ``_bundle_metadata`` so
-    an OLDER VoiceStudio (which only reads metadata.json) can still import the ref
+    an OLDER CallenVoice (which only reads metadata.json) can still import the ref
     audio from a ``.ovsvoice`` bundle."""
     return {
         "bundle_version": 1,

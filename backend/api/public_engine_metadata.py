@@ -63,7 +63,7 @@ _UNAVAILABLE_PLATFORM = (
 # right, the installation is not. MLX-Audio / MLX-Whisper need MPS (#390).
 _UNAVAILABLE_NO_MPS = (
     "This engine needs Apple's GPU (MPS), and this installation's PyTorch "
-    "can't use it. Updating macOS or reinstalling VoiceStudio usually "
+    "can't use it. Updating macOS or reinstalling CallenVoice usually "
     "restores it."
 )
 _UNAVAILABLE_NEEDS_CONFIG = (

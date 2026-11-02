@@ -208,7 +208,7 @@ describe('DesktopUpdater', () => {
     emit('update-available', {
       version: '0.5.3',
       releaseNotes: null,
-      files: [{ url: 'VoiceStudio.exe', sha512: 'hash', size: 1_000 }],
+      files: [{ url: 'CallenVoice.exe', sha512: 'hash', size: 1_000 }],
     });
     emit('download-progress', {
       percent: 25,
@@ -467,7 +467,7 @@ describe('DesktopUpdater', () => {
         JSON.stringify([
           {
             tag_name: 'v0.5.2',
-            name: 'VoiceStudio 0.5.2',
+            name: 'CallenVoice 0.5.2',
             published_at: '2026-09-12T12:00:00Z',
             prerelease: false,
             body: 'Ready',
@@ -475,7 +475,7 @@ describe('DesktopUpdater', () => {
           { name: 'missing tag' },
           {
             tag_name: 'mobile-v0.5.7-beta.2',
-            name: 'mobile-v0.5.7-beta.2 — VoiceStudio mobile',
+            name: 'mobile-v0.5.7-beta.2 — CallenVoice mobile',
             published_at: '2026-10-24T14:00:00Z',
             prerelease: true,
             body: 'Phone apps',
@@ -488,7 +488,7 @@ describe('DesktopUpdater', () => {
     await expect(listDesktopReleases(fetcher)).resolves.toEqual([
       {
         version: '0.5.2',
-        name: 'VoiceStudio 0.5.2',
+        name: 'CallenVoice 0.5.2',
         date: '2026-09-12T12:00:00Z',
         prerelease: false,
         notes: 'Ready',
@@ -497,7 +497,7 @@ describe('DesktopUpdater', () => {
     expect(fetcher).toHaveBeenCalledWith(
       expect.stringContaining('/debpalash/VoiceStudio/releases?per_page=30'),
       expect.objectContaining({
-        headers: expect.objectContaining({ 'User-Agent': 'VoiceStudio' }),
+        headers: expect.objectContaining({ 'User-Agent': 'CallenVoice' }),
         signal: expect.any(AbortSignal),
       }),
     );

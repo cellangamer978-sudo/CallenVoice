@@ -11,6 +11,7 @@ import { DUB_CARD, DubFieldRow, DubStepHeading } from './dub-section';
 import { setDubProduction, type DubSession } from './dub-session';
 import { DubSourceRow } from './dub-source-row';
 import { DubUrlForm } from './dub-url-form';
+import { ALLOW_URL_IMPORT } from '@/callen/product';
 
 // The source picker stays on what speech recognition can transcribe.
 const sourceOptions = LANG_CODES.map((item) => item.label);
@@ -53,7 +54,7 @@ export function DubSourcePanel({
   const [linkModeJob, setLinkModeJob] = useState<string | null>(null);
   const locked = busy || Boolean(session.recovery);
   const linkMode = Boolean(session.jobId) && linkModeJob === session.jobId;
-  const urlForm = (
+  const urlForm = ALLOW_URL_IMPORT ? (
     <DubUrlForm
       disabled={busy || cancelling || Boolean(session.recovery)}
       autoFocus={linkMode}
@@ -63,7 +64,7 @@ export function DubSourcePanel({
         setLinkModeJob(null);
       }}
     />
-  );
+  ) : null;
   const auto = t('dub.num_speakers_auto');
   const diarisationLabel = `${t('engineSidebar.diarisation')} · ${t('modelMaintenance.installed')}`;
   return (
@@ -124,7 +125,9 @@ export function DubSourcePanel({
             confirmRemove={confirmRemove}
             recovering={Boolean(session.recovery)}
             onChangeFile={() => inputRef.current?.click()}
-            onToggleLink={() => setLinkModeJob(linkMode ? null : session.jobId)}
+            onToggleLink={
+              ALLOW_URL_IMPORT ? () => setLinkModeJob(linkMode ? null : session.jobId) : undefined
+            }
             onRemove={onRemove}
           />
           {linkMode && urlForm}

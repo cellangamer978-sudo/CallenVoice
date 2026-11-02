@@ -170,7 +170,7 @@ it('names the exact build, not just the version', async () => {
   await submitReport();
   await waitFor(() => expect(mock.open).toHaveBeenCalledTimes(1));
   const body = new URL(mock.open.mock.calls[0]![0]).searchParams.get('body')!;
-  expect(body).toMatch(/\*\*App:\*\* VoiceStudio \S+ \(build [0-9a-f]{9}\)/);
+  expect(body).toMatch(/\*\*App:\*\* CallenVoice \S+ \(build [0-9a-f]{9}\)/);
 });
 it('describes the machine and runtime from the app when the backend never started (#3156)', async () => {
   mock.api.mockRejectedValue(new Error('offline'));

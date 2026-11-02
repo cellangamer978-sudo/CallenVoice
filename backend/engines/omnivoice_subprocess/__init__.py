@@ -158,7 +158,7 @@ class OmniVoiceMPSSubprocessBackend(OmniVoiceSubprocessBackend):
     """
 
     id = "omnivoice"
-    display_name = "VoiceStudio (k2-fsa/OmniVoice, 600+ languages)"
+    display_name = "CallenVoice (k2-fsa/OmniVoice, 600+ languages)"
     instruct_vocabulary = "tags"
     supports_native_omnivoice_controls = True
 
@@ -174,7 +174,7 @@ class OmniVoiceMPSSubprocessBackend(OmniVoiceSubprocessBackend):
             raise RuntimeError(
                 "The isolated OmniVoice engine stopped during generation, "
                 "usually because macOS reclaimed it under memory pressure. "
-                "The VoiceStudio backend is still running. Close memory-heavy "
+                "The CallenVoice backend is still running. Close memory-heavy "
                 "apps or select a smaller TTS engine, then retry."
             ) from exc
 

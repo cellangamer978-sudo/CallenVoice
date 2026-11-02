@@ -7,7 +7,7 @@
  *
  * That is wrong for this app, twice over, and the reasons are not theoretical:
  *
- * 1. **It would track everyone immediately, before consent.** VoiceStudio's whole
+ * 1. **It would track everyone immediately, before consent.** CallenVoice's whole
  *    promise is that a default install sends nothing (Settings → Privacy is OFF
  *    until you turn it on; see backend/core/analytics.py). Initialising at load
  *    would make the app's own README a lie. So init happens ONLY after the user
@@ -41,7 +41,9 @@ import { scrubText } from './scrub';
  * tests/test_no_committed_analytics_token.py pins that a `phc_` literal may
  * live in exactly this file and backend/core/analytics.py.
  */
-const PUBLIC_PROJECT_TOKEN = 'phc_kJK9nFqtwFmB4CYWS4bMDTY7z9P4KCRyiRT7CzJTXm9f'; // gitleaks:allow — publishable write-only key (#1193)
+// CallenVoice: no default destination (the upstream key belonged to the original
+// project's PostHog account). Release builds set VITE_POSTHOG_KEY to our own project.
+const PUBLIC_PROJECT_TOKEN = '';
 const POSTHOG_TOKEN: string = (import.meta.env?.VITE_POSTHOG_KEY as string) || PUBLIC_PROJECT_TOKEN;
 const POSTHOG_HOST: string =
   (import.meta.env?.VITE_POSTHOG_HOST as string) || 'https://us.i.posthog.com';
@@ -170,9 +172,9 @@ export function sanitizeException(error: unknown): Error {
     )
     .slice(0, MAX_STACK_LINES)
     .map((line) => line.slice(0, MAX_STACK_LINE_LENGTH));
-  const safe = new Error('VoiceStudio renderer error');
+  const safe = new Error('CallenVoice renderer error');
   safe.name = errorClass;
-  safe.stack = [`${errorClass}: VoiceStudio renderer error`, ...frames].join('\n');
+  safe.stack = [`${errorClass}: CallenVoice renderer error`, ...frames].join('\n');
   return safe;
 }
 

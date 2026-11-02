@@ -37,20 +37,20 @@ function freshClone(root: string, { git = true } = {}) {
 }
 
 it('accepts a fresh clone at its root without leaving files behind', () => {
-  const root = freshClone(join(base, 'VoiceStudio'));
+  const root = freshClone(join(base, 'CallenVoice'));
   expect(inspectSourceCheckout(root)).toEqual({ ok: true, root });
   expect(readdirSync(root).filter((name) => name.includes('write-check'))).toEqual([]);
   expect(isVoiceStudioCheckout(root)).toBe(true);
 });
 
 it('accepts a git worktree, whose .git is a file', () => {
-  const root = freshClone(join(base, 'VoiceStudio'), { git: false });
+  const root = freshClone(join(base, 'CallenVoice'), { git: false });
   writeFileSync(join(root, '.git'), 'gitdir: /elsewhere\n');
   expect(inspectSourceCheckout(root)).toEqual({ ok: true, root });
 });
 
 it('accepts the folder git clone ran in and resolves the clone inside it', () => {
-  const root = freshClone(join(base, 'VoiceStudio'));
+  const root = freshClone(join(base, 'CallenVoice'));
   mkdirSync(join(base, 'other-project'));
   expect(inspectSourceCheckout(base)).toEqual({ ok: true, root });
   // Only the exact root counts when restoring a remembered location.
@@ -60,17 +60,17 @@ it('accepts the folder git clone ran in and resolves the clone inside it', () =>
 it('accepts the clone folder even when the parent sits inside another repository', () => {
   mkdirSync(join(base, '.git'));
   const code = join(base, 'code');
-  const root = freshClone(join(code, 'VoiceStudio'));
+  const root = freshClone(join(code, 'CallenVoice'));
   expect(inspectSourceCheckout(code)).toEqual({ ok: true, root });
 });
 
 it('accepts a folder inside the clone and resolves the clone root', () => {
-  const root = freshClone(join(base, 'VoiceStudio'));
+  const root = freshClone(join(base, 'CallenVoice'));
   expect(inspectSourceCheckout(join(root, 'electron', 'src', 'main'))).toEqual({ ok: true, root });
 });
 
 it('resolves the clone root from a folder nine or more levels deep, past nested repos', () => {
-  const root = freshClone(join(base, 'VoiceStudio'));
+  const root = freshClone(join(base, 'CallenVoice'));
   const nestedRepo = join(root, 'electron', 'node_modules', '@scope', 'pkg');
   mkdirSync(join(nestedRepo, '.git'), { recursive: true });
   const deep = join(nestedRepo, 'dist', 'esm', 'internal', 'a', 'b', 'c');
@@ -100,7 +100,7 @@ it.each([
   ['Windows/Linux install folder', ['resources', 'app.asar']],
   ['macOS bundle contents', ['Contents', 'Resources', 'app.asar']],
 ])('explains the installed app: %s', (_label, parts) => {
-  const install = join(base, 'VoiceStudio');
+  const install = join(base, 'CallenVoice');
   touch(join(install, ...parts));
   expect(inspectSourceCheckout(install)).toEqual({ ok: false, reason: 'installed_app' });
 });
@@ -108,7 +108,7 @@ it.each([
 it.skipIf(process.platform === 'win32' || process.getuid?.() === 0)(
   'explains a clone the app cannot write to',
   () => {
-    const root = freshClone(join(base, 'VoiceStudio'));
+    const root = freshClone(join(base, 'CallenVoice'));
     chmodSync(root, 0o555);
     expect(inspectSourceCheckout(root)).toEqual({ ok: false, reason: 'read_only' });
   },

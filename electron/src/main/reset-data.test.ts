@@ -60,7 +60,7 @@ it('reports real reset scopes and marks a cache outside app data as shared', asy
   expect(scopes.find((scope) => scope.key === 'models')!.size_bytes).toBeGreaterThan(0);
 });
 
-it('removes only selected VoiceStudio targets and preserves unrelated siblings', async () => {
+it('removes only selected CallenVoice targets and preserves unrelated siblings', async () => {
   const roots = await fixture();
   const report = await purgeResetScopes(
     roots,
@@ -90,7 +90,7 @@ it('refuses filesystem roots, home directories and unsigned custom roots', async
 it('does not infer ownership from a lookalike ancestor or a model-cache signature', async () => {
   const root = await mkdtemp(join(tmpdir(), 'VoiceStudio-lookalike-'));
   created.push(root);
-  const personal = join(root, 'Application Support', 'VoiceStudio', 'personal', 'documents');
+  const personal = join(root, 'Application Support', 'CallenVoice', 'personal', 'documents');
   const cache = join(root, 'external-cache');
   await mkdir(join(cache, 'models--someone--model'), { recursive: true });
   await mkdir(personal, { recursive: true });
@@ -141,7 +141,7 @@ it('measures a linked root but never follows links found inside it', async () =>
 });
 
 it('treats dot-prefixed names as children rather than parent traversal', () => {
-  const root = join(parse(process.cwd()).root, 'tmp', 'VoiceStudio');
+  const root = join(parse(process.cwd()).root, 'tmp', 'CallenVoice');
   expect(within(join(root, '..cache'), root)).toBe(true);
   expect(within(join(root, '..', 'cache'), root)).toBe(false);
 });
@@ -149,8 +149,8 @@ it('treats dot-prefixed names as children rather than parent traversal', () => {
 it('treats a bare app-named folder as owned only under an app-data parent or with a signature', async () => {
   const root = await mkdtemp(join(tmpdir(), 'VoiceStudio-parent-test-'));
   created.push(root);
-  const personal = join(root, 'Documents', 'VoiceStudio');
-  const installed = join(root, '.config', 'VoiceStudio');
+  const personal = join(root, 'Documents', 'CallenVoice');
+  const installed = join(root, '.config', 'CallenVoice');
   const strayShare = join(root, 'share', 'OmniVoice');
   const localShare = join(root, '.local', 'share', 'OmniVoice');
   for (const path of [personal, installed, strayShare, localShare])

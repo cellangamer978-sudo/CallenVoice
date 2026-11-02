@@ -1,4 +1,4 @@
-"""Short-lived VoiceStudio Cloud access tokens from Electron main.
+"""Short-lived CallenVoice Cloud access tokens from Electron main.
 
 The refresh token never leaves Electron main. Main answers {"signed_in": false}
 whenever account features or sync are switched off, or the backend is remote,

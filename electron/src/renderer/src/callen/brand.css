@@ -1,0 +1,43 @@
+/*
+ * CallenVoice brand layer: black and orange, minimal.
+ * Loaded after styles/globals.css (see main.tsx) so it overrides the default
+ * palette without editing the upstream theme files. Themes a user picks
+ * explicitly (html[data-theme-id]) keep their own colours.
+ *
+ * Orange is reserved for the primary action and focus; text on orange is black
+ * (#0A0A0A on #FF6A00 is about 7:1, white on the same orange is under 3:1).
+ */
+:root {
+  --callen-black: #0a0a0a;
+  --callen-charcoal: #1c1c1c;
+  --callen-orange: #ff6a00;
+  --callen-orange-strong: #c2410c; /* orange text on light backgrounds */
+  --callen-gray: #8a8a8a;
+  --callen-white: #fafafa;
+
+  --background: var(--callen-white);
+  --foreground: var(--callen-black);
+  --card-foreground: var(--callen-black);
+  --popover-foreground: var(--callen-black);
+  --primary: var(--callen-orange);
+  --primary-foreground: var(--callen-black);
+  --ring: var(--callen-orange);
+  --update-foreground: var(--callen-orange-strong);
+  --info: var(--callen-orange);
+  --info-foreground: var(--callen-orange-strong);
+}
+
+:root:is(.dark, .dark *) {
+  --background: var(--callen-black);
+  --foreground: var(--callen-white);
+  --card-foreground: var(--callen-white);
+  --popover-foreground: var(--callen-white);
+  --primary: var(--callen-orange);
+  --primary-foreground: var(--callen-black);
+  --ring: var(--callen-orange);
+  --update-foreground: var(--callen-orange);
+  --info: var(--callen-orange);
+  --info-foreground: var(--callen-orange);
+  --terminal-cursor: var(--callen-orange);
+  --terminal-selection-background: rgb(255 106 0 / 25%);
+}

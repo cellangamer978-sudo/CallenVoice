@@ -16,7 +16,7 @@ vi.mock('@/hooks/use-engines', () => ({
   useEngines: () => ({
     activeTts: {
       id: 'omnivoice',
-      display_name: 'VoiceStudio (k2-fsa/OmniVoice, 600+ languages)',
+      display_name: 'CallenVoice (k2-fsa/OmniVoice, 600+ languages)',
       expression_caps: { emotion: 'none', tags: engine.tags },
     },
   }),

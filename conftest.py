@@ -3,10 +3,16 @@
 Only fixtures that both suites need live here; each suite's own conftest.py
 still owns its import path and hermetic data dir.
 """
+import os
 import sys
 import types
 
 import pytest
+
+# CallenVoice: the upstream suites exercise every upstream engine, including the
+# ones our whitelist hides (backend/callen/catalog.py). Our own whitelist tests
+# (backend/tests/test_callen_*.py) clear this variable explicitly.
+os.environ.setdefault("CALLENVOICE_ALLOW_ALL_MODELS", "1")
 
 
 @pytest.fixture(autouse=True)

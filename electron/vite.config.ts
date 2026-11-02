@@ -32,6 +32,9 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     setupFiles: ['./src/renderer/src/test/setup.ts'],
+    // CallenVoice: upstream updater tests assume a configured release feed; the
+    // unconfigured (production default) case is covered in src/main/callen/.
+    env: { CALLENVOICE_UPDATE_REPO: 'callenvoice-test/updates' },
     // Node 25+ ships a global localStorage that is undefined without --localstorage-file
     // and shadows jsdom's Storage; CI runs Node 22, where this flag is a no-op.
     execArgv: ['--no-experimental-webstorage'],

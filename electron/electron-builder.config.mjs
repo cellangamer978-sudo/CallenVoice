@@ -49,7 +49,12 @@ if (
 ) {
   throw new Error(`Unsupported Electron update channel: ${updateChannel}`);
 }
-const updateUrl = 'https://github.com/debpalash/VoiceStudio/releases/latest/download';
+// CallenVoice: our own release repository ("owner/repo"); until it exists the
+// feed points at a reserved .invalid host, so no build can pull upstream releases.
+const callenUpdateRepo = (process.env.CALLENVOICE_UPDATE_REPO ?? '').trim();
+const updateUrl = /^[A-Za-z0-9-]+\/[A-Za-z0-9._-]+$/.test(callenUpdateRepo)
+  ? `https://github.com/${callenUpdateRepo}/releases/latest/download`
+  : 'https://updates.invalid/callenvoice';
 
 export function distributionPackaging(target = DISTRIBUTION_TARGET) {
   if (target === 'snap-store') {
@@ -151,7 +156,7 @@ export default {
     voicestudioDistribution: DISTRIBUTION_TARGET,
     voicestudioUpdateOwner: DISTRIBUTION_PROFILE.applicationUpdates,
     ...(DISTRIBUTION_TARGET === 'microsoft-store'
-      ? { author: { name: storeIdentity.publisherLegalName, email: 'hi@voicestudio.sh' } }
+      ? { author: { name: storeIdentity.publisherLegalName, email: 'engeener978@gmail.com' } }
       : {}),
   },
   directories: { output: 'release', buildResources: 'build' },

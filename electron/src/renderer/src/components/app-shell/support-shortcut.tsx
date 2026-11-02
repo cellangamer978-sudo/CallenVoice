@@ -4,9 +4,12 @@ import { useTranslation } from 'react-i18next';
 import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
 import './support-shortcut.css';
 import { GithubStar } from './github-star';
+import { isHiddenRoute } from '@/callen/product';
 
 export function SupportShortcut() {
   const { t } = useTranslation();
+  // CallenVoice: "Get Pro" and the GitHub star belong to the upstream project.
+  if (isHiddenRoute('/pro')) return null;
   return (
     <div className="flex shrink-0 items-center gap-0.5">
       <Tooltip>

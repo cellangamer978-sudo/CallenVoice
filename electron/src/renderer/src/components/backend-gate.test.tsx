@@ -15,7 +15,7 @@ const { backendStatus, platform, bridgeStub } = vi.hoisted(() => ({
     remote: false,
     elapsedMs: 0,
     logTail: [],
-    runtimePath: 'C:\\VoiceStudio\\runtime',
+    runtimePath: 'C:\\CallenVoice\\runtime',
     runtimeInterrupted: true,
     runtimeRegion: 'auto',
   } as BackendStatus,
@@ -307,11 +307,10 @@ it('explains unsupported Windows proxy bypass rules before retrying setup', () =
   );
   expect(screen.getByText(i18n.t('backend.proxy_bypass_help'))).toBeVisible();
   expect(i18n.t('backend.proxy_bypass_help')).toMatch(
-    /quit VoiceStudio.*launch VoiceStudio from that terminal/,
+    /quit CallenVoice.*launch CallenVoice from that terminal/,
   );
 });
 
-const LATEST_RELEASE_URL = 'https://github.com/debpalash/VoiceStudio/releases/latest';
 
 it('sends Apple Silicon users running the Intel build to the arm64 download (#2598)', () => {
   backendStatus.setupIssue = 'wrong_architecture';
@@ -326,9 +325,11 @@ it('sends Apple Silicon users running the Intel build to the arm64 download (#25
   );
 
   expect(screen.getByText(i18n.t('backend.setup_wrong_architecture'))).toBeVisible();
+  // CallenVoice: no upstream download link while our releases repository is unset
+  // (electron/src/shared/callen/repo.ts).
   expect(
-    screen.getByRole('link', { name: i18n.t('backend.download_apple_silicon') }),
-  ).toHaveAttribute('href', LATEST_RELEASE_URL);
+    screen.queryByRole('link', { name: i18n.t('backend.download_apple_silicon') }),
+  ).not.toBeInTheDocument();
   expect(
     screen.queryByRole('button', { name: i18n.t('backend.setup_required') }),
   ).not.toBeInTheDocument();
@@ -419,7 +420,7 @@ it('shows the effective install path with free space before setup starts', () =>
   backendStatus.runtimeFreeGib = 120;
   renderGate('setup_required');
 
-  expect(screen.getByText('C:\\VoiceStudio\\runtime')).toBeInTheDocument();
+  expect(screen.getByText('C:\\CallenVoice\\runtime')).toBeInTheDocument();
   expect(screen.getByTestId('setup-free-space')).toHaveTextContent(
     i18n.t('firstrun.free_space', { free: 120, needed: 9 }),
   );
@@ -450,7 +451,7 @@ it('offers Choose another folder for a missing Python environment', async () => 
   const chooseRuntimeLocation = vi.fn().mockResolvedValue({ path: 'D:\\vs' });
   const restart = vi.fn().mockResolvedValue(undefined);
   bridgeStub.current = { backend: { chooseRuntimeLocation, restart } };
-  backendStatus.message = 'The Python environment in C:\\VoiceStudio is missing or incomplete.';
+  backendStatus.message = 'The Python environment in C:\\CallenVoice is missing or incomplete.';
 
   renderGate('failed');
 
@@ -467,7 +468,7 @@ it('gives a source checkout Retry, not a folder picker it cannot use (#3480)', (
   delete backendStatus.runtimePath;
   try {
     backendStatus.message =
-      "The Python environment in C:\\Users\\me\\VoiceStudio is incomplete: ModuleNotFoundError: No module named 'fastapi'.";
+      "The Python environment in C:\\Users\\me\\CallenVoice is incomplete: ModuleNotFoundError: No module named 'fastapi'.";
 
     renderGate('failed');
 

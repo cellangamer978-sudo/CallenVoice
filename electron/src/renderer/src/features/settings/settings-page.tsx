@@ -1,4 +1,5 @@
 import { SupportSettings } from './support-settings';
+import { isHiddenRoute } from '@/callen/product';
 import { UpdateSettings } from './update-settings';
 import { MirrorSettings } from './mirror-settings';
 import { PrivacySettings } from './privacy-settings';
@@ -198,9 +199,12 @@ const extraSettings = [
   },
 ] as const;
 
-/** Settings → Account is listed only when this build offers VoiceStudio Cloud accounts. */
+/** Settings → Account is listed only when this build offers CallenVoice Cloud accounts. */
 export function extraSettingsFor(cloudAccountsAvailable: boolean) {
-  return extraSettings.filter((item) => cloudAccountsAvailable || !('cloudAccountsOnly' in item));
+  return extraSettings.filter(
+    (item) =>
+      (cloudAccountsAvailable || !('cloudAccountsOnly' in item)) && !isHiddenRoute(item.to),
+  );
 }
 
 export function SettingsPage() {

@@ -1,4 +1,4 @@
-"""VoiceStudio release-brand and source-launch contracts."""
+"""CallenVoice release-brand and source-launch contracts."""
 
 from __future__ import annotations
 
@@ -34,51 +34,47 @@ def test_current_version_is_in_lockstep_everywhere() -> None:
         assert match and Version(match.group(1)) == Version(CURRENT_VERSION), path
 
 
-def test_visible_brand_surfaces_say_voicestudio() -> None:
+def test_visible_brand_surfaces_say_callenvoice() -> None:
+    # CallenVoice: the desktop app carries our product name; the upstream
+    # README stays as the upstream project's documentation.
     visible_files = ("electron/build/Info.plist", "electron/src/renderer/index.html")
     product_name = json.loads((ROOT / "config/app.json").read_text())["productName"]
-    assert product_name == "VoiceStudio"
+    assert product_name == "CallenVoice"
     for path in visible_files:
         text = (ROOT / path).read_text()
         assert "__APP_PRODUCT_NAME__" in text, path
         assert "OmniVoice needs" not in text, path
         assert "OmniVoice may" not in text, path
         assert "OmniVoice Gallery" not in text, path
-
-    readme = (ROOT / "README.md").read_text()
-    assert "**VoiceStudio** (default, powered by k2-fsa/OmniVoice)" in readme
-    assert "**OmniVoice** (default)" not in readme
+    check = subprocess.run(
+        ["python3", str(ROOT / "scripts/callen/rebrand.py"), "--check"],
+        capture_output=True, text=True,
+    )
+    assert check.returncode == 0, check.stdout
+    notice = (ROOT / "CALLENVOICE.md").read_text()
+    assert "modified version of [VoiceStudio]" in notice
 
 
 def test_brand_mark_is_shared_and_fills_the_icon() -> None:
-    mark = (ROOT / "electron/src/shared/components/brand/VoiceStudioMark.jsx").read_text()
-    header = (ROOT / "electron/src/shared/components/Header.jsx").read_text()
-    about = (ROOT / "electron/src/shared/components/settings/AboutTab.jsx").read_text()
-    logo = (ROOT / "docs/logo.svg").read_text()
+    # CallenVoice: one logo source (branding/logo.svg) for the favicon, the
+    # in-app icon and the shared mark component.
+    logo = (ROOT / "branding/logo.svg").read_text()
     favicon = (ROOT / "electron/public/favicon.svg").read_text()
-
-    signature = "M6 34c4 0 5-7 9-7"
-    assert signature in mark
-    assert signature in logo
-    assert signature in favicon
-    assert "<VoiceStudioMark" in header
-    assert "<VoiceStudioMark" in about
-    assert 'data-testid="voice-studio-logo"' in header
-
-    # The previous icon devoted most of its canvas to an empty ring. The new
-    # mark uses the full tile and keeps only a narrow 2-unit outer margin.
-    assert 'x="2" y="2" width="60" height="60"' in logo
-    assert "<circle" not in logo
+    mark = (ROOT / "electron/src/shared/components/brand/VoiceStudioMark.jsx").read_text()
+    assert favicon == logo
+    assert 'fill="#0A0A0A"' in logo and 'fill="#FF6A00"' in logo
+    assert "A15.9 15.9 0 1 0" in mark
     assert 'src="docs/logo.png"' in (ROOT / "README.md").read_text()
 
 
 def test_waveform_stroke_is_never_filled() -> None:
     # An SVG path fills black unless told otherwise; without fill="none" the
     # waveform's closed curves painted a black band across every icon.
+    # CallenVoice: only the upstream sources (docs/logo.svg, mobile) still use it.
     signature = "M6 34c4 0 5-7 9-7"
     tracked = subprocess.run(["git", "ls-files", "*.svg"], cwd=ROOT, capture_output=True, text=True, check=True).stdout.split()
     svgs = [ROOT / name for name in tracked if signature in (ROOT / name).read_text()]
-    assert len(svgs) >= 3
+    assert len(svgs) >= 1
     for svg in svgs:
         stroke = re.search(rf'<path d="{re.escape(signature)}[^>]*>', svg.read_text())
         assert stroke and 'fill="none"' in stroke.group(0), svg
@@ -150,7 +146,7 @@ def test_compatibility_identifiers_stay_stable() -> None:
     assert package["name"] == "omnivoice-studio-monorepo"
     assert 'name = "omnivoice"' in (ROOT / "pyproject.toml").read_text()
     app_config = json.loads((ROOT / "config/app.json").read_text())
-    assert app_config["appId"] == "com.voicestudio.desktop"
+    assert app_config["appId"] == "com.callenvoice.desktop"  # CallenVoice
 
 
 def test_active_source_launch_is_electron_and_web_ports_clean_quietly() -> None:

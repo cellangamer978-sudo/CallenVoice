@@ -326,7 +326,7 @@ it.each(['', '3900'])(
     vi.stubEnv('VOICESTUDIO_SKIP_BACKEND', '');
     mocks.occupied.add(3900);
     // Another local service owns the port and happens to answer the same
-    // liveness shape, without the VoiceStudio marker header.
+    // liveness shape, without the CallenVoice marker header.
     vi.stubGlobal(
       'fetch',
       vi.fn(async (url: string) => {

@@ -224,7 +224,7 @@ class IsolatedFasterWhisperBackend(SubprocessASRBackend):
 
         if (status := availability_status()) is not None:
             if not cls.sidecar_script().is_file():
-                return False, "ASR sidecar script missing; reinstall VoiceStudio"
+                return False, "ASR sidecar script missing; reinstall CallenVoice"
             return status
 
         ok, detail = ensure_ctranslate2_loadable()

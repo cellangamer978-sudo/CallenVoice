@@ -22,7 +22,7 @@ describe('scrubText — frontend twin of backend/core/scrub.py', () => {
   it.each([
     ['/Users/alice/Library/Logs/app.log', '~/Library/Logs/app.log'],
     ['/home/bob/.omnivoice/omnivoice.log', '~/.omnivoice/omnivoice.log'],
-    ['C:\\Users\\carol\\AppData\\Roaming\\VoiceStudio', '~\\AppData\\Roaming\\VoiceStudio'],
+    ['C:\\Users\\carol\\AppData\\Roaming\\CallenVoice', '~\\AppData\\Roaming\\CallenVoice'],
     // Windows paths normalized to forward slashes (webview stacks, file URLs)
     ['C:/Users/dave/AppData/Local/OmniVoice/app.log', '~/AppData/Local/OmniVoice/app.log'],
     ['file:///C:/Users/erin/project/index.js', '~/project/index.js'],
@@ -344,7 +344,7 @@ describe('buildBugReportUrl — backend reachability section (#1164)', () => {
   });
 
   it('includes the transport ApiError diagnostics when the report is built from one', async () => {
-    const err = new Error("Can't reach the local VoiceStudio backend");
+    const err = new Error("Can't reach the local CallenVoice backend");
     err.detail = {
       transport: 'Failed to fetch /Users/alice/x',
       mode: 'server',

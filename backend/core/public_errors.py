@@ -106,7 +106,7 @@ def stream_failure(code: str, *, device: str | None = None) -> dict[str, object]
             "code": "transcription_memory",
             "detail": (
                 "Transcription ran out of GPU memory. Close other GPU apps or "
-                "Flush models, then try again; VoiceStudio will use CPU when "
+                "Flush models, then try again; CallenVoice will use CPU when "
                 "the remaining GPU memory is too low."
             ),
             "retryable": True,
@@ -123,11 +123,11 @@ def stream_failure(code: str, *, device: str | None = None) -> dict[str, object]
         "transcription_media_tool": {
             "code": "transcription_media_tool",
             "detail": (
-                "Transcription needs ffmpeg, which VoiceStudio could not find or "
+                "Transcription needs ffmpeg, which CallenVoice could not find or "
                 "run. Open Settings → Audio tools and use Download/Repair, or "
                 "install ffmpeg (macOS: brew install ffmpeg; Windows: winget "
                 "install Gyan.FFmpeg; Linux: your package manager) and restart "
-                "VoiceStudio. You can also point FFMPEG_PATH at an ffmpeg binary."
+                "CallenVoice. You can also point FFMPEG_PATH at an ffmpeg binary."
             ),
             "retryable": True,
         },
@@ -135,7 +135,7 @@ def stream_failure(code: str, *, device: str | None = None) -> dict[str, object]
             "code": "transcription_disk_full",
             "detail": (
                 "Transcription stopped because the disk is full. Free space on "
-                "the drive that holds VoiceStudio's data, model cache or temp "
+                "the drive that holds CallenVoice's data, model cache or temp "
                 "folder (Settings → Storage shows disk usage and clears "
                 "temporary files), then try again."
             ),
@@ -145,7 +145,7 @@ def stream_failure(code: str, *, device: str | None = None) -> dict[str, object]
             "code": "transcription_pipe_lost",
             "detail": (
                 "The backend lost its output pipe to the app while transcribing "
-                "(broken pipe). Restart VoiceStudio and try again."
+                "(broken pipe). Restart CallenVoice and try again."
             ),
             "retryable": True,
         },
@@ -282,7 +282,7 @@ def public_failure(
 ) -> str:
     """Log fixed failure metadata and return a fixed public failure message.
 
-    ``response`` must be authored by VoiceStudio, never derived from ``error``.
+    ``response`` must be authored by CallenVoice, never derived from ``error``.
     The helper intentionally does not attempt to redact exception text: a
     deny-list cannot cover arbitrary secrets, paths, source lines or nested
     tracebacks.
@@ -374,7 +374,7 @@ def public_exception_response(error: BaseException, *, fallback: str) -> dict[st
 # clock starts (#1033). That warm-up translated only a TIMEOUT into an
 # actionable reply. A download that FAILED — the mirror unreachable, DNS gone,
 # the connection refused, the body truncated, the cache corrupt — escaped the
-# route and reached the global 500 handler, which could only say "VoiceStudio
+# route and reached the global 500 handler, which could only say "CallenVoice
 # hit an internal error": it named neither the engine nor the fact that a model
 # download was the thing that broke. #2298 is that report (KittenTTS, first
 # generate, an unreachable mirror). A download that stalls and a download that

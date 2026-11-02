@@ -434,7 +434,7 @@ def why_no_gpu(torch, gpus=None) -> tuple[str, ...]:
                     f"ROCm {hip} is installed on Windows, but no GPU was enumerated "
                     f"while HSA_OVERRIDE_GFX_VERSION={override} is set. Remove that "
                     "override and verify AMD's supported Windows GPU/driver/wheel "
-                    "matrix; VoiceStudio does not remap Windows GPU architectures",
+                    "matrix; CallenVoice does not remap Windows GPU architectures",
                 )
             location = " and the device nodes are reachable"
             return (
@@ -443,7 +443,7 @@ def why_no_gpu(torch, gpus=None) -> tuple[str, ...]:
                 f"{override} is set. Try removing that override first — this "
                 "ROCm supports most current cards natively, and remapping one "
                 "it already supports can leave the runtime with no usable "
-                "device. VoiceStudio sets the override itself when a card "
+                "device. CallenVoice sets the override itself when a card "
                 "genuinely needs it",
             )
         if sys.platform == "win32":

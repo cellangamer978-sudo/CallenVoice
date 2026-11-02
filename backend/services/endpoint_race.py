@@ -86,7 +86,7 @@ _FAILOVER_ATTEMPTED: set[str] = set()
 
 
 def _is_allowed_probe_endpoint(endpoint: str) -> bool:
-    """Only probe the two fixed HTTPS origins shipped by VoiceStudio."""
+    """Only probe the two fixed HTTPS origins shipped by CallenVoice."""
     try:
         parsed = urlsplit(endpoint)
         port = parsed.port

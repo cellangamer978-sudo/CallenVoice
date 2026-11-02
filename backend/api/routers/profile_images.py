@@ -76,7 +76,7 @@ async def openverse_thumbnails(client: httpx.AsyncClient, name: str) -> list[tup
     response = await client.get(
         "https://api.openverse.org/v1/images/",
         headers={
-            "User-Agent": "VoiceStudio/0.5 (+https://github.com/debpalash/VoiceStudio)",
+            "User-Agent": "CallenVoice/0.5 (+https://github.com/debpalash/VoiceStudio)",
             "Accept": "application/json",
         },
         params={

@@ -22,7 +22,7 @@ describe('distribution contract', () => {
     expect(resolveDistributionTarget('')).toBe('direct');
     expect(resolveDistributionTarget(' snap-store ')).toBe('snap-store');
     expect(() => resolveDistributionTarget('unknown')).toThrow(
-      'Unsupported VoiceStudio distribution',
+      'Unsupported CallenVoice distribution',
     );
   });
 

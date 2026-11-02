@@ -73,7 +73,8 @@ export function DubSourceRow({
   confirmRemove: boolean;
   recovering: boolean;
   onChangeFile: () => void;
-  onToggleLink: () => void;
+  /** CallenVoice: omitted when URL import is off (callen/product.ts). */
+  onToggleLink?: () => void;
   onRemove: () => void;
 }) {
   const { t, i18n } = useTranslation();
@@ -122,10 +123,12 @@ export function DubSourceRow({
                   <FolderOpenIcon className="size-4" />
                   {t('dub.change_file')}
                 </Menu.Item>
-                <Menu.Item disabled={disabled} onClick={onToggleLink} className={ITEM}>
-                  <LinkIcon className="size-4" />
-                  {linkMode ? t('common.cancel') : t('dub.use_link')}
-                </Menu.Item>
+                {onToggleLink && (
+                  <Menu.Item disabled={disabled} onClick={onToggleLink} className={ITEM}>
+                    <LinkIcon className="size-4" />
+                    {linkMode ? t('common.cancel') : t('dub.use_link')}
+                  </Menu.Item>
+                )}
                 <Menu.Item
                   disabled={!removable}
                   onClick={() => (confirmRemove ? setConfirmOpen(true) : onRemove())}

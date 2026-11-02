@@ -5,6 +5,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import '@fontsource-variable/inter';
 import './styles/globals.css';
+import './callen/brand.css';
 import './i18n';
 import './hooks/use-appearance';
 import { App } from './app';

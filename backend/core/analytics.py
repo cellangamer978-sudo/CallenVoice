@@ -1,6 +1,6 @@
 """Opt-in product analytics — hardened.
 
-VoiceStudio is local-first, so analytics here is held to a higher bar than the
+CallenVoice is local-first, so analytics here is held to a higher bar than the
 usual SDK drop-in. Three rules, each enforced in code below and pinned by tests:
 
 1. **Off unless the user says yes.** Two independent gates must BOTH be true:
@@ -54,7 +54,9 @@ _OFF_VALUES = {"1", "true", "yes", "on"}
 #: desktop shell; developers can point at their own project) always wins.
 #: Committed-token guard: tests/test_no_committed_analytics_token.py allows a
 #: `phc_` literal in exactly this file and electron/src/shared/utils/analytics.ts.
-_PUBLIC_PROJECT_TOKEN = "phc_kJK9nFqtwFmB4CYWS4bMDTY7z9P4KCRyiRT7CzJTXm9f"  # gitleaks:allow — publishable write-only key (#1193)
+# CallenVoice: no default destination. The upstream key sent events to the
+# original project's PostHog account; a release build sets POSTHOG_PROJECT_TOKEN to our own.
+_PUBLIC_PROJECT_TOKEN = ""
 _DEFAULT_HOST = "https://us.i.posthog.com"
 
 #: The ONLY property keys that may leave this machine. Anything else is dropped.

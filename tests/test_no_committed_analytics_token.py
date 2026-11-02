@@ -76,29 +76,12 @@ def test_posthog_token_literals_only_in_the_two_canonical_files():
 
 
 def test_both_canonical_files_carry_the_same_default_token():
-    """#1193's whole point: source builds have a destination. Both halves must
-    ship the in-repo default, and it must be ONE token — a mismatched pair would
-    split installs across PostHog projects with no error anywhere."""
-    tokens = {}
+    """CallenVoice (adapted from upstream #1193): neither canonical file ships a
+    default token, so no build sends events to the upstream VoiceStudio project.
+    A release build supplies our own token through the environment."""
     for name in _CANONICAL_TOKEN_FILES:
         found = _POSTHOG_KEY_RE.findall((_REPO / name).read_text(encoding="utf-8"))
-        assert found, f"{name} no longer carries the in-repo default token (#1193)"
-        assert len(set(found)) == 1, f"{name} contains multiple distinct phc_ literals"
-        tokens[name] = found[0]
-    assert len(set(tokens.values())) == 1, f"canonical token files disagree: {tokens}"
-
-
-# ── the OVERRIDE chain must stay wired ───────────────────────────────────────
-#
-# The in-repo default is the fallback; release builds override it with the repo
-# secret, and a developer's process env overrides everything:
-#
-#     repo secret -> release.yml -> tauri-action -> option_env! in backend.rs
-#                 -> spawned backend process env -> analytics._resolved_token()
-#
-# Every link is invisible when it breaks (events just land in the default
-# project instead of the release one). These pin the links that live in files a
-# future change could quietly drop.
+        assert not found, f"{name} must not carry a default PostHog token: {found}"
 
 
 def test_the_frontend_reads_its_token_override_from_the_build_env():

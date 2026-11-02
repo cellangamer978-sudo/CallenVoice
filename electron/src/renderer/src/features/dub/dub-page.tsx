@@ -29,6 +29,7 @@ import { HighlightedText } from './segment-highlight';
 import { isFindBarTarget, useSegmentFind } from './use-segment-find';
 import { CastingBoard } from './casting-board';
 import { DubbingDemo } from './dubbing-demo';
+import { SHOW_UPSTREAM_DEMOS } from '@/callen/product';
 import { CheckpointBanner, type CheckpointStage } from './checkpoint-banner';
 import { ConfirmDialog } from '../clone/confirm-dialog';
 import { useDubOnsets } from './use-dub-onsets';
@@ -1610,7 +1611,7 @@ export function DubPage() {
                         >
                           {t('asr_missing.choose')}
                         </Link>
-                        <AgentFixButton request="Restore local ASR readiness for this Dubbing job. Install and activate the best supported Faster-Whisper model through VoiceStudio's setup interfaces, preserve the prepared media, and leave transcription ready to retry." />
+                        <AgentFixButton request="Restore local ASR readiness for this Dubbing job. Install and activate the best supported Faster-Whisper model through CallenVoice's setup interfaces, preserve the prepared media, and leave transcription ready to retry." />
                       </div>
                     )
                   ) : (
@@ -1654,7 +1655,7 @@ export function DubPage() {
                   }
                   onChangeFile={() => input.current?.click()}
                   demo={
-                    !demoDismissed && !busy ? (
+                    SHOW_UPSTREAM_DEMOS && !demoDismissed && !busy ? (
                       <DubbingDemo
                         onTry={() => input.current?.click()}
                         onEdit={async ({ path, filename }) => {

@@ -155,7 +155,7 @@ export async function errorFromResponse(res: Response): Promise<ApiError> {
       // Plain-text body.
     }
   }
-  // A gateway status that is not JSON did not come from VoiceStudio: a reverse
+  // A gateway status that is not JSON did not come from CallenVoice: a reverse
   // proxy (nginx, Caddy, a tunnel, Cloudflare) gave up waiting and answered with
   // its own HTML page (#2781, #3219). Echoing that page told the user nothing about the real
   // situation, which is that the backend may well still be rendering.

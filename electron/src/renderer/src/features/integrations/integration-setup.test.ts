@@ -80,7 +80,7 @@ it('exports a manual n8n workflow to the current backend without credentials', (
   expect(request.parameters.method).toBe('POST');
   expect(JSON.parse(request.parameters.jsonBody)).toEqual({
     model: 'tts-1',
-    input: 'VoiceStudio',
+    input: 'CallenVoice',
     voice: 'default',
     response_format: 'wav',
   });
@@ -130,7 +130,7 @@ function lookup(key: string) {
     .split('.')
     .reduce<unknown>((node, part) => (node as Record<string, unknown>)?.[part], en);
 }
-it('backs every "Works with VoiceStudio" entry with a real catalog route, blocks and strings', () => {
+it('backs every "Works with CallenVoice" entry with a real catalog route, blocks and strings', () => {
   const base = 'http://127.0.0.1:3912';
   for (const [slug, setup] of Object.entries(INTEGRATION_SETUPS)) {
     expect(getIntegrationBySlug(slug), slug).toBeDefined();

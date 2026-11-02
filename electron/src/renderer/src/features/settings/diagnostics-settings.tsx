@@ -27,6 +27,7 @@ import type { SystemInfo } from '@/lib/api/types';
 import { brandIcon } from '@/lib/brand';
 import { SettingsActionError } from './settings-action-error';
 import { ModelCredits } from './model-credits';
+import { CallenLegalNotice, callenLegalTitle } from '@/callen/legal-notice';
 import { SettingsRow, SettingsSection } from './settings-layout';
 
 type CheckStatus = 'ok' | 'warn' | 'fail';
@@ -71,7 +72,7 @@ const FIX_ROUTES: Record<string, string> = {
 function reportText(report: DiagnosticReport) {
   const marker: Record<CheckStatus, string> = { ok: '[ OK ]', warn: '[WARN]', fail: '[FAIL]' };
   const lines = [
-    `VoiceStudio diagnostics - v${report.app_version} on ${report.platform}`,
+    `CallenVoice diagnostics - v${report.app_version} on ${report.platform}`,
     '',
     ...report.checks.flatMap((check) => [
       `${marker[check.status]} ${check.label}: ${check.detail}`,
@@ -84,7 +85,7 @@ function reportText(report: DiagnosticReport) {
 }
 
 export function DiagnosticsSettings() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const bridge = getBridge();
   const [report, setReport] = useState<DiagnosticReport | null>(null);
   const [action, setAction] = useState<'check' | 'bundle' | 'copy' | null>(null);
@@ -159,8 +160,11 @@ export function DiagnosticsSettings() {
         <SettingsRow id="diagnostics-app" title={t('about.app')}>
           <span className="inline-flex items-center gap-2 text-sm font-medium" translate="no">
             <img src={brandIcon} alt="" className="size-5" />
-            VoiceStudio
+            CallenVoice
           </span>
+        </SettingsRow>
+        <SettingsRow id="diagnostics-legal" title={callenLegalTitle(i18n.language)}>
+          <CallenLegalNotice />
         </SettingsRow>
         <SettingsRow id="diagnostics-version" title={t('about.version')}>
           <span className="font-mono text-xs">

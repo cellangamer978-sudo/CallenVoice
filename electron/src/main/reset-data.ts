@@ -130,6 +130,7 @@ const APP_NAMES = new Set([
   'omnivoice',
   '.omnivoice',
   'voicestudio',
+  'callenvoice', // CallenVoice data folder
   'com.debpalash.omnivoice-studio',
 ]);
 const MANAGED_CHILDREN = new Set([

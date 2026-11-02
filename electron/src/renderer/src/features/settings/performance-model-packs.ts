@@ -1,8 +1,12 @@
 import type { CatalogueModel } from './model-catalogue-query';
 import { performanceTiers, type PerformanceTier } from '@/hooks/use-performance-profile';
 import { modelDiskShortfall } from './model-disk-space';
+import { DEFAULT_VOICE_MODEL_REPO } from '@/callen/product';
 
-const OMNIVOICE = 'k2-fsa/OmniVoice';
+// CallenVoice: every pack carries our default voice model instead of OmniVoice
+// (CC-BY-NC). Excluded models (NLLB, sherpa) drop out because the backend
+// catalogue no longer lists them.
+const OMNIVOICE = DEFAULT_VOICE_MODEL_REPO;
 const WHISPER_BASE = 'Systran/faster-whisper-base';
 const WHISPER_TURBO = 'deepdml/faster-whisper-large-v3-turbo-ct2';
 const WHISPER_LARGE = 'Systran/faster-whisper-large-v3';

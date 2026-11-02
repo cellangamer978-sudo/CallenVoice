@@ -1,3 +1,4 @@
+import { ALLOW_AGENT_TRANSLATION } from '@/callen/product';
 import { useTranslation } from 'react-i18next';
 import { Link } from '@tanstack/react-router';
 import {
@@ -83,7 +84,7 @@ export function DubTranslationPanel({
     (language) => language !== target && !extra.some((item) => item.lang === language),
   );
   const dialects = code && !hasVariantChoices(code) ? dialectOptionsFor(code) : [];
-  const agent = session.quality === 'agent';
+  const agent = ALLOW_AGENT_TRANSLATION && session.quality === 'agent';
   const agentDescription = agentLabel
     ? t('dub.agent_cli_desc', { agent: agentLabel })
     : t('dub.agent_quality_desc');
@@ -188,6 +189,7 @@ export function DubTranslationPanel({
           </DubFieldRow>
         )}
       </div>
+      {ALLOW_AGENT_TRANSLATION && (
       <div className="space-y-2 border-t border-border/40 pt-2">
         <p className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
           <LanguagesIcon className="size-3.5" aria-hidden="true" />
@@ -225,6 +227,7 @@ export function DubTranslationPanel({
         </div>
         {agent && <DubHint>{agentDescription}</DubHint>}
       </div>
+      )}
       {agent ? (
         <div className="space-y-2 border-t border-border/40 pt-2">
           <label htmlFor="dub-translation-instructions" className="text-xs font-medium">
