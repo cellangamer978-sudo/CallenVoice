@@ -35,7 +35,7 @@ allow commercial use. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 | --- | --- |
 | `backend/callen/` | Product layer: model whitelist and its HTTP filter |
 | `electron/src/renderer/src/callen/` | Brand theme, product scope, legal notice |
-| `electron/src/main/callen/` | Update feed (off until our release repository exists) |
+| `electron/src/main/callen/` | Update feed (off until the first CallenVoice release is published) |
 | `branding/` | Logo and artwork sources |
 | `scripts/callen/` | Rebranding script (`--check` fails if the old name is visible) |
 | `docs/callen/` | Decisions and the log of upstream files we changed |

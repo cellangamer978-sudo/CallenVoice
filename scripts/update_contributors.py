@@ -45,7 +45,9 @@ AVATARS = HOME / "contributors"
 XCASSETS = ROOT / "mobile/ios/VoiceStudio/Resources/Contributors.xcassets"
 SWIFT = ROOT / "mobile/ios/VoiceStudio/Features/HomeContributors.swift"
 KOTLIN = ROOT / "mobile/android/features/src/main/kotlin/com/voicestudio/mobile/features/HomeContributors.kt"
-READMES = (ROOT / "README.md", *sorted((ROOT / "docs/readme").glob("README_*.md")))
+# CallenVoice: the root README is ours and has no upstream contributor row; only the
+# translated upstream READMEs in docs/readme/ carry it.
+READMES = tuple(sorted((ROOT / "docs/readme").glob("README_*.md")))
 
 # Automation accounts that GitHub reports as ``type: User``.
 AUTOMATION_LOGINS = frozenset({

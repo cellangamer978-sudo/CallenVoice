@@ -57,7 +57,7 @@ it('rejects a non-web documentation URL and uses the shared safe fallback', () =
 
   expect(screen.getByRole('link', { name: /dub.open_docs/ })).toHaveAttribute(
     'href',
-    'https://github.com/debpalash/VoiceStudio/blob/main/docs/install/troubleshooting.md',
+    'https://github.com/cellangamer978-sudo/CallenVoice/blob/main/docs/install/troubleshooting.md',
   );
 });
 

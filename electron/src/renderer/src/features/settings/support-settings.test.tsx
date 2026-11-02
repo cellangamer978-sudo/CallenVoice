@@ -42,7 +42,7 @@ it('opens only the explicit destination and applies selected amounts only to Pay
   expect(mock.open).toHaveBeenCalledWith('https://paypal.me/palashCoder/20');
   expect(screen.getByRole('link', { name: 'contact.security_cta' })).toHaveAttribute(
     'href',
-    'https://github.com/debpalash/VoiceStudio/security/advisories/new',
+    'https://github.com/cellangamer978-sudo/CallenVoice/security/advisories/new',
   );
   expect(screen.getByRole('link', { name: 'support.sponsors_become' })).toHaveAttribute(
     'href',

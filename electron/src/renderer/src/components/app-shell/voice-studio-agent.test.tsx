@@ -138,8 +138,10 @@ it('explains why a picked source folder was rejected and how to get one', async 
   fireEvent.click(screen.getByRole('button', { name: 'agentWorkspace.features' }));
   fireEvent.click(screen.getByRole('checkbox', { name: 'agentWorkspace.source' }));
   expect(screen.getByText('repairAgent.noSource')).toBeInTheDocument();
-  // CallenVoice: no clone command for the upstream repository while ours is unset.
-  expect(screen.queryByText(/git clone/)).not.toBeInTheDocument();
+  // CallenVoice: the clone command points at our public repository, never upstream.
+  expect(
+    screen.getByText(/git clone https:\/\/github\.com\/cellangamer978-sudo\/CallenVoice\.git/),
+  ).toBeInTheDocument();
   expect(screen.getByRole('link', { name: /common\.learn_more/ })).toHaveAttribute(
     'href',
     expect.stringContaining('docs/electron-repair.md#source-checkout'),

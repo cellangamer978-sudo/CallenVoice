@@ -72,7 +72,9 @@ def test_new_contributors_are_told_to_sign_before_their_first_pull_request():
     assert contributing.count(signing_issue) >= 2
     assert signing_issue in template
     assert "sign the Contributor License Agreement once" in " ".join(template.split())
-    assert "contribution-licensing" in readme
+    # CallenVoice: the CLA is the upstream project's; our README does not ask
+    # contributors to sign it.
+    assert "contribution-licensing" not in readme
     assert cla.SIGNING_LABEL == "cla"
 
 

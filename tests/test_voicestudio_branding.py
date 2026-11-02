@@ -64,7 +64,7 @@ def test_brand_mark_is_shared_and_fills_the_icon() -> None:
     assert favicon == logo
     assert 'fill="#0A0A0A"' in logo and 'fill="#FF6A00"' in logo
     assert "A15.9 15.9 0 1 0" in mark
-    assert 'src="docs/logo.png"' in (ROOT / "README.md").read_text()
+    assert 'src="branding/logo.svg"' in (ROOT / "README.md").read_text()
 
 
 def test_waveform_stroke_is_never_filled() -> None:
@@ -118,9 +118,12 @@ def test_canonical_logo_changes_run_mobile_builds(event: str) -> None:
 
 
 def test_python_package_metadata_points_to_voicestudio() -> None:
+    # CallenVoice: our public repository (AGPL source link, backend doc links),
+    # with the upstream project still credited.
     pyproject = (ROOT / "pyproject.toml").read_text()
-    assert 'Homepage = "https://github.com/debpalash/VoiceStudio"' in pyproject
-    assert 'Repository = "https://github.com/debpalash/VoiceStudio"' in pyproject
+    assert 'Homepage = "https://github.com/cellangamer978-sudo/CallenVoice"' in pyproject
+    assert 'Repository = "https://github.com/cellangamer978-sudo/CallenVoice"' in pyproject
+    assert '"Upstream Project" = "https://github.com/debpalash/VoiceStudio"' in pyproject
     assert '"Upstream TTS Model" = "https://github.com/k2-fsa/OmniVoice"' in pyproject
 
 

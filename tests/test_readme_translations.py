@@ -13,9 +13,11 @@ _TARGET = re.compile(r'(?:src="|href="|\]\()([^")\s]+)')
 
 def test_translations_are_present_and_the_root_readme_links_to_them():
     assert {"README_CN.md", "README_JA.md", "README_KO.md", "README_RU.md"} <= {p.name for p in _TRANSLATIONS}
+    # CallenVoice: these are translations of the upstream VoiceStudio README, kept
+    # as upstream documentation; our root README does not offer them as its own.
     root = (_ROOT / "README.md").read_text(encoding="utf-8")
     for path in _TRANSLATIONS:
-        assert f'href="docs/readme/{path.name}"' in root
+        assert f'href="docs/readme/{path.name}"' not in root
     assert not list(_ROOT.glob("README_*.md")), "translations belong in docs/readme/, not the repo root"
 
 

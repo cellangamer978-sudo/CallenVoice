@@ -66,9 +66,10 @@ def test_escape_hatch_not_triggered_by_other_values(monkeypatch):
 
 
 def test_12gb_installed_reporting_11_8_usable_passes_clean(monkeypatch):
-    """Same reservation gap at the warn threshold: 12 GB installed ≈ 11.8."""
-    check = _ram_check(monkeypatch, 11.8)
-    assert check["status"] == "pass"
+    """CallenVoice recommends 16 GB (8 GB minimum), so 12 GB now warns; the same
+    reservation gap at the new threshold, 16 GB installed ≈ 15.8, passes clean."""
+    assert _ram_check(monkeypatch, 11.8)["status"] == "warn"
+    assert _ram_check(monkeypatch, 15.8)["status"] == "pass"
 
 
 def test_warn_band_between_thresholds(monkeypatch):

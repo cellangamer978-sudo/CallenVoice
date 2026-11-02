@@ -45,6 +45,10 @@ def test_discord_link_updated(relpath):
         pytest.skip(f"{relpath} not found")
     content = filepath.read_text(encoding="utf-8")
     assert OLD_DISCORD not in content, f"{relpath} still contains expired link {OLD_DISCORD}"
+    if relpath == "README.md":
+        # CallenVoice: the upstream community server is not ours to advertise.
+        assert NEW_DISCORD not in content
+        return
     assert NEW_DISCORD in content, f"{relpath} missing new link {NEW_DISCORD}"
 
 

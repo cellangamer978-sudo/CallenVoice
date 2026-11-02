@@ -96,6 +96,7 @@ def _lazy_omnivoice():
     return _OmniVoice
 
 
+from core import links
 from core.config import IDLE_TIMEOUT_SECONDS, CPU_POOL_WORKERS
 from core.generate_budget import (
     automatic_cpu_ceiling_s,
@@ -1227,7 +1228,7 @@ def _timeout_guidance(
             "machine, so shorter text or a lighter engine won't help. "
             "Restart the backend to clear it (Settings → Logs → Backend has "
             "the stack trace that was captured), and please report it with "
-            "that log at https://github.com/debpalash/VoiceStudio/issues — "
+            f"that log at {links.PROJECT_REPO_URL}/issues — "
             "the trace names exactly where it stopped."
         )
     common = (

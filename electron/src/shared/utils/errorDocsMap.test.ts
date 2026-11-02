@@ -67,7 +67,7 @@ describe('errorDocsMap', () => {
   });
 
   it('every URL resolves under the project repo blob', () => {
-    const base = 'https://github.com/debpalash/VoiceStudio/blob/main';
+    const base = 'https://github.com/cellangamer978-sudo/CallenVoice/blob/main'; // CallenVoice: docs from our repository
     for (const [key, url] of Object.entries(ERROR_DOCS)) {
       expect(url.startsWith(base), `${key} not under ${base}: ${url}`).toBe(true);
     }

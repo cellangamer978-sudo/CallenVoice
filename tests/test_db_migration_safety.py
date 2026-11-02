@@ -184,7 +184,7 @@ def test_midflight_failure_stops_startup_and_names_backup(tmp_path, monkeypatch)
     assert backups, "the pre-migration backup must exist on failure"
     assert backups[0] in msg, "the error must name the backup path"
     assert str(db) in msg, "the error must name the live DB path"
-    assert "github.com/debpalash/VoiceStudio/issues" in msg
+    assert "github.com/cellangamer978-sudo/CallenVoice/issues" in msg  # CallenVoice: report to our repository
     # Original data still present in BOTH the live DB and the backup —
     # and nothing was auto-restored (the backup file is separate).
     assert _profile_names(db) == ["Alice"]

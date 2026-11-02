@@ -70,7 +70,7 @@ it('shows an exact live count and refreshes it every 20 minutes', async () => {
   await waitFor(() => expect(screen.getByText('43,769')).toBeVisible());
   expect(screen.getByRole('link', { name: 'support.star_github' })).toHaveAttribute(
     'href',
-    'https://github.com/debpalash/VoiceStudio',
+    'https://github.com/cellangamer978-sudo/CallenVoice',
   );
   client.clear();
 });

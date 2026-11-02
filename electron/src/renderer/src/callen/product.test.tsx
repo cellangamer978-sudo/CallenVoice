@@ -77,4 +77,12 @@ describe('AGPL notice', () => {
       'https://github.com/debpalash/VoiceStudio',
     );
   });
+
+  it('links to the complete CallenVoice source code (AGPL-3.0 §13)', () => {
+    render(<CallenLegalNotice />);
+    const links = screen.getAllByRole('link');
+    expect(links.map((link) => link.getAttribute('href'))).toContain(
+      'https://github.com/cellangamer978-sudo/CallenVoice',
+    );
+  });
 });

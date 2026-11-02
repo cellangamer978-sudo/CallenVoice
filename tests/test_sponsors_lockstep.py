@@ -10,7 +10,9 @@ import pytest
 
 _ROOT = Path(__file__).resolve().parents[1]
 _CONFIG = _ROOT / "electron" / "src" / "shared" / "config" / "sponsors.js"
-_READMES = [_ROOT / "README.md", *sorted((_ROOT / "docs" / "readme").glob("README_*.md"))]
+# CallenVoice: the root README is ours and carries no upstream sponsor row; the
+# translated upstream READMEs in docs/readme/ are kept unchanged and still checked.
+_READMES = sorted((_ROOT / "docs" / "readme").glob("README_*.md"))
 
 _README_REPOSITORIES = {
     "OpenGTM": "/debpalash/OpenGTM",

@@ -52,6 +52,13 @@ luego `--check`, que falla si quedó algún texto visible con el nombre viejo.
 | `electron/build/icons/*` | Regenerados con `scripts/callen/build_icons.mjs` (macOS con el margen de Apple, 824/1024) | El ícono de macOS llenaba todo el lienzo |
 | `mobile/contract/strings.mobile.en.json`, tokens generados de `mobile/` | Sincronizados con los textos y colores nuevos | Las apps móviles no son parte del producto, pero sus tests comparan contra la interfaz de escritorio |
 | `backend/config/model_licenses.json`, `docs/licensing/model-license-data.json` | Entrada de MADLAD-400 CT2 y datos regenerados | Candidato de traducción de la Fase 3 |
+| `README.md` | Reemplazado por el README de CallenVoice (en español): qué hace, estado, requisitos, ejecución desde el código, licencia, créditos a VoiceStudio y uso responsable | Es la portada del repositorio público. El README del original sigue en el historial y en su repositorio; sus traducciones quedan sin cambios en `docs/readme/` |
+| `pyproject.toml` | `Homepage`, `Repository`, `Documentation` y `Bug Tracker` apuntan a cellangamer978-sudo/CallenVoice; nuevo `Upstream Project` con el original | Enlace al código fuente (AGPL) y enlaces a la documentación del backend (`core/links.py` lee `Repository`) |
+| `electron/src/shared/callen/repo.ts` | `CALLEN_REPO_URL` con nuestro repositorio; `CALLEN_HAS_RELEASES = false` mantiene ocultos los enlaces de descarga | Aún no hay versiones publicadas: un enlace a una página de descargas vacía no sirve |
+| `electron/src/shared/utils/contactLinks.js` | `REPO_URL` de nuestro repositorio | Los botones "Reportar error" (pantalla de error del backend, detalles de un fallo, pantalla de error general) abrían reportes en el repositorio de VoiceStudio |
+| `backend/core/db.py`, `backend/services/model_manager.py` | Los mensajes de error enlazan nuestros reportes vía `core.links` | Idem |
+| `docs/install/agent.md`, `docs/migration/real-time-voice-cloning.md` | Anclas al README nuevo | Las secciones del README anterior ya no existen |
+| `scripts/update_contributors.py` | Solo actualiza las traducciones de `docs/readme/` | El README nuevo no tiene la fila de avatares del original |
 
 ### Tests del original adaptados
 
@@ -65,13 +72,18 @@ luego `--check`, que falla si quedó algún texto visible con el nombre viejo.
 | `tests/test_gitleaks_allowlist.py` | Lee la clave permitida de `.gitleaks.toml`: ya no está en el código, pero sigue en el historial heredado |
 | `tests/test_no_committed_analytics_token.py`, `tests/test_analytics_lifecycle.py`, `tests/test_analytics_optin.py` | Prueban la decisión contraria a la del original (#1193): sin destino por defecto |
 | `tests/test_model_license_workflow.py` | Cuentas de modelos y pines con la entrada de MADLAD-400 |
+| `tests/test_agent_skill_discovery.py`, `tests/test_issue_fixes.py`, `tests/test_sponsors_lockstep.py`, `tests/test_readme_translations.py`, `tests/test_cla_workflow.py` | Exigían en el README contenido del original (instalar sus skills, su Discord, sus patrocinadores, sus traducciones, su CLA). Ahora verifican que el README de CallenVoice **no** lo promocione; las traducciones del original se siguen verificando |
+| `tests/test_voicestudio_branding.py` | Logo del README desde `branding/logo.svg`; metadatos del paquete con nuestro repositorio y el original acreditado |
+| `tests/test_db_migration_safety.py`, `tests/test_wedge_vs_slow_hardware_1416.py`, `electron/.../bugReport.test.js`, `errorDocsMap.test.ts`, `error-boundary.test.tsx`, `pipeline-failure.test.tsx`, `github-star.test.tsx`, `support-settings.test.tsx` | Esperan enlaces a nuestro repositorio |
+| `electron/.../voice-studio-agent.test.tsx` | El comando de clonado usa nuestro repositorio |
+| `backend/tests/test_ram_preflight_1618.py` | Con 16 GB recomendados, 12 GB ahora da advertencia; 16 GB (≈15,8 utilizables) pasa limpio |
 
 ## Pendiente antes de distribuir
 
-- `CALLEN_REPO_URL` en `electron/src/shared/callen/repo.ts` y `[project.urls].Repository` en `pyproject.toml` (repositorio público; de ahí salen el aviso de código fuente, la documentación y las descargas).
-- `CALLEN_UPDATE_REPO` en `electron/src/main/callen/updates.ts` (repositorio de versiones).
-- Textos del original fuera de la interfaz que todavía dicen VoiceStudio: `README.md`, `docs/`, `backend/config/models.yaml` (etiquetas de modelos ocultos), instaladores por script (`scripts/install*`).
+- Al publicar la primera versión (Fase 5): `CALLEN_HAS_RELEASES = true` en `electron/src/shared/callen/repo.ts` y `CALLEN_UPDATE_REPO = 'cellangamer978-sudo/CallenVoice'` en `electron/src/main/callen/updates.ts`. Se activan juntos, cuando exista un instalador firmado que ofrecer.
+- Textos del original fuera de la interfaz que todavía dicen VoiceStudio: `docs/` (incluye `docs/install/`, que describe el instalador por script de voicestudio.sh, que instala el original), `backend/config/models.yaml` (etiquetas de modelos ocultos), instaladores por script (`scripts/install*`).
+- `.github/CONTRIBUTING.md` y la plantilla de pull request piden firmar el CLA del original. Hace falta una política de contribuciones propia antes de aceptar aportes de terceros.
+- `electron/src/shared/pages/ContactPage.jsx` y `contactLinks.js` (correo, Discord, sitio web, licencia comercial) siguen con los datos del original; hoy solo se usan en secciones ocultas.
 - Demos de audio y video del original (`backend/assets/samples`, `docs/media`): generadas con OmniVoice; ya no se muestran ni se siembran. Falta grabar una voz demo propia con consentimiento firmado.
 - Configuración → Modelos → LLM sigue permitiendo cargar claves de servicios en la nube; revisar en la Fase 3 junto con el traductor Opus-MT.
 - El motor MOSS-TTS-Nano necesita su entorno propio (≈5 GB) además de los pesos: hoy se instala desde Configuración → Modelos; en la Fase 4 viene en el instalador.
-- Mensajes del backend con enlaces a la documentación del original (github.com/debpalash/VoiceStudio/docs).

@@ -4,6 +4,7 @@ import logging
 from contextlib import contextmanager
 from core.config import DB_PATH
 from core import db_backup
+from core import links
 from core.version import APP_VERSION
 
 logger = logging.getLogger("omnivoice.db")
@@ -679,7 +680,7 @@ def _run_alembic_upgrade() -> None:
             f"exactly as the failed migration left it). "
             f"{backup_note}. "
             "What to do: relaunch to retry; if it keeps failing, report it at "
-            "https://github.com/debpalash/VoiceStudio/issues (keep the backup file). "
+            f"{links.PROJECT_REPO_URL}/issues (keep the backup file). "
             "To roll back manually: quit the app, replace omnivoice.db with the backup "
             "file, and reinstall the previous version."
         )

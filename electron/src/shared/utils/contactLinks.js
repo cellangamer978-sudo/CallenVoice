@@ -1,4 +1,6 @@
-export const REPO_URL = 'https://github.com/debpalash/VoiceStudio';
+// CallenVoice: bug reports and issue searches go to our repository, never upstream.
+// Keep in sync with CALLEN_REPO_URL (src/shared/callen/repo.ts).
+export const REPO_URL = 'https://github.com/cellangamer978-sudo/CallenVoice';
 export const ISSUES_URL = `${REPO_URL}/issues`;
 export const DISCORD_URL = 'https://discord.gg/bzQavDfVV9';
 // GitHub Security Advisories = the private "report a vulnerability" flow that
