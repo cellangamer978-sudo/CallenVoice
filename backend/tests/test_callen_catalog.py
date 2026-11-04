@@ -220,3 +220,53 @@ def test_upstream_demo_voice_is_not_seeded():
 def test_allow_all_override_restores_upstream_demo(monkeypatch):
     monkeypatch.setenv("CALLENVOICE_ALLOW_ALL_MODELS", "1")
     assert catalog.upstream_demo_voice_allowed()
+
+
+# ── LLM providers: local only ──────────────────────────────────────────────
+
+def _llm_stub():
+    app = FastAPI()
+    app.add_middleware(CallenCatalogMiddleware)
+    calls = []
+
+    @app.get("/api/settings/llm-providers")
+    def listing():
+        return {"active": "openai", "providers": [{"id": "openai"}, {"id": "ollama"}, {"id": "lmstudio"}]}
+
+    @app.put("/api/settings/llm-providers/{pid}")
+    async def save(pid: str, body: dict):
+        calls.append(("put", pid))
+        return {}
+
+    @app.post("/api/settings/llm-providers/active")
+    async def active(body: dict):
+        calls.append(("active", body.get("provider")))
+        return {}
+
+    @app.post("/api/settings/llm-providers/{pid}/connect")
+    def connect(pid: str):
+        calls.append(("connect", pid))
+        return {}
+
+    app.state.calls = calls
+    return app, TestClient(app)
+
+
+def test_cloud_llm_providers_are_hidden_and_refused():
+    app, client = _llm_stub()
+    data = client.get("/api/settings/llm-providers").json()
+    assert [p["id"] for p in data["providers"]] == ["ollama", "lmstudio"]
+    assert data["active"] is None
+    assert client.put("/api/settings/llm-providers/openai", json={"api_key": "x"}).status_code == 403
+    assert client.post("/api/settings/llm-providers/anthropic/connect").status_code == 403
+    assert client.post("/api/settings/llm-providers/claude-code/connect").status_code == 403
+    assert client.post("/api/settings/llm-providers/active", json={"provider": "openai"}).status_code == 403
+    assert app.state.calls == []
+
+
+def test_local_llm_providers_pass_through():
+    app, client = _llm_stub()
+    assert client.put("/api/settings/llm-providers/ollama", json={}).status_code == 200
+    assert client.post("/api/settings/llm-providers/lmstudio/connect").status_code == 200
+    assert client.post("/api/settings/llm-providers/active", json={"provider": "ollama"}).status_code == 200
+    assert app.state.calls == [("put", "ollama"), ("connect", "lmstudio"), ("active", "ollama")]

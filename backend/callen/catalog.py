@@ -89,6 +89,20 @@ def translation_engine_allowed(engine_id: str | None) -> bool:
     return _env_override_allows_all() or (engine_id or "") in ALLOWED_TRANSLATION_ENGINES
 
 
+def llm_provider_allowed(provider_id: str | None) -> bool:
+    """Only LLM providers that run on the user's machine (Ollama, LM Studio).
+
+    CallenVoice promises local processing: cloud providers and agent CLIs would
+    send the user's transcripts to third parties and need their own API terms.
+    """
+    if _env_override_allows_all():
+        return True
+    from services import llm_providers  # lazy: keeps catalog import-light
+
+    provider = llm_providers.get_provider(provider_id or "")
+    return bool(provider and provider.local)
+
+
 def model_repo_allowed(repo_id: str | None) -> bool:
     if _env_override_allows_all():
         return True

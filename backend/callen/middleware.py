@@ -19,8 +19,15 @@ from callen import catalog
 _SIDECAR_INSTALL = re.compile(r"^/engines/sidecar/([^/]+)/install$")
 _TRANSLATION_INSTALL = re.compile(r"^/engines/translation/([^/]+)/install$")
 _MODEL_INSTALL_PATHS = {"/models/install", "/models/install/prepare", "/models/licenses/accept"}
-_BODY_CHECK_PATHS = {"/engines/select", "/engines/translation/select", *_MODEL_INSTALL_PATHS}
-_FILTERED_LISTINGS = {"/engines/tts", "/engines/translation", "/models"}
+_LLM_PROVIDERS = "/api/settings/llm-providers"
+_LLM_PROVIDER_ACTION = re.compile(r"^/api/settings/llm-providers/([^/]+)(?:/(connect|test))?$")
+_BODY_CHECK_PATHS = {
+    "/engines/select",
+    "/engines/translation/select",
+    _LLM_PROVIDERS + "/active",
+    *_MODEL_INSTALL_PATHS,
+}
+_FILTERED_LISTINGS = {"/engines/tts", "/engines/translation", "/models", _LLM_PROVIDERS}
 
 
 def _refusal(kind: str, identifier: str) -> tuple[int, bytes]:
@@ -38,6 +45,9 @@ def _check_path(path: str) -> tuple[int, bytes] | None:
     m = _TRANSLATION_INSTALL.match(path)
     if m and not catalog.translation_engine_allowed(m.group(1)):
         return _refusal("translation_engine", m.group(1))
+    m = _LLM_PROVIDER_ACTION.match(path)
+    if m and m.group(1) != "active" and not catalog.llm_provider_allowed(m.group(1)):
+        return _refusal("llm_provider", m.group(1))
     return None
 
 
@@ -54,6 +64,9 @@ def _check_body(path: str, raw: bytes) -> tuple[int, bytes] | None:
     elif path == "/engines/translation/select":
         if not catalog.translation_engine_allowed(body.get("engine_id")):
             return _refusal("translation_engine", str(body.get("engine_id") or ""))
+    elif path == _LLM_PROVIDERS + "/active":
+        if not catalog.llm_provider_allowed(body.get("provider")):
+            return _refusal("llm_provider", str(body.get("provider") or ""))
     elif path in _MODEL_INSTALL_PATHS:
         repo = body.get("repo_id")
         if repo and not catalog.model_repo_allowed(repo):
@@ -71,6 +84,10 @@ def _filter_listing(path: str, data):
         data["engines"] = [
             e for e in data["engines"] if catalog.translation_engine_allowed(e.get("id"))
         ]
+    elif path == _LLM_PROVIDERS and isinstance(data.get("providers"), list):
+        data["providers"] = [p for p in data["providers"] if catalog.llm_provider_allowed(p.get("id"))]
+        if not catalog.llm_provider_allowed(data.get("active")):
+            data["active"] = None
     elif path == "/models" and isinstance(data.get("models"), list):
         data["models"] = [m for m in data["models"] if catalog.model_repo_allowed(m.get("repo_id"))]
     return data
@@ -96,7 +113,7 @@ class CallenCatalogMiddleware:
         path = scope.get("path", "")
         method = scope.get("method", "")
 
-        if method == "POST":
+        if method in ("POST", "PUT"):
             refused = _check_path(path)
             if refused:
                 return await _send_json(send, *refused)

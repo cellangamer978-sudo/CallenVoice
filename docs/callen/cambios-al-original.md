@@ -97,3 +97,11 @@ luego `--check`, que falla si quedó algún texto visible con el nombre viejo.
 - `features/dub/dub-section.tsx`: `DubStepHeading` ya no muestra número (un punto naranja en su lugar) para no chocar con la barra de pasos; la prop `step` se conserva como `data-step`.
 - `i18n/locales/es.json`: "cinemático" → "Cinemático"; "Cinematic"/"Autofit" sueltos en textos en español → "Cinemático"/"Ajuste automático"; "utiliza el LLM" → "usa un modelo de lenguaje".
 - Barra de pasos navegable: `ProjectSteps` acepta `onSelect`; `scrollToProjectStep` lleva a la sección. `dub-page.tsx`: cinco paneles envueltos en `<div data-callen-step="…" className="contents">` (sin cambio de layout) y `data-callen-step="generate"` en el botón Generar. "Procesar" lleva al panel de carga. Tests unitarios; el desplazamiento real con un proyecto cargado no se verificó en pantalla.
+
+### Fase 2 — Proveedores LLM solo locales
+- `backend/callen/catalog.py`: `llm_provider_allowed()` → solo proveedores con `local=True` (Ollama, LM Studio). Justificación: la app promete procesamiento local ("sin nube"); los proveedores en la nube y las CLIs de agentes enviarían transcripciones a terceros. `CALLENVOICE_ALLOW_ALL_MODELS=1` los reactiva para desarrollo.
+- `backend/callen/middleware.py`: filtra `GET /api/settings/llm-providers` y rechaza (403) `PUT /api/settings/llm-providers/{id}`, `POST …/{id}/connect|test` y `POST …/active` para proveedores no locales. Ahora también inspecciona PUT. Routers originales sin tocar.
+- `backend/tests/test_callen_catalog.py`: 2 tests nuevos. Verificado contra el backend real: la lista devuelve solo `ollama` y `lmstudio`.
+- Limitación conocida: el proveedor "custom" (endpoint OpenAI-compatible propio) queda bloqueado aunque apunte a localhost.
+- `features/settings/settings-nav.tsx`: oculta el botón "Soporte" (donaciones al original), ya que `/settings/support` es una sección oculta.
+- Lotes y Configuración: revisados con capturas; ya usaban la paleta negro/naranja, sin cambios de color.
