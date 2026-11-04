@@ -862,6 +862,39 @@ async def dub_translate(req: TranslateRequest):
             return await _maybe_cinematic(translated, req, src_lang, loop, already_llm=True)
 
         # Offline Argos Translate
+        # CallenVoice: Opus-MT offline engine (backend/callen/opus_mt.py).
+        if provider == "opus":
+            from callen import opus_mt
+
+            requested = {seg.target_lang or req.target_lang for seg in req.segments}
+            unsupported = [code for code in requested if opus_mt.route(src_lang, code) is None]
+            if unsupported:
+                return JSONResponse(status_code=400, content={
+                    "error": "Opus-MT does not support the requested language. Use Argos for this pair.",
+                    "code": "unsupported_translation_language",
+                    "languages": sorted({src_lang, *unsupported}),
+                })
+
+            def _translate_opus():
+                results = []
+                groups: dict[str, list] = {}
+                for seg in req.segments:
+                    if not seg.text or not seg.text.strip():
+                        results.append({"id": seg.id, "text": seg.text})
+                    else:
+                        groups.setdefault(seg.target_lang or req.target_lang, []).append(seg)
+                for target, segs in groups.items():
+                    try:
+                        texts = opus_mt.translate([seg.text for seg in segs], src_lang, target)
+                        results.extend({"id": seg.id, "text": text} for seg, text in zip(segs, texts))
+                    except Exception as exc:  # noqa: BLE001
+                        results.extend({"id": seg.id, "text": seg.text, "error": str(exc)} for seg in segs)
+                order = {seg.id: i for i, seg in enumerate(req.segments)}
+                return sorted(results, key=lambda row: order.get(row["id"], 0))
+
+            translated = await loop.run_in_executor(_cpu_pool, _translate_opus)
+            return await _maybe_cinematic(translated, req, src_lang, loop)
+
         if provider == "argos" or provider == "libretranslate":
             try:
                 import argostranslate  # noqa: F401

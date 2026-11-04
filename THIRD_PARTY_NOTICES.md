@@ -31,9 +31,11 @@ first release, together with the FFmpeg/x264 notices for the PyAV wheels
 | KittenTTS mini | Preset English voices | Apache-2.0 | huggingface.co/KittenML |
 | Fun-CosyVoice3-0.5B-2512 | Voice cloning (16 GB / GPU) | Apache-2.0 | huggingface.co/FunAudioLLM |
 | VoxCPM2 | Voice cloning (16 GB / GPU) | Apache-2.0 | huggingface.co/openbmb |
-| Opus-MT | Translation | Apache-2.0 | huggingface.co/Helsinki-NLP |
+| Opus-MT: opus-mt-en-es, opus-mt-es-en, opus-mt-ROMANCE-en | Translation (default engine) | Apache-2.0 | huggingface.co/Helsinki-NLP |
+| Opus-MT: opus-mt-tc-big-en-pt — © Language Technology Research Group, University of Helsinki (Tiedemann & Thottingal, OPUS-MT, EAMT 2020) | Translation EN→PT | CC-BY-4.0 (attribution required) | huggingface.co/Helsinki-NLP/opus-mt-tc-big-en-pt |
 | MADLAD-400 3B (CTranslate2) | Translation, high quality | Apache-2.0 | huggingface.co/santhosh/madlad400-3b-ct2 |
 | AudioSeal | Watermark | MIT | github.com/facebookresearch/audioseal |
 
 Pending review before release: Argos Translate language packages (no licence
-declared in the package; kept temporarily until Opus-MT is integrated).
+declared in the package). Opus-MT is now the default engine; Argos remains as a
+fallback for pairs Opus-MT does not cover and must be reviewed or removed before release.

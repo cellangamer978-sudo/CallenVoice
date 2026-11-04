@@ -173,3 +173,19 @@ def apply_to_model_catalogue(models: list[dict]) -> list[dict]:
             entry["required"] = False
         out.append(entry)
     return out
+
+
+DEFAULT_TRANSLATION_ENGINE = "opus"
+
+
+def seed_default_preferences() -> None:
+    """First run only: make Opus-MT the translation engine.
+
+    Upstream falls back to Argos wherever ``translation_backend`` is unset, so
+    storing our default once covers the Dub page, batch jobs and the system
+    report alike. An explicit choice by the user is never overwritten.
+    """
+    from core import prefs
+
+    if prefs.get("translation_backend") is None:
+        prefs.set_("translation_backend", DEFAULT_TRANSLATION_ENGINE)

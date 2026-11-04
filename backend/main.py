@@ -1981,6 +1981,11 @@ from core.render_trace import RenderTraceMiddleware
 # CallenVoice: innermost, so auth/CSRF/network guards run before the whitelist.
 from callen.middleware import CallenCatalogMiddleware
 app.add_middleware(CallenCatalogMiddleware)
+from callen.catalog import seed_default_preferences
+try:
+    seed_default_preferences()
+except Exception:  # noqa: BLE001 - a prefs problem must never block startup
+    logging.getLogger("callen").warning("Could not seed CallenVoice defaults", exc_info=True)
 app.add_middleware(RenderTraceMiddleware)
 app.add_middleware(StartupGateMiddleware)
 

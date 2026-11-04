@@ -52,6 +52,18 @@ _ARGOS_TRADITIONAL_SUBTAGS = frozenset({"hant", "tw", "hk", "mo"})
 # Engine ID → registry entry. Keyed by the `provider` string sent from the
 # frontend (must match the values of `translateProvider` in the store).
 REGISTRY: dict[str, dict] = {
+    # CallenVoice: Opus-MT (backend/callen/opus_mt.py). Apache-2.0 / CC-BY-4.0
+    # weights, CPU via transformers (already a core dependency).
+    "opus": {
+        "id": "opus",
+        "display_name": "Opus-MT (Local)",
+        "pip_package": None,
+        "probe_module": "transformers",
+        "category": "offline",
+        "needs_key": False,
+        "builtin": True,
+        "notes": "Offline Helsinki-NLP models for English, Spanish and Portuguese. Downloads ~300 MB-1 GB per pair on first use.",
+    },
     "argos": {
         "id": "argos",
         "display_name": "Argos (Local, Fast)",

@@ -105,3 +105,13 @@ luego `--check`, que falla si quedó algún texto visible con el nombre viejo.
 - Limitación conocida: el proveedor "custom" (endpoint OpenAI-compatible propio) queda bloqueado aunque apunte a localhost.
 - `features/settings/settings-nav.tsx`: oculta el botón "Soporte" (donaciones al original), ya que `/settings/support` es una sección oculta.
 - Lotes y Configuración: revisados con capturas; ya usaban la paleta negro/naranja, sin cambios de color.
+
+### Fase 3 — Traducción local con Opus-MT
+- Nuevo `backend/callen/opus_mt.py`: motor Opus-MT (MarianMT vía `transformers`, sin dependencias nuevas). Pares directos en↔es, en→pt, pt→en; es→pt y similares pasan por inglés. Pesos se bajan de HF en el primer uso (300 MB–1 GB por par).
+- `backend/services/translation_engines.py`: entrada `"opus"` en `REGISTRY`.
+- `backend/api/routers/dub_translate.py`: rama `provider == "opus"` antes de Argos; par no soportado → 400 `unsupported_translation_language`; pasa por `_maybe_cinematic` como Argos.
+- `backend/callen/catalog.py` + `backend/main.py`: `seed_default_preferences()` fija `translation_backend = "opus"` solo si el usuario no eligió otro.
+- `THIRD_PARTY_NOTICES.md`: modelos exactos y atribución CC-BY-4.0 de opus-mt-tc-big-en-pt.
+- Verificado con modelos reales en CPU: en→es, es→en, en→pt y es→pt (vía inglés); con el modelo cargado ~0,5 s por frase. Verificado contra el backend real: `/engines/translation` → activo `opus` en un primer arranque; `/dub/translate` traduce y rechaza en→fr.
+- Tests: `backend/tests/test_callen_opus_mt.py` (6). Suites de traducción: 1.975 pasan; 3 fallos de `test_engines_route_shape` ocurren igual sin estos cambios (dependen del orden de ejecución).
+- Pendiente: el dialecto (es-AR, es-MX) no lo aplica Opus-MT; lo resuelven los perfiles de idioma (siguiente paso).
