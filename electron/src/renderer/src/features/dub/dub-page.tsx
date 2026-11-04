@@ -38,6 +38,7 @@ import { formatSegmentTime, parseSegmentTimeField } from './segment-time-field';
 import { setDubFitOptions, setDubQuality, setDubProduction } from './dub-session';
 import { DEFAULT_REPAIR_AGENT_KEY } from '@/lib/repair-agent-events';
 import type { RepairAgentId, RepairAgentInfo } from '../../../../preload/index.d';
+import { ProjectSteps } from '@/callen/project-steps';
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Link, useNavigate } from '@tanstack/react-router';
@@ -935,6 +936,10 @@ export function DubPage() {
           </Button>
         )}
       </WorkspaceHeader>
+      {/* CallenVoice: where the project is in the dubbing flow. */}
+      <div className="border-b border-border/40 px-3 py-2">
+        <ProjectSteps phase={session.phase} jobId={session.jobId} segments={session.segments} />
+      </div>
       <ConfirmDialog
         open={storyOpen}
         onOpenChange={setStoryOpen}

@@ -91,3 +91,5 @@ luego `--check`, que falla si quedó algún texto visible con el nombre viejo.
 ### Fase 2 — Inicio y textos
 - `electron/src/renderer/src/features/home/home-page.tsx`: los íconos de acceso usan un único tono de marca (`bg-primary/10 text-primary`) en lugar de la paleta multicolor heredada.
 - `electron/src/renderer/src/i18n/locales/es.json`: "vídeo" → "video" (forma latinoamericana). pt.json y gl.json no se tocan (allí "vídeo" es correcto).
+- Nuevo `electron/src/renderer/src/callen/project-steps.tsx` (+ test): indicador de pasos del proyecto (Importar → Procesar → Idiomas → Editor → Voces → Generar → Exportar; el Inicio es el 8.º, fuera del proyecto). Solo lee `session.phase`; no cambia comportamiento. Orden ajustado al flujo real (la transcripción ocurre antes de elegir idioma), distinto del orden del plan de Fase 1.
+- `electron/src/renderer/src/features/dub/dub-page.tsx`: inserta `<ProjectSteps>` bajo la cabecera. Sin otros cambios.
