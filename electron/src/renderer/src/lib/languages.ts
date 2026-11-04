@@ -5,7 +5,10 @@ export const LANGUAGES: string[] = languagesJson;
 
 export const POPULAR_LANGUAGES: string[] = [
   'English',
-  'Spanish',
+  'Spanish (Latin America)',
+  'Spanish (Argentina)',
+  'Spanish (Mexico)',
+  'Spanish (Spain)',
   'French',
   'German',
   'Italian',

@@ -28,7 +28,7 @@ import pytest
     ("pt", "pt-BR"),
     # Languages without a variant split carry no dialect here.
     ("en-US", None),
-    ("Spanish", None),
+    ("Spanish", "es-419"),  # CallenVoice: Spanish defaults to Latin America
     ("Auto", None),
     (None, None),
 ])
@@ -57,7 +57,7 @@ def test_regional_target_splits_into_base_and_dialect():
     from core.language_variants import split_target
     assert split_target("pt-PT") == ("pt", "pt-PT")
     assert split_target("pt") == ("pt", None)
-    assert split_target("es-AR") == ("es-AR", None)  # no picker split for Spanish
+    assert split_target("es-AR") == ("es", "es-AR")  # CallenVoice: Spanish profiles
 
 
 # ── TTS engine boundary ─────────────────────────────────────────────────────
@@ -196,7 +196,7 @@ def test_regional_target_becomes_base_plus_dialect():
     req = _request(target_lang="pt-PT")
     _resolve_target_dialect(req)
     assert (req.target_lang, req.dialect) == ("pt", "pt-PT")
-    other = _request(target_lang="es")
+    other = _request(target_lang="fr")  # CallenVoice: "es" now has profiles
     _resolve_target_dialect(other)
     assert other.dialect is None
 
@@ -211,7 +211,7 @@ def test_regional_segment_targets_become_base_codes():
         target_lang="pt",
     )
     _resolve_target_dialect(req)
-    assert [seg.target_lang for seg in req.segments] == ["pt", "es-AR"]
+    assert [seg.target_lang for seg in req.segments] == ["pt", "es"]  # CallenVoice: es-AR profile
 
 
 def test_resolver_accepts_request_objects_without_a_dialect_field():

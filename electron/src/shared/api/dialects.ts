@@ -10,7 +10,7 @@
 
 /** Target-language ISO 639-1 code → BCP-47 dialect codes we curate hints for. */
 export const DIALECTS: Record<string, string[]> = {
-  es: ['es-ES', 'es-MX', 'es-AR', 'es-CO', 'es-CL'],
+  es: ['es-419', 'es-AR', 'es-MX', 'es-ES', 'es-CO', 'es-CL'],
   pt: ['pt-BR', 'pt-PT'],
   en: ['en-US', 'en-GB', 'en-AU', 'en-IN'],
   fr: ['fr-FR', 'fr-CA', 'fr-BE'],

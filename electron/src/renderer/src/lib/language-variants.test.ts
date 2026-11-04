@@ -29,7 +29,9 @@ describe('Portuguese choices', () => {
     expect(canonicalLanguage('English')).toBe('English');
     expect(languageDialect('Portuguese')).toBe('pt-BR');
     expect(languageDialect('Portuguese (Portugal)')).toBe('pt-PT');
-    expect(languageDialect('Spanish')).toBeUndefined();
+    // CallenVoice: Spanish has language profiles; plain Spanish means Latin America.
+    expect(languageDialect('Spanish')).toBe('es-419');
+    expect(languageDialect('French')).toBeUndefined();
   });
 
   it('carries the BCP-47 tag for names, flags and search', () => {
@@ -59,7 +61,8 @@ describe('Portuguese choices', () => {
     expect(variantChoice('Portuguese', 'pt-PT')).toBe('Portuguese (Portugal)');
     expect(variantChoice('Portuguese', undefined)).toBe('Portuguese (Brazil)');
     expect(hasVariantChoices('pt')).toBe(true);
-    expect(hasVariantChoices('es')).toBe(false);
+    expect(hasVariantChoices('es')).toBe(true); // CallenVoice: Spanish profiles
+    expect(hasVariantChoices('fr')).toBe(false);
   });
 });
 

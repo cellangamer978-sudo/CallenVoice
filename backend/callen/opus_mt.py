@@ -29,8 +29,8 @@ _loaded: dict[str, tuple[object, object]] = {}
 
 
 def base_lang(code: str | None) -> str:
-    """'es-419' / 'pt_BR' / 'Spanish' → 'es' / 'pt' / 'es'."""
-    value = (code or "").strip().lower().replace("_", "-")
+    """'es-419' / 'pt_BR' / 'Spanish (Mexico)' → 'es' / 'pt' / 'es'."""
+    value = (code or "").strip().lower().replace("_", "-").split(" (", 1)[0]
     names = {"english": "en", "spanish": "es", "portuguese": "pt"}
     return names.get(value, value.split("-")[0])
 

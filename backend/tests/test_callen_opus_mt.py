@@ -11,6 +11,7 @@ def test_routes_direct_pivot_and_unsupported():
         opus_mt.DIRECT_PAIRS[("en", "pt")],
     ]
     assert opus_mt.route("es-AR", "es-MX") == []
+    assert opus_mt.route("English", "Spanish (Mexico)") == [opus_mt.DIRECT_PAIRS[("en", "es")]]
     assert opus_mt.route("en", "fr") is None
 
 

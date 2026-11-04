@@ -125,6 +125,8 @@ LANG_NAMES = {
 # per-segment prompt, so verbosity = wall time.
 DIALECT_HINTS = {
     # Spanish
+    # CallenVoice: neutral Latin American Spanish profile.
+    "es-419": "Neutral Latin American Spanish: use tú/ustedes (never vosotros) and vocabulary understood across Latin America; avoid Spain-only and country-specific slang.",
     "es-ES": "European Spanish (Spain): use tú/vosotros forms and Peninsular vocabulary.",
     "es-MX": "Mexican Spanish: use tú/ustedes forms and Mexican vocabulary.",
     "es-AR": "Rioplatense Spanish (Argentina): use voseo — 'vos' with its verb forms (e.g. 'vos sos', 'tenés') and 'ustedes'; prefer Argentinian vocabulary.",

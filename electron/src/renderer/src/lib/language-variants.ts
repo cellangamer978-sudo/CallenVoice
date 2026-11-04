@@ -17,12 +17,19 @@ export interface LanguageVariant {
 export const LANGUAGE_VARIANTS: Record<string, LanguageVariant> = {
   'Portuguese (Brazil)': { base: 'Portuguese', dialect: 'pt-BR' },
   'Portuguese (Portugal)': { base: 'Portuguese', dialect: 'pt-PT' },
+  // CallenVoice language profiles: Latin American Spanish first.
+  'Spanish (Latin America)': { base: 'Spanish', dialect: 'es-419' },
+  'Spanish (Argentina)': { base: 'Spanish', dialect: 'es-AR' },
+  'Spanish (Mexico)': { base: 'Spanish', dialect: 'es-MX' },
+  'Spanish (Spain)': { base: 'Spanish', dialect: 'es-ES' },
 };
 
 /** Base picker name (lowercase) → the variant it means when named alone. */
 const DEFAULT_VARIANTS: Record<string, string> = {
   portuguese: 'Portuguese (Brazil)',
   pt: 'Portuguese (Brazil)',
+  spanish: 'Spanish (Latin America)',
+  es: 'Spanish (Latin America)',
 };
 
 const byLowerName = new Map(

@@ -23,13 +23,21 @@ from typing import Optional
 VARIANT_NAMES: dict[str, tuple[str, str]] = {
     "portuguese (brazil)": ("Portuguese", "pt-BR"),
     "portuguese (portugal)": ("Portuguese", "pt-PT"),
+    # CallenVoice language profiles: Latin American Spanish first.
+    "spanish (latin america)": ("Spanish", "es-419"),
+    "spanish (argentina)": ("Spanish", "es-AR"),
+    "spanish (mexico)": ("Spanish", "es-MX"),
+    "spanish (spain)": ("Spanish", "es-ES"),
 }
 
 #: Base ISO code -> dialect used when the caller named only the language.
-DEFAULT_DIALECTS: dict[str, str] = {"pt": "pt-BR"}
+DEFAULT_DIALECTS: dict[str, str] = {"pt": "pt-BR", "es": "es-419"}  # CallenVoice: es-419
 
 #: Every dialect each base language offers as a separate choice.
-DIALECTS: dict[str, tuple[str, ...]] = {"pt": ("pt-BR", "pt-PT")}
+DIALECTS: dict[str, tuple[str, ...]] = {
+    "pt": ("pt-BR", "pt-PT"),
+    "es": ("es-419", "es-AR", "es-MX", "es-ES"),  # CallenVoice
+}
 
 #: Picker name (lowercase) -> base ISO code, for resolvers keyed by language id.
 VARIANT_CODES: dict[str, str] = {
@@ -37,9 +45,13 @@ VARIANT_CODES: dict[str, str] = {
 }
 
 #: Base language names (lowercase) that carry a default dialect.
-_BASE_NAMES: dict[str, str] = {"portuguese": "pt", "pt": "pt", "por": "pt"}
+_BASE_NAMES: dict[str, str] = {
+    "portuguese": "pt", "pt": "pt", "por": "pt",
+    "spanish": "es", "es": "es", "spa": "es",  # CallenVoice
+}
 
-_TAG_RE = re.compile(r"^([a-z]{2,3})[-_]([a-z]{2})$")
+# CallenVoice: also UN M.49 numeric regions ("es-419").
+_TAG_RE = re.compile(r"^([a-z]{2,3})[-_]([a-z]{2}|[0-9]{3})$")
 
 
 def _key(language: object) -> str:

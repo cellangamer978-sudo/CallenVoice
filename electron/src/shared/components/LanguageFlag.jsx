@@ -1,6 +1,7 @@
 import React from 'react';
 import { Globe } from 'lucide-react';
 import AF from 'country-flag-icons/react/3x2/AF';
+import AR from 'country-flag-icons/react/3x2/AR';
 import AL from 'country-flag-icons/react/3x2/AL';
 import AM from 'country-flag-icons/react/3x2/AM';
 import AZ from 'country-flag-icons/react/3x2/AZ';
@@ -8,6 +9,7 @@ import BA from 'country-flag-icons/react/3x2/BA';
 import BD from 'country-flag-icons/react/3x2/BD';
 import BG from 'country-flag-icons/react/3x2/BG';
 import BR from 'country-flag-icons/react/3x2/BR';
+import MX from 'country-flag-icons/react/3x2/MX';
 import BY from 'country-flag-icons/react/3x2/BY';
 import CN from 'country-flag-icons/react/3x2/CN';
 import CZ from 'country-flag-icons/react/3x2/CZ';
@@ -160,6 +162,10 @@ export const LANGUAGE_FLAGS = {
   sl: SI,
   so: SO,
   es: ES,
+  // CallenVoice language profiles (es-419 has no country flag: shows the globe).
+  'es-AR': AR,
+  'es-MX': MX,
+  'es-ES': ES,
   su: ID,
   sw: TZ,
   sv: SE,

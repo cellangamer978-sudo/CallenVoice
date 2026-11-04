@@ -115,3 +115,13 @@ luego `--check`, que falla si quedó algún texto visible con el nombre viejo.
 - Verificado con modelos reales en CPU: en→es, es→en, en→pt y es→pt (vía inglés); con el modelo cargado ~0,5 s por frase. Verificado contra el backend real: `/engines/translation` → activo `opus` en un primer arranque; `/dub/translate` traduce y rechaza en→fr.
 - Tests: `backend/tests/test_callen_opus_mt.py` (6). Suites de traducción: 1.975 pasan; 3 fallos de `test_engines_route_shape` ocurren igual sin estos cambios (dependen del orden de ejecución).
 - Pendiente: el dialecto (es-AR, es-MX) no lo aplica Opus-MT; lo resuelven los perfiles de idioma (siguiente paso).
+
+### Fase 3 — Perfiles de idioma (es-419, es-AR, es-MX, es-ES, pt-BR)
+- Se extiende el mecanismo de variantes regionales del original (#3143, usado para pt-BR/pt-PT) al español. "Spanish" sin región ahora significa **es-419** (antes: sin dialecto).
+- `backend/core/language_variants.py`: variantes `Spanish (Latin America|Argentina|Mexico|Spain)`, dialecto por defecto `es-419`, regex de etiqueta acepta regiones numéricas (`419`).
+- `backend/api/routers/dub_translate.py`: pista de dialecto `es-419` (tú/ustedes, sin vosotros) para los caminos con LLM.
+- Frontend: `lib/language-variants.ts` (espejo), `lib/languages.json` y `lib/languages.ts` (las 4 variantes reemplazan "Spanish"), `shared/api/dialects.ts` (es-419), `shared/language-regions.json` + `shared/components/LanguageFlag.jsx` (banderas AR/MX/ES; es-419 muestra el globo).
+- `backend/callen/opus_mt.py`: acepta nombres de variante ("Spanish (Mexico)").
+- Tests adaptados (cambio intencional, con comentario "CallenVoice"): `tests/test_engine_language_options.py`, `tests/test_portuguese_variants_3143.py`, `language-variants.test.ts`. Frontend completo: 2.752 pasan. Python: suites de idioma pasan; `tests/test_profile_unification.py` muere por memoria en este entorno también sin cambios (no verificable acá).
+- Verificado en pantalla (selector con es-419 por defecto y banderas) y contra el backend: es-AR traduce y responde `dialect_applied: false`.
+- Limitación: Opus-MT no aplica el dialecto (sin voseo); solo lo aplican los caminos con LLM local (calidad Cinemático con Ollama/LM Studio). La voz sintetizada tampoco cambia de acento por perfil.
