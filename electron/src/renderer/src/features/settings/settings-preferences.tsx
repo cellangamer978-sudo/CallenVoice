@@ -156,7 +156,7 @@ export function GeneralSettings() {
         >
           <Select
             items={APP_LANGUAGE_ITEMS}
-            value={i18n.resolvedLanguage || i18n.language}
+            value={i18n.language} /* CallenVoice: resolvedLanguage stays "en" when the locale bundle loads after init */
             onValueChange={(value) => void setAppLanguage(value as AppLocale)}
           >
             <SelectTrigger aria-labelledby="language-label" className="min-w-44">

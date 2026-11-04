@@ -125,3 +125,6 @@ luego `--check`, que falla si quedó algún texto visible con el nombre viejo.
 - Tests adaptados (cambio intencional, con comentario "CallenVoice"): `tests/test_engine_language_options.py`, `tests/test_portuguese_variants_3143.py`, `language-variants.test.ts`. Frontend completo: 2.752 pasan. Python: suites de idioma pasan; `tests/test_profile_unification.py` muere por memoria en este entorno también sin cambios (no verificable acá).
 - Verificado en pantalla (selector con es-419 por defecto y banderas) y contra el backend: es-AR traduce y responde `dialect_applied: false`.
 - Limitación: Opus-MT no aplica el dialecto (sin voseo); solo lo aplican los caminos con LLM local (calidad Cinemático con Ollama/LM Studio). La voz sintetizada tampoco cambia de acento por perfil.
+
+### Corrección — selector de idioma mostraba "English"
+- `components/backend-gate.tsx`, `features/settings/settings-preferences.tsx`, `features/batch/batch-page.tsx`: `i18n.resolvedLanguage` → `i18n.language`. Causa: con `partialBundledLanguages` el paquete del idioma se carga después de `init`, y `resolvedLanguage` queda en "en". Fallo heredado del original. Verificado con captura (muestra "español"); 294 tests de esas áreas pasan.
