@@ -34,6 +34,8 @@ first release, together with the FFmpeg/x264 notices for the PyAV wheels
 | Opus-MT: opus-mt-en-es, opus-mt-es-en, opus-mt-ROMANCE-en | Translation (default engine) | Apache-2.0 | huggingface.co/Helsinki-NLP |
 | Opus-MT: opus-mt-tc-big-en-pt — © Language Technology Research Group, University of Helsinki (Tiedemann & Thottingal, OPUS-MT, EAMT 2020) | Translation EN→PT | CC-BY-4.0 (attribution required) | huggingface.co/Helsinki-NLP/opus-mt-tc-big-en-pt |
 | MADLAD-400 3B (CTranslate2) | Translation, high quality | Apache-2.0 | huggingface.co/santhosh/madlad400-3b-ct2 |
+| pyannote speaker-diarization-3.1 + segmentation-3.0 | Speaker diarisation (optional) | MIT | huggingface.co/pyannote |
+| WeSpeaker ResNet34-LM (pyannote/wespeaker-voxceleb-resnet34-LM) — © WeSpeaker contributors | Speaker embeddings for diarisation | CC-BY-4.0 (attribution required) | huggingface.co/pyannote/wespeaker-voxceleb-resnet34-LM |
 | AudioSeal | Watermark | MIT | github.com/facebookresearch/audioseal |
 
 Pending review before release: Argos Translate language packages (no licence

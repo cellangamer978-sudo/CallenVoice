@@ -49,6 +49,12 @@ ALLOWED_MODEL_REPOS: tuple[str, ...] = (
     # Translation (Apache-2.0)
     "Helsinki-NLP/opus-mt-*",
     "santhosh/madlad400-3b-ct2",
+    # Speaker diarisation, pyannote 3.1 pipeline (gated: the user accepts the
+    # terms with their own Hugging Face token). Pipeline and segmentation are
+    # MIT; the WeSpeaker embedding model is CC-BY-4.0 (attribution).
+    "pyannote/speaker-diarization-3.1",
+    "pyannote/segmentation-3.0",
+    "pyannote/wespeaker-voxceleb-resnet34-LM",
 )
 
 

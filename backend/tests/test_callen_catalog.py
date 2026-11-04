@@ -304,3 +304,10 @@ def test_non_commercial_sortformer_diarisation_is_hidden_and_refused():
     assert client.post("/engines/diarisation/select", json={"engine_id": "audiocpp-sortformer"}).status_code == 403
     assert client.post("/engines/diarisation/select", json={"engine_id": "pyannote"}).status_code == 200
     assert calls == ["pyannote"]
+
+
+def test_pyannote_pipeline_repos_are_whitelisted():
+    from services.diarization_runtime import PYANNOTE_REPOS
+
+    for repo in PYANNOTE_REPOS:
+        assert catalog.model_repo_allowed(repo)

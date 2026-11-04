@@ -139,3 +139,4 @@ luego `--check`, que falla si quedó algún texto visible con el nombre viejo.
 - `backend/callen/catalog.py`: `ALLOWED_DIARISATION_ENGINES = {"pyannote"}` (MIT; requiere token de Hugging Face y aceptar sus términos). Sortformer (`audiocpp-sortformer`, pesos NVIDIA diar_sortformer_4spk-v1) es CC-BY-NC-4.0 → excluido. Licencias verificadas en Hugging Face (2026-11-04).
 - `backend/callen/middleware.py`: filtra `GET /engines/diarisation` y rechaza `POST /engines/diarisation/select` fuera de la lista.
 - Test nuevo; 44 + 63 tests pasan.
+- `backend/callen/catalog.py`: lista blanca + los 3 repos de pyannote (`speaker-diarization-3.1`, `segmentation-3.0` MIT; `wespeaker-voxceleb-resnet34-LM` CC-BY-4.0). Sin esto la instalación de pyannote quedaba bloqueada. `THIRD_PARTY_NOTICES.md` con atribución. Test nuevo.
