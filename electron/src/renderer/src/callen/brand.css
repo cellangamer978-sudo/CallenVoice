@@ -41,3 +41,10 @@
   --terminal-cursor: var(--callen-orange);
   --terminal-selection-background: rgb(255 106 0 / 25%);
 }
+
+/* CallenVoice: Home cards use the single brand accent instead of upstream's
+ * per-destination blue / violet / teal (overrides features/home/home-page.css). */
+:root .home-destination,
+:root .home-destination[data-destination] {
+  --home-accent: var(--callen-orange);
+}
