@@ -17,12 +17,8 @@ export function DubStepHeading({
   return (
     <div className="flex min-h-7 items-center gap-2">
       <h2 className="flex min-w-0 flex-1 items-center gap-2 text-sm font-medium text-foreground/95">
-        <span
-          aria-hidden="true"
-          className="grid size-5 shrink-0 place-items-center rounded-full bg-primary/12 text-[11px] font-semibold text-primary"
-        >
-          {step}
-        </span>
+        {/* CallenVoice: no number here; the project steps bar above numbers the flow. */}
+        <span aria-hidden="true" data-step={step} className="size-1.5 shrink-0 rounded-full bg-primary" />
         <span className="truncate">{children}</span>
       </h2>
       {end}
