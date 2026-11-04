@@ -87,3 +87,7 @@ luego `--check`, que falla si quedó algún texto visible con el nombre viejo.
 - Demos de audio y video del original (`backend/assets/samples`, `docs/media`): generadas con OmniVoice; ya no se muestran ni se siembran. Falta grabar una voz demo propia con consentimiento firmado.
 - Configuración → Modelos → LLM sigue permitiendo cargar claves de servicios en la nube; revisar en la Fase 3 junto con el traductor Opus-MT.
 - El motor MOSS-TTS-Nano necesita su entorno propio (≈5 GB) además de los pesos: hoy se instala desde Configuración → Modelos; en la Fase 4 viene en el instalador.
+
+### Fase 2 — Inicio y textos
+- `electron/src/renderer/src/features/home/home-page.tsx`: los íconos de acceso usan un único tono de marca (`bg-primary/10 text-primary`) en lugar de la paleta multicolor heredada.
+- `electron/src/renderer/src/i18n/locales/es.json`: "vídeo" → "video" (forma latinoamericana). pt.json y gl.json no se tocan (allí "vídeo" es correcto).
