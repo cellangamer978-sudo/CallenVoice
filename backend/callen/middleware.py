@@ -24,10 +24,11 @@ _LLM_PROVIDER_ACTION = re.compile(r"^/api/settings/llm-providers/([^/]+)(?:/(con
 _BODY_CHECK_PATHS = {
     "/engines/select",
     "/engines/translation/select",
+    "/engines/diarisation/select",
     _LLM_PROVIDERS + "/active",
     *_MODEL_INSTALL_PATHS,
 }
-_FILTERED_LISTINGS = {"/engines", "/engines/tts", "/engines/translation", "/models", _LLM_PROVIDERS}
+_FILTERED_LISTINGS = {"/engines", "/engines/diarisation", "/engines/tts", "/engines/translation", "/models", _LLM_PROVIDERS}
 
 
 def _refusal(kind: str, identifier: str) -> tuple[int, bytes]:
@@ -64,6 +65,9 @@ def _check_body(path: str, raw: bytes) -> tuple[int, bytes] | None:
     elif path == "/engines/translation/select":
         if not catalog.translation_engine_allowed(body.get("engine_id")):
             return _refusal("translation_engine", str(body.get("engine_id") or ""))
+    elif path == "/engines/diarisation/select":
+        if not catalog.diarisation_engine_allowed(body.get("engine_id")):
+            return _refusal("diarisation_engine", str(body.get("engine_id") or ""))
     elif path == _LLM_PROVIDERS + "/active":
         if not catalog.llm_provider_allowed(body.get("provider")):
             return _refusal("llm_provider", str(body.get("provider") or ""))
@@ -87,6 +91,8 @@ def _filter_listing(path: str, data):
         data["engines"] = [
             e for e in data["engines"] if catalog.translation_engine_allowed(e.get("id"))
         ]
+    elif path == "/engines/diarisation" and isinstance(data.get("options"), list):
+        data["options"] = [o for o in data["options"] if catalog.diarisation_engine_allowed(o.get("id"))]
     elif path == _LLM_PROVIDERS and isinstance(data.get("providers"), list):
         data["providers"] = [p for p in data["providers"] if catalog.llm_provider_allowed(p.get("id"))]
         if not catalog.llm_provider_allowed(data.get("active")):

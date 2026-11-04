@@ -134,3 +134,8 @@ luego `--check`, que falla si quedó algún texto visible con el nombre viejo.
 - Causa 1: el middleware filtraba `/engines/tts` pero no el listado agregado `/engines`, que es el que leen esas pantallas. `backend/callen/middleware.py` ahora filtra también `/engines` (familia TTS). La selección ya estaba bloqueada por `/engines/select`.
 - Causa 2: el script de cambio de marca había renombrado "VoiceStudio (k2-fsa/OmniVoice…)" a "CallenVoice (…)", presentando un modelo de terceros (CC-BY-NC) con nuestra marca. `backend/services/tts_backend.py` y `backend/engines/omnivoice_subprocess/__init__.py`: nombre → "OmniVoice (k2-fsa, 600+ languages)".
 - Test nuevo en `backend/tests/test_callen_catalog.py` (43 pasan); 120 tests de motores pasan; `rebrand --check` = 0.
+
+### Corrección — diarización: Sortformer fuera (CC-BY-NC-4.0)
+- `backend/callen/catalog.py`: `ALLOWED_DIARISATION_ENGINES = {"pyannote"}` (MIT; requiere token de Hugging Face y aceptar sus términos). Sortformer (`audiocpp-sortformer`, pesos NVIDIA diar_sortformer_4spk-v1) es CC-BY-NC-4.0 → excluido. Licencias verificadas en Hugging Face (2026-11-04).
+- `backend/callen/middleware.py`: filtra `GET /engines/diarisation` y rechaza `POST /engines/diarisation/select` fuera de la lista.
+- Test nuevo; 44 + 63 tests pasan.

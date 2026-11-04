@@ -283,3 +283,24 @@ def test_aggregate_engine_listing_hides_excluded_tts(stub):
     assert [b["id"] for b in data["tts"]["backends"]] == ["moss-tts-nano", "kittentts"]
     assert data["tts"]["active"] == "moss-tts-nano"
     assert data["asr"] == {"backends": [{"id": "whisper"}]}
+
+
+def test_non_commercial_sortformer_diarisation_is_hidden_and_refused():
+    app = FastAPI()
+    app.add_middleware(CallenCatalogMiddleware)
+    calls = []
+
+    @app.get("/engines/diarisation")
+    def listing():
+        return {"active": "pyannote", "options": [{"id": "pyannote"}, {"id": "audiocpp-sortformer"}]}
+
+    @app.post("/engines/diarisation/select")
+    async def select(body: dict):
+        calls.append(body["engine_id"])
+        return {}
+
+    client = TestClient(app)
+    assert [o["id"] for o in client.get("/engines/diarisation").json()["options"]] == ["pyannote"]
+    assert client.post("/engines/diarisation/select", json={"engine_id": "audiocpp-sortformer"}).status_code == 403
+    assert client.post("/engines/diarisation/select", json={"engine_id": "pyannote"}).status_code == 200
+    assert calls == ["pyannote"]

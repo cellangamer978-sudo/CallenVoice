@@ -81,6 +81,16 @@ def upstream_demo_voice_allowed() -> bool:
     return _env_override_allows_all()
 
 
+#: Speaker diarisation. pyannote 3.1 is MIT (gated on Hugging Face: the user
+#: accepts its terms with their own token). Sortformer is excluded: its NVIDIA
+#: weights (diar_sortformer_4spk-v1) are CC-BY-NC-4.0.
+ALLOWED_DIARISATION_ENGINES: frozenset[str] = frozenset({"pyannote"})
+
+
+def diarisation_engine_allowed(engine_id: str | None) -> bool:
+    return _env_override_allows_all() or (engine_id or "") in ALLOWED_DIARISATION_ENGINES
+
+
 def tts_engine_allowed(engine_id: str | None) -> bool:
     return _env_override_allows_all() or (engine_id or "") in ALLOWED_TTS_ENGINES
 
