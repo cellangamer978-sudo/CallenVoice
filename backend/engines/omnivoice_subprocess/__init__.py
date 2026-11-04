@@ -158,7 +158,7 @@ class OmniVoiceMPSSubprocessBackend(OmniVoiceSubprocessBackend):
     """
 
     id = "omnivoice"
-    display_name = "CallenVoice (k2-fsa/OmniVoice, 600+ languages)"
+    display_name = "OmniVoice (k2-fsa, 600+ languages)"  # CallenVoice: never brand a third-party model as ours
     instruct_vocabulary = "tags"
     supports_native_omnivoice_controls = True
 

@@ -27,7 +27,7 @@ _BODY_CHECK_PATHS = {
     _LLM_PROVIDERS + "/active",
     *_MODEL_INSTALL_PATHS,
 }
-_FILTERED_LISTINGS = {"/engines/tts", "/engines/translation", "/models", _LLM_PROVIDERS}
+_FILTERED_LISTINGS = {"/engines", "/engines/tts", "/engines/translation", "/models", _LLM_PROVIDERS}
 
 
 def _refusal(kind: str, identifier: str) -> tuple[int, bytes]:
@@ -77,7 +77,10 @@ def _check_body(path: str, raw: bytes) -> tuple[int, bytes] | None:
 def _filter_listing(path: str, data):
     if not isinstance(data, dict):
         return data
-    if path == "/engines/tts" and isinstance(data.get("backends"), list):
+    if path == "/engines" and isinstance(data.get("tts"), dict):
+        # The aggregate listing feeds Settings → Models and the setup wizard.
+        data["tts"] = _filter_listing("/engines/tts", data["tts"])
+    elif path == "/engines/tts" and isinstance(data.get("backends"), list):
         data["backends"] = [b for b in data["backends"] if catalog.tts_engine_allowed(b.get("id"))]
         data["active"] = catalog.resolve_tts_engine(data.get("active"))
     elif path == "/engines/translation" and isinstance(data.get("engines"), list):

@@ -128,3 +128,9 @@ luego `--check`, que falla si quedó algún texto visible con el nombre viejo.
 
 ### Corrección — selector de idioma mostraba "English"
 - `components/backend-gate.tsx`, `features/settings/settings-preferences.tsx`, `features/batch/batch-page.tsx`: `i18n.resolvedLanguage` → `i18n.language`. Causa: con `partialBundledLanguages` el paquete del idioma se carga después de `init`, y `resolvedLanguage` queda en "en". Fallo heredado del original. Verificado con captura (muestra "español"); 294 tests de esas áreas pasan.
+
+### Corrección — modelos no comerciales visibles en Configuración → Modelos y en el asistente
+- Encontrado por el usuario en Windows: la lista de TTS mostraba "CallenVoice (k2-fsa/OmniVoice)", "OmniVoice (subprocess…)" y MLX-Audio, fuera de la lista blanca.
+- Causa 1: el middleware filtraba `/engines/tts` pero no el listado agregado `/engines`, que es el que leen esas pantallas. `backend/callen/middleware.py` ahora filtra también `/engines` (familia TTS). La selección ya estaba bloqueada por `/engines/select`.
+- Causa 2: el script de cambio de marca había renombrado "VoiceStudio (k2-fsa/OmniVoice…)" a "CallenVoice (…)", presentando un modelo de terceros (CC-BY-NC) con nuestra marca. `backend/services/tts_backend.py` y `backend/engines/omnivoice_subprocess/__init__.py`: nombre → "OmniVoice (k2-fsa, 600+ languages)".
+- Test nuevo en `backend/tests/test_callen_catalog.py` (43 pasan); 120 tests de motores pasan; `rebrand --check` = 0.

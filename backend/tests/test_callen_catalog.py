@@ -110,6 +110,10 @@ def _stub_app() -> FastAPI:
         return {"active": "omnivoice", "backends": [{"id": "omnivoice"}, {"id": "moss-tts-nano"},
                                                     {"id": "indextts2"}, {"id": "kittentts"}]}
 
+    @app.get("/engines")
+    def all_engines():
+        return {"tts": tts(), "asr": {"backends": [{"id": "whisper"}]}}
+
     @app.get("/engines/translation")
     def translation():
         return {"active": "argos", "engines": [{"id": "argos"}, {"id": "nllb"}, {"id": "deepl"},
@@ -270,3 +274,12 @@ def test_local_llm_providers_pass_through():
     assert client.post("/api/settings/llm-providers/lmstudio/connect").status_code == 200
     assert client.post("/api/settings/llm-providers/active", json={"provider": "ollama"}).status_code == 200
     assert app.state.calls == [("put", "ollama"), ("connect", "lmstudio"), ("active", "ollama")]
+
+
+def test_aggregate_engine_listing_hides_excluded_tts(stub):
+    # Settings → Models and the setup wizard read /engines, not /engines/tts.
+    _, client = stub
+    data = client.get("/engines").json()
+    assert [b["id"] for b in data["tts"]["backends"]] == ["moss-tts-nano", "kittentts"]
+    assert data["tts"]["active"] == "moss-tts-nano"
+    assert data["asr"] == {"backends": [{"id": "whisper"}]}
