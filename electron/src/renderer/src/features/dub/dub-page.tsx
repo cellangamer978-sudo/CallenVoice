@@ -38,7 +38,7 @@ import { formatSegmentTime, parseSegmentTimeField } from './segment-time-field';
 import { setDubFitOptions, setDubQuality, setDubProduction } from './dub-session';
 import { DEFAULT_REPAIR_AGENT_KEY } from '@/lib/repair-agent-events';
 import type { RepairAgentId, RepairAgentInfo } from '../../../../preload/index.d';
-import { ProjectSteps } from '@/callen/project-steps';
+import { ProjectSteps, scrollToProjectStep } from '@/callen/project-steps';
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Link, useNavigate } from '@tanstack/react-router';
@@ -938,7 +938,12 @@ export function DubPage() {
       </WorkspaceHeader>
       {/* CallenVoice: where the project is in the dubbing flow. */}
       <div className="border-b border-border/40 px-3 py-2">
-        <ProjectSteps phase={session.phase} jobId={session.jobId} segments={session.segments} />
+        <ProjectSteps
+          phase={session.phase}
+          jobId={session.jobId}
+          segments={session.segments}
+          onSelect={scrollToProjectStep}
+        />
       </div>
       <ConfirmDialog
         open={storyOpen}
@@ -959,29 +964,31 @@ export function DubPage() {
           libraryLabel={t('projects.title')}
           className="flex flex-col gap-2"
         >
-          <DubSourcePanel
-            session={session}
-            busy={busy}
-            cancelling={cancelling}
-            inputRef={input}
-            localSize={localSource?.name === session.filename ? localSource.size : undefined}
-            removable={sourceRemovable}
-            confirmRemove={Boolean(
-              session.recovery || session.segments.length > 0 || editHistory.undoDepth > 0,
-            )}
-            diarisationReady={modelCatalogue.isSuccess ? diarisationReady : undefined}
-            onFile={startUpload}
-            onUrl={(link, cookieFile, fetchSubs) => {
-              if (busy || cancelling || session.recovery || !isDubUrl(link)) return;
-              setPreview('original');
-              void ingestDubUrl(link, cookieFile, fetchSubs);
-            }}
-            onSubtitles={(file) => {
-              setPreview('original');
-              void importDubSubtitles(file);
-            }}
-            onRemove={() => void removeVideo()}
-          />
+          <div data-callen-step="import" className="contents">
+            <DubSourcePanel
+              session={session}
+              busy={busy}
+              cancelling={cancelling}
+              inputRef={input}
+              localSize={localSource?.name === session.filename ? localSource.size : undefined}
+              removable={sourceRemovable}
+              confirmRemove={Boolean(
+                session.recovery || session.segments.length > 0 || editHistory.undoDepth > 0,
+              )}
+              diarisationReady={modelCatalogue.isSuccess ? diarisationReady : undefined}
+              onFile={startUpload}
+              onUrl={(link, cookieFile, fetchSubs) => {
+                if (busy || cancelling || session.recovery || !isDubUrl(link)) return;
+                setPreview('original');
+                void ingestDubUrl(link, cookieFile, fetchSubs);
+              }}
+              onSubtitles={(file) => {
+                setPreview('original');
+                void importDubSubtitles(file);
+              }}
+              onRemove={() => void removeVideo()}
+            />
+          </div>
           {session.jobId && !['idle', 'preparing'].includes(session.phase) && (
             <section className="-mt-1 space-y-3 rounded-xl rounded-t-md border border-border/40 bg-muted/15 p-3">
               <h2 className="flex items-center gap-2 text-sm font-medium">
@@ -1060,27 +1067,31 @@ export function DubPage() {
               )}
             </section>
           )}
-          <DubTranslationPanel
-            session={session}
-            locked={busy || Boolean(session.recovery)}
-            provider={provider}
-            agentLabel={selectedTranslationAgent?.label}
-            agentAvailable={Boolean(selectedTranslationAgent) || llmAgentReady}
-            engineQuality={lastEngineQuality.current}
-            argos={{
-              error: argosPacks.isError ? argosPacks.error : null,
-              missing: missingArgosPacks,
-              installing: installingArgosPacks,
-              retry: () => void argosPacks.refetch(),
-              install: () => void installArgosLanguagePacks(),
-            }}
-          />
-          <CastingBoard
-            segments={session.segments}
-            profiles={profiles.data || []}
-            disabled={busy || Boolean(session.recovery)}
-            onAssign={assignDubSpeakerProfile}
-          />
+          <div data-callen-step="languages" className="contents">
+            <DubTranslationPanel
+              session={session}
+              locked={busy || Boolean(session.recovery)}
+              provider={provider}
+              agentLabel={selectedTranslationAgent?.label}
+              agentAvailable={Boolean(selectedTranslationAgent) || llmAgentReady}
+              engineQuality={lastEngineQuality.current}
+              argos={{
+                error: argosPacks.isError ? argosPacks.error : null,
+                missing: missingArgosPacks,
+                installing: installingArgosPacks,
+                retry: () => void argosPacks.refetch(),
+                install: () => void installArgosLanguagePacks(),
+              }}
+            />
+          </div>
+          <div data-callen-step="voices" className="contents">
+            <CastingBoard
+              segments={session.segments}
+              profiles={profiles.data || []}
+              disabled={busy || Boolean(session.recovery)}
+              onAssign={assignDubSpeakerProfile}
+            />
+          </div>
           <details className="group rounded-xl border border-border/40 bg-muted/15 p-3">
             <summary className="flex cursor-pointer list-none items-center gap-2 text-sm font-medium">
               <Clock3Icon className="size-4 text-muted-foreground" />
@@ -1259,11 +1270,13 @@ export function DubPage() {
               </Button>
             </div>
           </details>
-          <DubExportPanel
-            key={session.jobId || session.inputType}
-            session={session}
-            disabled={busy || Boolean(session.recovery)}
-          />
+          <div data-callen-step="export" className="contents">
+            <DubExportPanel
+              key={session.jobId || session.inputType}
+              session={session}
+              disabled={busy || Boolean(session.recovery)}
+            />
+          </div>
         </SecondarySidebar>
         <section data-slot="dub-transcript" className="flex min-h-0 min-w-0 flex-1 flex-col">
           {session.segments.length > 0 && (
@@ -1547,17 +1560,19 @@ export function DubPage() {
           )}
           {session.segments.length > 0 && (
             <div className="shrink-0 py-2 pl-6 pr-16">
-              <DubTimeline
-                segments={session.segments}
-                disabled={busy || Boolean(session.recovery)}
-                mediaDuration={session.duration}
-                onsets={timelineOnsets.onsets}
-                peaks={timelineOnsets.peaks}
-                previewingId={previewingSegmentId}
-                selectedId={selectedSegmentId}
-                onSelect={selectTranscriptSegment}
-                onPreviewSegment={(segment) => void previewDubSegment(segment)}
-              />
+              <div data-callen-step="editor" className="contents">
+                <DubTimeline
+                  segments={session.segments}
+                  disabled={busy || Boolean(session.recovery)}
+                  mediaDuration={session.duration}
+                  onsets={timelineOnsets.onsets}
+                  peaks={timelineOnsets.peaks}
+                  previewingId={previewingSegmentId}
+                  selectedId={selectedSegmentId}
+                  onSelect={selectTranscriptSegment}
+                  onPreviewSegment={(segment) => void previewDubSegment(segment)}
+                />
+              </div>
             </div>
           )}
           {/* Leave the fixed right-edge agent launcher clear of transcript actions. */}
@@ -2666,6 +2681,7 @@ export function DubPage() {
                     </Button>
                   )}
                   <Button
+                    data-callen-step="generate"
                     disabled={
                       Boolean(session.recovery) ||
                       ttsBlocker !== null ||

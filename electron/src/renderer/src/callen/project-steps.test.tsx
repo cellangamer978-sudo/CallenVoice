@@ -29,3 +29,27 @@ describe('ProjectSteps', () => {
     expect(screen.getAllByRole('listitem')).toHaveLength(PROJECT_STEPS.length);
   });
 });
+
+describe('step navigation', () => {
+  it('calls onSelect with the clicked step', async () => {
+    const { fireEvent } = await import('@testing-library/react');
+    const picked: string[] = [];
+    render(<ProjectSteps phase="idle" jobId={null} segments={[]} onSelect={(s) => picked.push(s)} />);
+    fireEvent.click(screen.getByRole('button', { name: /Voices|Voces|Vozes/ }));
+    expect(picked).toEqual(['voices']);
+  });
+
+  it('scrolls to the section inside a display:contents anchor', async () => {
+    const { scrollToProjectStep } = await import('./project-steps');
+    const root = document.createElement('div');
+    root.innerHTML = '<div data-callen-step="import" class="contents"><section></section></div>';
+    const section = root.querySelector('section') as HTMLElement;
+    let scrolled = false;
+    section.scrollIntoView = () => {
+      scrolled = true;
+    };
+    expect(scrollToProjectStep('process', root)).toBe(true);
+    expect(scrolled).toBe(true);
+    expect(scrollToProjectStep('export', root)).toBe(false);
+  });
+});
